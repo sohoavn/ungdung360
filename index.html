@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UngDung360 - Hệ sinh thái ứng dụng số | Kênh Số Hóa</title>
+    
+    <!-- Font Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- VSH CSS Framework -->
+    <link rel="stylesheet" href="assets/css/vsh-core.css">
+    <link rel="stylesheet" href="assets/css/vsh-components.css">
+    <link rel="stylesheet" href="assets/css/vsh-layout.css">
+    <link rel="stylesheet" href="assets/css/vsh-utilities.css">
+    <link rel="stylesheet" href="assets/css/vsh-responsive.css">
+</head>
+<body>
+    <!-- ===== HEADER ===== -->
+    <header class="vsh-header">
+        <div class="vsh-container vsh-flex vsh-flex--between vsh-flex--items-center" style="max-width: 100%; height: 100%;">
+            <!-- Logo -->
+            <a href="/" class="vsh-header__logo">
+                <span style="background: var(--vsh-primary); color: white; padding: 6px 10px; border-radius: 6px; font-size: 14px;">U360</span>
+                <span class="vsh-hidden-mobile">Kênh Số Hóa</span>
+            </a>
+            
+            <!-- Navigation (ẩn trên mobile) -->
+            <nav class="vsh-header__nav">
+                <a href="#tinh-nang" class="vsh-header__nav-link">Tính năng</a>
+                <a href="#nganh-nghe" class="vsh-header__nav-link">Ngành nghề</a>
+                <a href="#bang-gia" class="vsh-header__nav-link">Bảng giá</a>
+                <a href="#lien-he" class="vsh-header__nav-link">Liên hệ</a>
+            </nav>
+            
+            <!-- Actions -->
+            <div class="vsh-header__actions">
+                <a href="login.html" class="vsh-btn vsh-btn--outline vsh-btn--sm vsh-hidden-mobile">Đăng nhập</a>
+                <a href="register.html" class="vsh-btn vsh-btn--primary vsh-btn--sm">Dùng thử</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== HERO SECTION ===== -->
+    <section class="vsh-hero">
+        <div class="vsh-container vsh-text-center">
+            <div class="vsh-hero__content">
+                <!-- Badge -->
+                <span class="vsh-hero__badge">
+                    🚀 Nền tảng số hóa #1 Việt Nam
+                </span>
+                
+                <!-- Title -->
+                <h1 class="vsh-hero__title">
+                    Số hóa doanh nghiệp với <span>UngDung360</span>
+                </h1>
+                
+                <!-- Description -->
+                <p class="vsh-hero__description">
+                    Hệ sinh thái 50+ ứng dụng được thiết kế riêng cho từng ngành nghề. 
+                    Quản lý • Vận hành • Báo cáo - Tất cả trong một nền tảng duy nhất.
+                </p>
+                
+                <!-- CTA Buttons -->
+                <div class="vsh-hero__actions">
+                    <a href="register.html" class="vsh-btn vsh-btn--primary vsh-btn--lg">
+                        Bắt đầu miễn phí
+                    </a>
+                    <a href="#tinh-nang" class="vsh-btn vsh-btn--outline vsh-btn--lg">
+                        Tìm hiểu thêm
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FEATURES SECTION ===== -->
+    <section id="tinh-nang" class="vsh-section vsh-section--gray">
+        <div class="vsh-container">
+            <!-- Section Header -->
+            <div class="vsh-section__header">
+                <h2 class="vsh-section__title">Tại sao chọn UngDung360?</h2>
+                <p class="vsh-section__subtitle">
+                    Nền tảng được thiết kế để đơn giản hóa vận hành doanh nghiệp của bạn
+                </p>
+            </div>
+            
+            <!-- Features Grid -->
+            <div class="vsh-grid vsh-grid--cols-2 vsh-grid--gap-6" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+                <!-- Feature 1 -->
+                <div class="vsh-card">
+                    <div class="vsh-card__body vsh-text-center">
+                        <div style="font-size: 48px; margin-bottom: 16px;">🏢</div>
+                        <h3 style="font-size: 18px; margin-bottom: 8px;">Đa khách hàng (Multi-tenant)</h3>
+                        <p class="vsh-text-secondary vsh-mb-0">Mỗi doanh nghiệp có không gian riêng với logo, màu sắc và dữ liệu độc lập.</p>
+                    </div>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="vsh-card">
+                    <div class="vsh-card__body vsh-text-center">
+                        <div style="font-size: 48px; margin-bottom: 16px;">📱</div>
+                        <h3 style="font-size: 18px; margin-bottom: 8px;">Kho ứng dụng phong phú</h3>
+                        <p class="vsh-text-secondary vsh-mb-0">50+ ứng dụng theo ngành nghề, chọn lọc phù hợp với nhu cầu của bạn.</p>
+                    </div>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="vsh-card">
+                    <div class="vsh-card__body vsh-text-center">
+                        <div style="font-size: 48px; margin-bottom: 16px;">🔐</div>
+                        <h3 style="font-size: 18px; margin-bottom: 8px;">Bảo mật & Phân quyền</h3>
+                        <p class="vsh-text-secondary vsh-mb-0">Phân quyền chi tiết theo vai trò, dữ liệu được mã hóa và bảo vệ.</p>
+                    </div>
+                </div>
+                
+                <!-- Feature 4 -->
+                <div class="vsh-card">
+                    <div class="vsh-card__body vsh-text-center">
+                        <div style="font-size: 48px; margin-bottom: 16px;">☁️</div>
+                        <h3 style="font-size: 18px; margin-bottom: 8px;">Cloud - Truy cập mọi nơi</h3>
+                        <p class="vsh-text-secondary vsh-mb-0">Làm việc từ bất kỳ đâu, trên mọi thiết bị với kết nối internet.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== STATS SECTION ===== -->
+    <section class="vsh-section">
+        <div class="vsh-container">
+            <div class="vsh-grid vsh-grid--cols-4 vsh-grid--gap-6" style="grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));">
+                <div class="vsh-text-center">
+                    <div class="vsh-text-4xl vsh-font-bold vsh-text-brand">50+</div>
+                    <div class="vsh-text-secondary">Ứng dụng</div>
+                </div>
+                <div class="vsh-text-center">
+                    <div class="vsh-text-4xl vsh-font-bold vsh-text-brand">100+</div>
+                    <div class="vsh-text-secondary">Doanh nghiệp</div>
+                </div>
+                <div class="vsh-text-center">
+                    <div class="vsh-text-4xl vsh-font-bold vsh-text-brand">1,000+</div>
+                    <div class="vsh-text-secondary">Người dùng</div>
+                </div>
+                <div class="vsh-text-center">
+                    <div class="vsh-text-4xl vsh-font-bold vsh-text-brand">99.9%</div>
+                    <div class="vsh-text-secondary">Uptime</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CTA SECTION ===== -->
+    <section class="vsh-section vsh-section--dark">
+        <div class="vsh-container vsh-text-center">
+            <h2 style="color: white; margin-bottom: 16px;">Sẵn sàng số hóa doanh nghiệp?</h2>
+            <p style="color: rgba(255,255,255,0.7); margin-bottom: 32px; max-width: 500px; margin-left: auto; margin-right: auto;">
+                Bắt đầu miễn phí ngay hôm nay. Không cần thẻ tín dụng.
+            </p>
+            <a href="register.html" class="vsh-btn vsh-btn--primary vsh-btn--lg">
+                Đăng ký miễn phí
+            </a>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="vsh-footer">
+        <div class="vsh-container">
+            <div class="vsh-footer__grid">
+                <!-- Brand Column -->
+                <div>
+                    <div class="vsh-footer__brand-logo">
+                        <span style="background: var(--vsh-primary); color: white; padding: 6px 10px; border-radius: 6px; font-size: 14px;">U360</span>
+                        Kênh Số Hóa
+                    </div>
+                    <p class="vsh-footer__brand-desc">
+                        Nền tảng hệ sinh thái ứng dụng số hàng đầu cho doanh nghiệp Việt Nam.
+                    </p>
+                </div>
+                
+                <!-- Links Column 1 -->
+                <div>
+                    <h4 class="vsh-footer__title">Sản phẩm</h4>
+                    <div class="vsh-footer__links">
+                        <a href="#" class="vsh-footer__link">Tính năng</a>
+                        <a href="#" class="vsh-footer__link">Bảng giá</a>
+                        <a href="#" class="vsh-footer__link">Ngành nghề</a>
+                        <a href="#" class="vsh-footer__link">API</a>
+                    </div>
+                </div>
+                
+                <!-- Links Column 2 -->
+                <div>
+                    <h4 class="vsh-footer__title">Hỗ trợ</h4>
+                    <div class="vsh-footer__links">
+                        <a href="#" class="vsh-footer__link">Tài liệu</a>
+                        <a href="#" class="vsh-footer__link">Hướng dẫn</a>
+                        <a href="#" class="vsh-footer__link">FAQ</a>
+                        <a href="#" class="vsh-footer__link">Liên hệ</a>
+                    </div>
+                </div>
+                
+                <!-- Links Column 3 -->
+                <div>
+                    <h4 class="vsh-footer__title">Liên kết</h4>
+                    <div class="vsh-footer__links">
+                        <a href="#" class="vsh-footer__link">Về chúng tôi</a>
+                        <a href="#" class="vsh-footer__link">Blog</a>
+                        <a href="#" class="vsh-footer__link">Tuyển dụng</a>
+                        <a href="#" class="vsh-footer__link">Đối tác</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bottom -->
+            <div class="vsh-footer__bottom">
+                <div class="vsh-footer__copyright">
+                    © 2024 Kênh Số Hóa. All rights reserved.
+                </div>
+                <div class="vsh-footer__bottom-links">
+                    <a href="#" class="vsh-footer__bottom-link">Điều khoản</a>
+                    <a href="#" class="vsh-footer__bottom-link">Bảo mật</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
