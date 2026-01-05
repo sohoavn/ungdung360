@@ -1,0 +1,425 @@
+/*
+ * ═══════════════════════════════════════════════════════════
+ * VSH PLATFORM - UTILITIES CSS
+ * Version: 1.0.0
+ * Author: Kênh Số Hóa (kenhsohoa.com)
+ * ═══════════════════════════════════════════════════════════
+ * File này chứa các utility classes (class tiện ích):
+ * - Spacing (margin, padding)
+ * - Typography (text align, colors, sizes)
+ * - Display & Visibility
+ * - Background & Border
+ * - Sizing
+ * ═══════════════════════════════════════════════════════════
+ */
+
+/* ============================================
+   1. MARGIN (KHOẢNG CÁCH NGOÀI)
+   Quy tắc: .vsh-m{hướng}-{size}
+   Hướng: t(top), r(right), b(bottom), l(left), x(trái-phải), y(trên-dưới)
+   Size: 0, 1, 2, 3, 4, 5, 6, 8, 10, 12, 16, auto
+   ============================================ */
+
+/* Margin all sides */
+.vsh-m-0 { margin: 0 !important; }
+.vsh-m-1 { margin: var(--vsh-space-1) !important; }
+.vsh-m-2 { margin: var(--vsh-space-2) !important; }
+.vsh-m-3 { margin: var(--vsh-space-3) !important; }
+.vsh-m-4 { margin: var(--vsh-space-4) !important; }
+.vsh-m-5 { margin: var(--vsh-space-5) !important; }
+.vsh-m-6 { margin: var(--vsh-space-6) !important; }
+.vsh-m-8 { margin: var(--vsh-space-8) !important; }
+.vsh-m-auto { margin: auto !important; }
+
+/* Margin top */
+.vsh-mt-0 { margin-top: 0 !important; }
+.vsh-mt-1 { margin-top: var(--vsh-space-1) !important; }
+.vsh-mt-2 { margin-top: var(--vsh-space-2) !important; }
+.vsh-mt-3 { margin-top: var(--vsh-space-3) !important; }
+.vsh-mt-4 { margin-top: var(--vsh-space-4) !important; }
+.vsh-mt-5 { margin-top: var(--vsh-space-5) !important; }
+.vsh-mt-6 { margin-top: var(--vsh-space-6) !important; }
+.vsh-mt-8 { margin-top: var(--vsh-space-8) !important; }
+.vsh-mt-10 { margin-top: var(--vsh-space-10) !important; }
+.vsh-mt-12 { margin-top: var(--vsh-space-12) !important; }
+.vsh-mt-16 { margin-top: var(--vsh-space-16) !important; }
+.vsh-mt-auto { margin-top: auto !important; }
+
+/* Margin right */
+.vsh-mr-0 { margin-right: 0 !important; }
+.vsh-mr-1 { margin-right: var(--vsh-space-1) !important; }
+.vsh-mr-2 { margin-right: var(--vsh-space-2) !important; }
+.vsh-mr-3 { margin-right: var(--vsh-space-3) !important; }
+.vsh-mr-4 { margin-right: var(--vsh-space-4) !important; }
+.vsh-mr-5 { margin-right: var(--vsh-space-5) !important; }
+.vsh-mr-6 { margin-right: var(--vsh-space-6) !important; }
+.vsh-mr-8 { margin-right: var(--vsh-space-8) !important; }
+.vsh-mr-auto { margin-right: auto !important; }
+
+/* Margin bottom */
+.vsh-mb-0 { margin-bottom: 0 !important; }
+.vsh-mb-1 { margin-bottom: var(--vsh-space-1) !important; }
+.vsh-mb-2 { margin-bottom: var(--vsh-space-2) !important; }
+.vsh-mb-3 { margin-bottom: var(--vsh-space-3) !important; }
+.vsh-mb-4 { margin-bottom: var(--vsh-space-4) !important; }
+.vsh-mb-5 { margin-bottom: var(--vsh-space-5) !important; }
+.vsh-mb-6 { margin-bottom: var(--vsh-space-6) !important; }
+.vsh-mb-8 { margin-bottom: var(--vsh-space-8) !important; }
+.vsh-mb-10 { margin-bottom: var(--vsh-space-10) !important; }
+.vsh-mb-12 { margin-bottom: var(--vsh-space-12) !important; }
+.vsh-mb-16 { margin-bottom: var(--vsh-space-16) !important; }
+.vsh-mb-auto { margin-bottom: auto !important; }
+
+/* Margin left */
+.vsh-ml-0 { margin-left: 0 !important; }
+.vsh-ml-1 { margin-left: var(--vsh-space-1) !important; }
+.vsh-ml-2 { margin-left: var(--vsh-space-2) !important; }
+.vsh-ml-3 { margin-left: var(--vsh-space-3) !important; }
+.vsh-ml-4 { margin-left: var(--vsh-space-4) !important; }
+.vsh-ml-5 { margin-left: var(--vsh-space-5) !important; }
+.vsh-ml-6 { margin-left: var(--vsh-space-6) !important; }
+.vsh-ml-8 { margin-left: var(--vsh-space-8) !important; }
+.vsh-ml-auto { margin-left: auto !important; }
+
+/* Margin x-axis (left + right) */
+.vsh-mx-0 { margin-left: 0 !important; margin-right: 0 !important; }
+.vsh-mx-2 { margin-left: var(--vsh-space-2) !important; margin-right: var(--vsh-space-2) !important; }
+.vsh-mx-4 { margin-left: var(--vsh-space-4) !important; margin-right: var(--vsh-space-4) !important; }
+.vsh-mx-6 { margin-left: var(--vsh-space-6) !important; margin-right: var(--vsh-space-6) !important; }
+.vsh-mx-auto { margin-left: auto !important; margin-right: auto !important; }
+
+/* Margin y-axis (top + bottom) */
+.vsh-my-0 { margin-top: 0 !important; margin-bottom: 0 !important; }
+.vsh-my-2 { margin-top: var(--vsh-space-2) !important; margin-bottom: var(--vsh-space-2) !important; }
+.vsh-my-4 { margin-top: var(--vsh-space-4) !important; margin-bottom: var(--vsh-space-4) !important; }
+.vsh-my-6 { margin-top: var(--vsh-space-6) !important; margin-bottom: var(--vsh-space-6) !important; }
+.vsh-my-8 { margin-top: var(--vsh-space-8) !important; margin-bottom: var(--vsh-space-8) !important; }
+
+
+/* ============================================
+   2. PADDING (KHOẢNG CÁCH TRONG)
+   ============================================ */
+
+/* Padding all sides */
+.vsh-p-0 { padding: 0 !important; }
+.vsh-p-1 { padding: var(--vsh-space-1) !important; }
+.vsh-p-2 { padding: var(--vsh-space-2) !important; }
+.vsh-p-3 { padding: var(--vsh-space-3) !important; }
+.vsh-p-4 { padding: var(--vsh-space-4) !important; }
+.vsh-p-5 { padding: var(--vsh-space-5) !important; }
+.vsh-p-6 { padding: var(--vsh-space-6) !important; }
+.vsh-p-8 { padding: var(--vsh-space-8) !important; }
+.vsh-p-10 { padding: var(--vsh-space-10) !important; }
+.vsh-p-12 { padding: var(--vsh-space-12) !important; }
+
+/* Padding top */
+.vsh-pt-0 { padding-top: 0 !important; }
+.vsh-pt-2 { padding-top: var(--vsh-space-2) !important; }
+.vsh-pt-4 { padding-top: var(--vsh-space-4) !important; }
+.vsh-pt-6 { padding-top: var(--vsh-space-6) !important; }
+.vsh-pt-8 { padding-top: var(--vsh-space-8) !important; }
+.vsh-pt-10 { padding-top: var(--vsh-space-10) !important; }
+.vsh-pt-12 { padding-top: var(--vsh-space-12) !important; }
+.vsh-pt-16 { padding-top: var(--vsh-space-16) !important; }
+
+/* Padding right */
+.vsh-pr-0 { padding-right: 0 !important; }
+.vsh-pr-2 { padding-right: var(--vsh-space-2) !important; }
+.vsh-pr-4 { padding-right: var(--vsh-space-4) !important; }
+.vsh-pr-6 { padding-right: var(--vsh-space-6) !important; }
+.vsh-pr-8 { padding-right: var(--vsh-space-8) !important; }
+
+/* Padding bottom */
+.vsh-pb-0 { padding-bottom: 0 !important; }
+.vsh-pb-2 { padding-bottom: var(--vsh-space-2) !important; }
+.vsh-pb-4 { padding-bottom: var(--vsh-space-4) !important; }
+.vsh-pb-6 { padding-bottom: var(--vsh-space-6) !important; }
+.vsh-pb-8 { padding-bottom: var(--vsh-space-8) !important; }
+.vsh-pb-10 { padding-bottom: var(--vsh-space-10) !important; }
+.vsh-pb-12 { padding-bottom: var(--vsh-space-12) !important; }
+.vsh-pb-16 { padding-bottom: var(--vsh-space-16) !important; }
+
+/* Padding left */
+.vsh-pl-0 { padding-left: 0 !important; }
+.vsh-pl-2 { padding-left: var(--vsh-space-2) !important; }
+.vsh-pl-4 { padding-left: var(--vsh-space-4) !important; }
+.vsh-pl-6 { padding-left: var(--vsh-space-6) !important; }
+.vsh-pl-8 { padding-left: var(--vsh-space-8) !important; }
+
+/* Padding x-axis */
+.vsh-px-0 { padding-left: 0 !important; padding-right: 0 !important; }
+.vsh-px-2 { padding-left: var(--vsh-space-2) !important; padding-right: var(--vsh-space-2) !important; }
+.vsh-px-4 { padding-left: var(--vsh-space-4) !important; padding-right: var(--vsh-space-4) !important; }
+.vsh-px-6 { padding-left: var(--vsh-space-6) !important; padding-right: var(--vsh-space-6) !important; }
+.vsh-px-8 { padding-left: var(--vsh-space-8) !important; padding-right: var(--vsh-space-8) !important; }
+
+/* Padding y-axis */
+.vsh-py-0 { padding-top: 0 !important; padding-bottom: 0 !important; }
+.vsh-py-2 { padding-top: var(--vsh-space-2) !important; padding-bottom: var(--vsh-space-2) !important; }
+.vsh-py-4 { padding-top: var(--vsh-space-4) !important; padding-bottom: var(--vsh-space-4) !important; }
+.vsh-py-6 { padding-top: var(--vsh-space-6) !important; padding-bottom: var(--vsh-space-6) !important; }
+.vsh-py-8 { padding-top: var(--vsh-space-8) !important; padding-bottom: var(--vsh-space-8) !important; }
+.vsh-py-10 { padding-top: var(--vsh-space-10) !important; padding-bottom: var(--vsh-space-10) !important; }
+.vsh-py-12 { padding-top: var(--vsh-space-12) !important; padding-bottom: var(--vsh-space-12) !important; }
+.vsh-py-16 { padding-top: var(--vsh-space-16) !important; padding-bottom: var(--vsh-space-16) !important; }
+
+
+/* ============================================
+   3. TEXT (CHỮ)
+   ============================================ */
+
+/* Text Align (Căn chỉnh) */
+.vsh-text-left { text-align: left !important; }
+.vsh-text-center { text-align: center !important; }
+.vsh-text-right { text-align: right !important; }
+.vsh-text-justify { text-align: justify !important; }
+
+/* Text Size (Kích thước) */
+.vsh-text-xs { font-size: var(--vsh-text-xs) !important; }
+.vsh-text-sm { font-size: var(--vsh-text-sm) !important; }
+.vsh-text-base { font-size: var(--vsh-text-base) !important; }
+.vsh-text-lg { font-size: var(--vsh-text-lg) !important; }
+.vsh-text-xl { font-size: var(--vsh-text-xl) !important; }
+.vsh-text-2xl { font-size: var(--vsh-text-2xl) !important; }
+.vsh-text-3xl { font-size: var(--vsh-text-3xl) !important; }
+.vsh-text-4xl { font-size: var(--vsh-text-4xl) !important; }
+.vsh-text-5xl { font-size: var(--vsh-text-5xl) !important; }
+
+/* Font Weight (Độ đậm) */
+.vsh-font-normal { font-weight: var(--vsh-font-normal) !important; }
+.vsh-font-medium { font-weight: var(--vsh-font-medium) !important; }
+.vsh-font-semibold { font-weight: var(--vsh-font-semibold) !important; }
+.vsh-font-bold { font-weight: var(--vsh-font-bold) !important; }
+
+/* Text Colors (Màu chữ) */
+.vsh-text-primary { color: var(--vsh-text-primary) !important; }
+.vsh-text-secondary { color: var(--vsh-text-secondary) !important; }
+.vsh-text-muted { color: var(--vsh-text-tertiary) !important; }
+.vsh-text-white { color: var(--vsh-text-white) !important; }
+.vsh-text-brand { color: var(--vsh-primary) !important; }
+.vsh-text-success { color: var(--vsh-secondary) !important; }
+.vsh-text-warning { color: var(--vsh-warning) !important; }
+.vsh-text-danger { color: var(--vsh-danger) !important; }
+.vsh-text-info { color: var(--vsh-info) !important; }
+
+/* Text Transform */
+.vsh-uppercase { text-transform: uppercase !important; }
+.vsh-lowercase { text-transform: lowercase !important; }
+.vsh-capitalize { text-transform: capitalize !important; }
+.vsh-normal-case { text-transform: none !important; }
+
+/* Text Decoration */
+.vsh-underline { text-decoration: underline !important; }
+.vsh-line-through { text-decoration: line-through !important; }
+.vsh-no-underline { text-decoration: none !important; }
+
+/* Text Overflow */
+.vsh-truncate {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.vsh-break-words {
+  overflow-wrap: break-word !important;
+  word-wrap: break-word !important;
+}
+
+/* White Space */
+.vsh-whitespace-nowrap { white-space: nowrap !important; }
+.vsh-whitespace-normal { white-space: normal !important; }
+
+/* Line Height */
+.vsh-leading-tight { line-height: var(--vsh-leading-tight) !important; }
+.vsh-leading-normal { line-height: var(--vsh-leading-normal) !important; }
+.vsh-leading-relaxed { line-height: var(--vsh-leading-relaxed) !important; }
+
+
+/* ============================================
+   4. DISPLAY & VISIBILITY
+   ============================================ */
+
+/* Display */
+.vsh-hidden { display: none !important; }
+.vsh-block { display: block !important; }
+.vsh-inline { display: inline !important; }
+.vsh-inline-block { display: inline-block !important; }
+.vsh-flex { display: flex !important; }
+.vsh-inline-flex { display: inline-flex !important; }
+.vsh-grid { display: grid !important; }
+
+/* Visibility */
+.vsh-visible { visibility: visible !important; }
+.vsh-invisible { visibility: hidden !important; }
+
+/* Opacity */
+.vsh-opacity-0 { opacity: 0 !important; }
+.vsh-opacity-25 { opacity: 0.25 !important; }
+.vsh-opacity-50 { opacity: 0.5 !important; }
+.vsh-opacity-75 { opacity: 0.75 !important; }
+.vsh-opacity-100 { opacity: 1 !important; }
+
+/* Screen Reader Only (Ẩn nhưng đọc được) */
+.vsh-sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+
+/* ============================================
+   5. BACKGROUND (NỀN)
+   ============================================ */
+
+.vsh-bg-white { background-color: var(--vsh-bg-primary) !important; }
+.vsh-bg-gray { background-color: var(--vsh-bg-secondary) !important; }
+.vsh-bg-gray-dark { background-color: var(--vsh-bg-tertiary) !important; }
+.vsh-bg-dark { background-color: var(--vsh-bg-dark) !important; }
+.vsh-bg-darker { background-color: var(--vsh-bg-darker) !important; }
+.vsh-bg-primary { background-color: var(--vsh-primary) !important; }
+.vsh-bg-primary-light { background-color: var(--vsh-primary-bg) !important; }
+.vsh-bg-success { background-color: var(--vsh-secondary) !important; }
+.vsh-bg-warning { background-color: var(--vsh-warning) !important; }
+.vsh-bg-danger { background-color: var(--vsh-danger) !important; }
+.vsh-bg-transparent { background-color: transparent !important; }
+
+
+/* ============================================
+   6. BORDER (ĐƯỜNG VIỀN)
+   ============================================ */
+
+/* Border */
+.vsh-border { border: 1px solid var(--vsh-border-color) !important; }
+.vsh-border-0 { border: 0 !important; }
+.vsh-border-t { border-top: 1px solid var(--vsh-border-color) !important; }
+.vsh-border-r { border-right: 1px solid var(--vsh-border-color) !important; }
+.vsh-border-b { border-bottom: 1px solid var(--vsh-border-color) !important; }
+.vsh-border-l { border-left: 1px solid var(--vsh-border-color) !important; }
+
+/* Border Radius */
+.vsh-rounded-none { border-radius: 0 !important; }
+.vsh-rounded-sm { border-radius: var(--vsh-border-radius-sm) !important; }
+.vsh-rounded { border-radius: var(--vsh-border-radius) !important; }
+.vsh-rounded-lg { border-radius: var(--vsh-border-radius-lg) !important; }
+.vsh-rounded-xl { border-radius: var(--vsh-border-radius-xl) !important; }
+.vsh-rounded-full { border-radius: var(--vsh-border-radius-full) !important; }
+
+/* Border Color */
+.vsh-border-primary { border-color: var(--vsh-primary) !important; }
+.vsh-border-success { border-color: var(--vsh-secondary) !important; }
+.vsh-border-warning { border-color: var(--vsh-warning) !important; }
+.vsh-border-danger { border-color: var(--vsh-danger) !important; }
+
+
+/* ============================================
+   7. SHADOW (BÓNG ĐỔ)
+   ============================================ */
+
+.vsh-shadow-none { box-shadow: none !important; }
+.vsh-shadow-sm { box-shadow: var(--vsh-shadow-sm) !important; }
+.vsh-shadow { box-shadow: var(--vsh-shadow) !important; }
+.vsh-shadow-md { box-shadow: var(--vsh-shadow-md) !important; }
+.vsh-shadow-lg { box-shadow: var(--vsh-shadow-lg) !important; }
+.vsh-shadow-xl { box-shadow: var(--vsh-shadow-xl) !important; }
+
+
+/* ============================================
+   8. SIZING (KÍCH THƯỚC)
+   ============================================ */
+
+/* Width */
+.vsh-w-full { width: 100% !important; }
+.vsh-w-auto { width: auto !important; }
+.vsh-w-screen { width: 100vw !important; }
+.vsh-w-1\/2 { width: 50% !important; }
+.vsh-w-1\/3 { width: 33.333333% !important; }
+.vsh-w-2\/3 { width: 66.666667% !important; }
+.vsh-w-1\/4 { width: 25% !important; }
+.vsh-w-3\/4 { width: 75% !important; }
+
+/* Min/Max Width */
+.vsh-min-w-0 { min-width: 0 !important; }
+.vsh-min-w-full { min-width: 100% !important; }
+.vsh-max-w-full { max-width: 100% !important; }
+.vsh-max-w-screen { max-width: 100vw !important; }
+
+/* Height */
+.vsh-h-full { height: 100% !important; }
+.vsh-h-auto { height: auto !important; }
+.vsh-h-screen { height: 100vh !important; }
+.vsh-min-h-screen { min-height: 100vh !important; }
+
+
+/* ============================================
+   9. POSITION (VỊ TRÍ)
+   ============================================ */
+
+.vsh-static { position: static !important; }
+.vsh-relative { position: relative !important; }
+.vsh-absolute { position: absolute !important; }
+.vsh-fixed { position: fixed !important; }
+.vsh-sticky { position: sticky !important; }
+
+/* Position Values */
+.vsh-inset-0 { top: 0 !important; right: 0 !important; bottom: 0 !important; left: 0 !important; }
+.vsh-top-0 { top: 0 !important; }
+.vsh-right-0 { right: 0 !important; }
+.vsh-bottom-0 { bottom: 0 !important; }
+.vsh-left-0 { left: 0 !important; }
+
+
+/* ============================================
+   10. CURSOR
+   ============================================ */
+
+.vsh-cursor-pointer { cursor: pointer !important; }
+.vsh-cursor-default { cursor: default !important; }
+.vsh-cursor-not-allowed { cursor: not-allowed !important; }
+.vsh-cursor-wait { cursor: wait !important; }
+
+
+/* ============================================
+   11. OVERFLOW
+   ============================================ */
+
+.vsh-overflow-auto { overflow: auto !important; }
+.vsh-overflow-hidden { overflow: hidden !important; }
+.vsh-overflow-visible { overflow: visible !important; }
+.vsh-overflow-scroll { overflow: scroll !important; }
+.vsh-overflow-x-auto { overflow-x: auto !important; }
+.vsh-overflow-y-auto { overflow-y: auto !important; }
+
+
+/* ============================================
+   12. Z-INDEX
+   ============================================ */
+
+.vsh-z-0 { z-index: 0 !important; }
+.vsh-z-10 { z-index: 10 !important; }
+.vsh-z-20 { z-index: 20 !important; }
+.vsh-z-30 { z-index: 30 !important; }
+.vsh-z-40 { z-index: 40 !important; }
+.vsh-z-50 { z-index: 50 !important; }
+
+
+/* ============================================
+   13. POINTER EVENTS
+   ============================================ */
+
+.vsh-pointer-events-none { pointer-events: none !important; }
+.vsh-pointer-events-auto { pointer-events: auto !important; }
+
+
+/* ============================================
+   14. USER SELECT
+   ============================================ */
+
+.vsh-select-none { user-select: none !important; }
+.vsh-select-text { user-select: text !important; }
+.vsh-select-all { user-select: all !important; }
