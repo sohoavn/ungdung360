@@ -373,6 +373,15 @@
             }
         }
     </style>
+
+    <!-- Supabase JS Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- VSH Scripts -->
+    <script src="assets/js/vsh-config.js"></script>
+    <script src="assets/js/vsh-supabase.js"></script>
+    <script src="assets/js/vsh-auth.js"></script>
+
 </head>
 <body>
     <div class="register-page">
@@ -600,6 +609,14 @@
     </div>
     
     <script>
+        // ===== KIỂM TRA ĐÃ ĐĂNG NHẬP CHƯA =====
+        document.addEventListener('DOMContentLoaded', async function() {
+            const isLoggedIn = await VSH_AUTH.isLoggedIn();
+            if (isLoggedIn) {
+                window.location.href = 'dashboard/index.html';
+            }
+        });
+        
         // ===== TOGGLE PASSWORD =====
         function togglePassword(inputId) {
             const input = document.getElementById(inputId);
@@ -615,32 +632,28 @@
             }
         }
         
-        // ===== PASSWORD STRENGTH =====
+        // ===== KIỂM TRA ĐỘ MẠNH MẬT KHẨU =====
         function checkPasswordStrength(password) {
             const fill = document.getElementById('strengthFill');
             const text = document.getElementById('strengthText');
             
-            // Reset
             fill.className = 'password-strength__fill';
             
             if (password.length === 0) {
                 text.textContent = 'Nhập mật khẩu để kiểm tra độ mạnh';
+                text.style.color = 'var(--vsh-text-tertiary)';
                 return;
             }
             
             let strength = 0;
             
-            // Length check
             if (password.length >= 8) strength++;
             if (password.length >= 12) strength++;
-            
-            // Character checks
             if (/[a-z]/.test(password)) strength++;
             if (/[A-Z]/.test(password)) strength++;
             if (/[0-9]/.test(password)) strength++;
             if (/[^a-zA-Z0-9]/.test(password)) strength++;
             
-            // Determine level
             if (strength <= 2) {
                 fill.classList.add('password-strength__fill--weak');
                 text.textContent = 'Yếu - Thêm chữ hoa, số và ký tự đặc biệt';
@@ -656,68 +669,139 @@
             }
         }
         
-        // ===== HANDLE REGISTER =====
-        function handleRegister(event) {
-            event.preventDefault();
-            
-            const form = document.getElementById('registerForm');
-            const btn = document.getElementById('registerBtn');
+        // ===== HIỂN THỊ THÔNG BÁO =====
+        function showAlert(message, type = 'error') {
             const alert = document.getElementById('registerAlert');
             const alertMessage = document.getElementById('registerAlertMessage');
             
-            // Get values
+            alert.classList.remove('register-alert--error', 'register-alert--success');
+            alert.classList.add(type === 'error' ? 'register-alert--error' : 'register-alert--success');
+            alertMessage.textContent = message;
+            alert.classList.add('is-visible');
+            
+            // Scroll lên để thấy thông báo
+            alert.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        
+        function hideAlert() {
+            const alert = document.getElementById('registerAlert');
+            alert.classList.remove('is-visible');
+        }
+        
+        // ===== XỬ LÝ ĐĂNG KÝ =====
+        async function handleRegister(event) {
+            event.preventDefault();
+            
+            // Lấy giá trị từ form
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const company = document.getElementById('company').value.trim();
+            const industry = document.getElementById('industry').value;
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
+            const terms = document.getElementById('terms').checked;
             
-            // Validate passwords match
-            if (password !== confirmPassword) {
-                alert.classList.remove('register-alert--success');
-                alert.classList.add('register-alert--error');
-                alertMessage.textContent = 'Mật khẩu xác nhận không khớp!';
-                alert.classList.add('is-visible');
+            const btn = document.getElementById('registerBtn');
+            
+            // ===== VALIDATE =====
+            
+            // Kiểm tra các trường bắt buộc
+            if (!firstName || !lastName || !email || !company || !password || !confirmPassword) {
+                showAlert('Vui lòng điền đầy đủ các trường bắt buộc');
                 return;
             }
             
-            // Show loading
+            // Kiểm tra email hợp lệ
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showAlert('Định dạng email không hợp lệ');
+                return;
+            }
+            
+            // Kiểm tra mật khẩu
+            if (password.length < 6) {
+                showAlert('Mật khẩu phải có ít nhất 6 ký tự');
+                return;
+            }
+            
+            // Kiểm tra mật khẩu khớp
+            if (password !== confirmPassword) {
+                showAlert('Mật khẩu xác nhận không khớp');
+                return;
+            }
+            
+            // Kiểm tra điều khoản
+            if (!terms) {
+                showAlert('Vui lòng đồng ý với Điều khoản sử dụng');
+                return;
+            }
+            
+            // Ẩn thông báo cũ
+            hideAlert();
+            
+            // Hiển thị loading
             btn.classList.add('vsh-btn--loading');
             btn.disabled = true;
-            alert.classList.remove('is-visible');
             
-            // Simulate registration
-            setTimeout(() => {
-                // Collect form data
-                const formData = {
-                    firstName: document.getElementById('firstName').value,
-                    lastName: document.getElementById('lastName').value,
-                    email: document.getElementById('email').value,
-                    company: document.getElementById('company').value,
-                    industry: document.getElementById('industry').value,
-                };
-                
-                console.log('Register data:', formData);
-                
-                // Show success
-                alert.classList.remove('register-alert--error');
-                alert.classList.add('register-alert--success');
-                alertMessage.textContent = '✓ Đăng ký thành công! Vui lòng kiểm tra email để xác nhận tài khoản.';
-                alert.classList.add('is-visible');
-                
-                // Reset button
+            // ===== GỌI API ĐĂNG KÝ =====
+            const fullName = lastName + ' ' + firstName;
+            
+            const result = await VSH_AUTH.signUp(email, password, {
+                full_name: fullName,
+                company: company,
+                industry: industry
+            });
+            
+            if (result.success) {
+                // Kiểm tra có cần xác nhận email không
+                if (result.data.user && !result.data.session) {
+                    // Cần xác nhận email
+                    showAlert('✓ Đăng ký thành công! Vui lòng kiểm tra email để xác nhận tài khoản.', 'success');
+                    
+                    // Chuyển đến trang login sau 3 giây
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 3000);
+                } else {
+                    // Không cần xác nhận email (đã tắt trong Supabase)
+                    showAlert('✓ Đăng ký thành công! Đang chuyển hướng...', 'success');
+                    
+                    // Chuyển đến Dashboard sau 1.5 giây
+                    setTimeout(() => {
+                        window.location.href = 'dashboard/index.html';
+                    }, 1500);
+                }
+            } else {
+                // Đăng ký thất bại
+                showAlert(result.error);
                 btn.classList.remove('vsh-btn--loading');
                 btn.disabled = false;
-                
-                // Redirect after 2s
-                setTimeout(() => {
-                    window.location.href = 'login.html';
-                }, 2000);
-                
-            }, 1500);
+            }
         }
         
-        // ===== GOOGLE REGISTER =====
-        function handleGoogleRegister() {
-            alert('Tính năng đăng ký với Google sẽ được kích hoạt sau khi kết nối Supabase!');
+        // ===== ĐĂNG KÝ VỚI GOOGLE =====
+        async function handleGoogleRegister() {
+            const supabase = getSupabase();
+            if (!supabase) {
+                showAlert('Không thể kết nối. Vui lòng thử lại.');
+                return;
+            }
+            
+            const { data, error } = await supabase.auth.signInWithOAuth({
+                provider: 'google',
+                options: {
+                    redirectTo: window.location.origin + '/dashboard/index.html'
+                }
+            });
+            
+            if (error) {
+                showAlert('Không thể đăng ký với Google. Vui lòng thử lại.');
+                console.error(error);
+            }
         }
     </script>
+</script>
 </body>
+
 </html>
