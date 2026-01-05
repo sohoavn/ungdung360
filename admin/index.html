@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - UngDung360</title>
+    
+    <!-- Font Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- VSH CSS Framework -->
+    <link rel="stylesheet" href="../assets/css/vsh-core.css">
+    <link rel="stylesheet" href="../assets/css/vsh-components.css">
+    <link rel="stylesheet" href="../assets/css/vsh-layout.css">
+    <link rel="stylesheet" href="../assets/css/vsh-utilities.css">
+    <link rel="stylesheet" href="../assets/css/vsh-responsive.css">
+    
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- VSH Scripts -->
+    <script src="../assets/js/vsh-config.js"></script>
+    <script src="../assets/js/vsh-supabase.js"></script>
+    <script src="../assets/js/vsh-auth.js"></script>
+    <script src="../assets/js/vsh-admin.js"></script>
+    
+    <style>
+        /* Admin specific styles */
+        .admin-header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        }
+        
+        .admin-header .vsh-header__logo {
+            color: white;
+        }
+        
+        .stat-card {
+            background: var(--vsh-bg-primary);
+            border: 1px solid var(--vsh-border-color);
+            border-radius: var(--vsh-border-radius-lg);
+            padding: var(--vsh-space-5);
+            display: flex;
+            align-items: center;
+            gap: var(--vsh-space-4);
+        }
+        
+        .stat-card__icon {
+            width: 56px;
+            height: 56px;
+            border-radius: var(--vsh-border-radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+        }
+        
+        .stat-card__icon--blue { background: #dbeafe; }
+        .stat-card__icon--green { background: #dcfce7; }
+        .stat-card__icon--purple { background: #f3e8ff; }
+        .stat-card__icon--orange { background: #ffedd5; }
+        
+        .stat-card__value {
+            font-size: var(--vsh-text-3xl);
+            font-weight: var(--vsh-font-bold);
+            color: var(--vsh-text-primary);
+        }
+        
+        .stat-card__label {
+            font-size: var(--vsh-text-sm);
+            color: var(--vsh-text-secondary);
+        }
+        
+        .quick-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--vsh-space-4);
+            margin-top: var(--vsh-space-6);
+        }
+        
+        .quick-link {
+            display: flex;
+            align-items: center;
+            gap: var(--vsh-space-3);
+            padding: var(--vsh-space-4);
+            background: var(--vsh-bg-primary);
+            border: 1px solid var(--vsh-border-color);
+            border-radius: var(--vsh-border-radius-lg);
+            text-decoration: none;
+            color: var(--vsh-text-primary);
+            transition: all var(--vsh-transition-fast);
+        }
+        
+        .quick-link:hover {
+            border-color: var(--vsh-primary);
+            box-shadow: var(--vsh-shadow-md);
+            transform: translateY(-2px);
+            text-decoration: none;
+        }
+        
+        .quick-link__icon {
+            width: 44px;
+            height: 44px;
+            background: var(--vsh-bg-secondary);
+            border-radius: var(--vsh-border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+        
+        .quick-link__text {
+            font-weight: var(--vsh-font-medium);
+        }
+        
+        .quick-link__desc {
+            font-size: var(--vsh-text-xs);
+            color: var(--vsh-text-tertiary);
+        }
+        
+        .recent-section {
+            margin-top: var(--vsh-space-8);
+        }
+        
+        .section-title {
+            font-size: var(--vsh-text-lg);
+            font-weight: var(--vsh-font-semibold);
+            margin-bottom: var(--vsh-space-4);
+            display: flex;
+            align-items: center;
+            gap: var(--vsh-space-2);
+        }
+    </style>
+</head>
+<body class="vsh-app vsh-app--with-sidebar">
+    
+    <!-- SIDEBAR -->
+    <aside class="vsh-sidebar vsh-sidebar--dark" id="sidebar">
+        <div class="vsh-sidebar__header">
+            <a href="index.html" class="vsh-sidebar__brand">
+                <div class="vsh-sidebar__brand-logo" style="background: #ef4444;">A</div>
+                <span class="vsh-sidebar__brand-text">Admin Panel</span>
+            </a>
+        </div>
+        
+        <nav class="vsh-sidebar__nav">
+            <div class="vsh-sidebar__nav-section">
+                <div class="vsh-sidebar__nav-title">Quản trị</div>
+                <ul class="vsh-sidebar__nav-list">
+                    <li>
+                        <a href="index.html" class="vsh-sidebar__nav-link is-active">
+                            <span class="vsh-sidebar__nav-icon">📊</span>
+                            <span class="vsh-sidebar__nav-text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="tenants.html" class="vsh-sidebar__nav-link">
+                            <span class="vsh-sidebar__nav-icon">🏢</span>
+                            <span class="vsh-sidebar__nav-text">Quản lý Tenants</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="users.html" class="vsh-sidebar__nav-link">
+                            <span class="vsh-sidebar__nav-icon">👥</span>
+                            <span class="vsh-sidebar__nav-text">Quản lý Users</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="apps.html" class="vsh-sidebar__nav-link">
+                            <span class="vsh-sidebar__nav-icon">📱</span>
+                            <span class="vsh-sidebar__nav-text">Quản lý Apps</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="vsh-sidebar__nav-section">
+                <div class="vsh-sidebar__nav-title">Khác</div>
+                <ul class="vsh-sidebar__nav-list">
+                    <li>
+                        <a href="../dashboard/index.html" class="vsh-sidebar__nav-link">
+                            <span class="vsh-sidebar__nav-icon">🏠</span>
+                            <span class="vsh-sidebar__nav-text">Về User Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../index.html" class="vsh-sidebar__nav-link">
+                            <span class="vsh-sidebar__nav-icon">🌐</span>
+                            <span class="vsh-sidebar__nav-text">Về Trang chủ</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        
+        <div class="vsh-sidebar__footer">
+            <a href="#" class="vsh-sidebar__nav-link" onclick="handleLogout()">
+                <span class="vsh-sidebar__nav-icon">🚪</span>
+                <span class="vsh-sidebar__nav-text">Đăng xuất</span>
+            </a>
+        </div>
+    </aside>
+    
+    <!-- SIDEBAR OVERLAY -->
+    <div class="vsh-sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    
+    <!-- HEADER -->
+    <header class="vsh-header admin-header">
+        <button class="vsh-header__toggle" onclick="toggleSidebar()" style="color: white;">☰</button>
+        
+        <div class="vsh-header__logo" style="margin-left: 16px;">
+            <span style="background: #ef4444; color: white; padding: 6px 10px; border-radius: 6px; font-size: 12px;">ADMIN</span>
+            <span class="vsh-hidden-mobile" style="color: white; margin-left: 8px;">UngDung360</span>
+        </div>
+        
+        <div class="vsh-header__actions" style="margin-left: auto;">
+            <div class="vsh-dropdown" id="userDropdown">
+                <div class="vsh-header__user" onclick="toggleUserMenu()" style="color: white;">
+                    <div class="vsh-avatar" style="background: #ef4444;">
+                        <span id="userInitials">SA</span>
+                    </div>
+                    <div class="vsh-hidden-mobile">
+                        <div class="vsh-header__user-name" id="userName" style="color: white;">Super Admin</div>
+                        <div class="vsh-header__user-role" style="color: rgba(255,255,255,0.7);">Administrator</div>
+                    </div>
+                </div>
+                
+                <div class="vsh-dropdown__menu">
+                    <a href="../dashboard/index.html" class="vsh-dropdown__item">
+                        <span>🏠</span> User Dashboard
+                    </a>
+                    <div class="vsh-dropdown__divider"></div>
+                    <a href="#" class="vsh-dropdown__item vsh-dropdown__item--danger" onclick="handleLogout()">
+                        <span>🚪</span> Đăng xuất
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- MAIN CONTENT -->
+    <main class="vsh-main">
+        <!-- Page Header -->
+        <div class="vsh-page-header">
+            <div class="vsh-page-header__top">
+                <h1 class="vsh-page-header__title">Admin Dashboard</h1>
+            </div>
+            <p class="vsh-page-header__description">
+                Tổng quan hệ thống UngDung360
+            </p>
+        </div>
+        
+        <!-- Stats Grid -->
+        <div class="vsh-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px;">
+            <div class="stat-card">
+                <div class="stat-card__icon stat-card__icon--blue">🏢</div>
+                <div>
+                    <div class="stat-card__value" id="statTenants">0</div>
+                    <div class="stat-card__label">Khách hàng (Tenants)</div>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-card__icon stat-card__icon--green">👥</div>
+                <div>
+                    <div class="stat-card__value" id="statUsers">0</div>
+                    <div class="stat-card__label">Người dùng</div>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-card__icon stat-card__icon--purple">📱</div>
+                <div>
+                    <div class="stat-card__value" id="statApps">0</div>
+                    <div class="stat-card__label">Tổng số Apps</div>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-card__icon stat-card__icon--orange">✅</div>
+                <div>
+                    <div class="stat-card__value" id="statActiveApps">0</div>
+                    <div class="stat-card__label">Apps hoạt động</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Links -->
+        <div class="recent-section">
+            <h2 class="section-title">
+                <span>⚡</span> Truy cập nhanh
+            </h2>
+            <div class="quick-links">
+                <a href="tenants.html" class="quick-link">
+                    <div class="quick-link__icon">🏢</div>
+                    <div>
+                        <div class="quick-link__text">Quản lý Tenants</div>
+                        <div class="quick-link__desc">Thêm, sửa, xóa khách hàng</div>
+                    </div>
+                </a>
+                
+                <a href="users.html" class="quick-link">
+                    <div class="quick-link__icon">👥</div>
+                    <div>
+                        <div class="quick-link__text">Quản lý Users</div>
+                        <div class="quick-link__desc">Quản lý người dùng hệ thống</div>
+                    </div>
+                </a>
+                
+                <a href="apps.html" class="quick-link">
+                    <div class="quick-link__icon">📱</div>
+                    <div>
+                        <div class="quick-link__text">Quản lý Apps</div>
+                        <div class="quick-link__desc">Thêm, sửa, xóa ứng dụng</div>
+                    </div>
+                </a>
+                
+                <a href="../dashboard/index.html" class="quick-link">
+                    <div class="quick-link__icon">🏠</div>
+                    <div>
+                        <div class="quick-link__text">User Dashboard</div>
+                        <div class="quick-link__desc">Xem giao diện người dùng</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Recent Activity -->
+        <div class="recent-section">
+            <h2 class="section-title">
+                <span>📋</span> Thông tin hệ thống
+            </h2>
+            <div class="vsh-card">
+                <div class="vsh-card__body">
+                    <table class="vsh-table">
+                        <tbody>
+                            <tr>
+                                <td style="font-weight: 500;">Phiên bản</td>
+                                <td>UngDung360 v1.0.0</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 500;">Database</td>
+                                <td>Supabase PostgreSQL</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 500;">Hosting</td>
+                                <td>GitHub Pages</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 500;">Trạng thái</td>
+                                <td><span class="vsh-badge vsh-badge--success">Hoạt động bình thường</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <script>
+        // ===== INITIALIZATION =====
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Kiểm tra đăng nhập
+            const isLoggedIn = await VSH_AUTH.isLoggedIn();
+            if (!isLoggedIn) {
+                window.location.href = '../login.html';
+                return;
+            }
+            
+            // Kiểm tra quyền Super Admin
+            const isAdmin = await VSH_ADMIN.isSuperAdmin();
+            if (!isAdmin) {
+                alert('Bạn không có quyền truy cập trang Admin!');
+                window.location.href = '../dashboard/index.html';
+                return;
+            }
+            
+            // Load user info
+            const user = await VSH_AUTH.getCurrentUser();
+            if (user) {
+                renderUserInfo(user);
+            }
+            
+            // Load stats
+            await loadStats();
+        });
+        
+        // ===== RENDER USER INFO =====
+        function renderUserInfo(user) {
+            const fullName = user.user_metadata?.full_name || user.email.split('@')[0];
+            document.getElementById('userName').textContent = fullName;
+            
+            const names = fullName.split(' ');
+            const initials = names.length > 1 
+                ? names[0][0] + names[names.length - 1][0]
+                : fullName.substring(0, 2);
+            document.getElementById('userInitials').textContent = initials.toUpperCase();
+        }
+        
+        // ===== LOAD STATS =====
+        async function loadStats() {
+            const result = await VSH_ADMIN.getStats();
+            
+            if (result.success) {
+                document.getElementById('statTenants').textContent = result.data.totalTenants;
+                document.getElementById('statUsers').textContent = result.data.totalUsers;
+                document.getElementById('statApps').textContent = result.data.totalApps;
+                document.getElementById('statActiveApps').textContent = result.data.activeApps;
+            }
+        }
+        
+        // ===== SIDEBAR TOGGLE =====
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('is-active');
+            document.getElementById('sidebarOverlay').classList.toggle('is-active');
+        }
+        
+        // ===== USER MENU =====
+        function toggleUserMenu() {
+            document.getElementById('userDropdown').classList.toggle('is-active');
+        }
+        
+        document.addEventListener('click', function(e) {
+            const dropdown = document.getElementById('userDropdown');
+            if (dropdown && !dropdown.contains(e.target)) {
+                dropdown.classList.remove('is-active');
+            }
+        });
+        
+        // ===== LOGOUT =====
+        async function handleLogout() {
+            await VSH_AUTH.signOut();
+            window.location.href = '../login.html';
+        }
+    </script>
+</body>
+</html>
