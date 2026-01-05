@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - UngDung360 | Kênh Số Hóa</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+    
+    <!-- Font Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- VSH CSS Framework -->
+    <link rel="stylesheet" href="../assets/css/vsh-core.css">
+    <link rel="stylesheet" href="../assets/css/vsh-components.css">
+    <link rel="stylesheet" href="../assets/css/vsh-layout.css">
+    <link rel="stylesheet" href="../assets/css/vsh-utilities.css">
+    <link rel="stylesheet" href="../assets/css/vsh-responsive.css">
+    
+    <style>
+        /* ===== CUSTOM DASHBOARD STYLES ===== */
+        
+        /* Welcome Banner */
+        .welcome-banner {
+            background: linear-gradient(135deg, var(--vsh-primary) 0%, var(--vsh-primary-dark) 100%);
+            border-radius: var(--vsh-border-radius-lg);
+            padding: var(--vsh-space-6);
+            color: white;
+            margin-bottom: var(--vsh-space-6);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .welcome-banner::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+        
+        .welcome-banner::after {
+            content: "";
+            position: absolute;
+            bottom: -30%;
+            right: 10%;
+            width: 200px;
+            height: 200px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+        }
+        
+        .welcome-banner__content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .welcome-banner__greeting {
+            font-size: var(--vsh-text-sm);
+            opacity: 0.9;
+            margin-bottom: var(--vsh-space-1);
+        }
+        
+        .welcome-banner__name {
+            font-size: var(--vsh-text-2xl);
+            font-weight: var(--vsh-font-bold);
+            margin-bottom: var(--vsh-space-2);
+        }
+        
+        .welcome-banner__date {
+            font-size: var(--vsh-text-sm);
+            opacity: 0.8;
+        }
+        
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--vsh-space-4);
+            margin-bottom: var(--vsh-space-6);
+        }
+        
+        .stat-card {
+            background: var(--vsh-bg-primary);
+            border: 1px solid var(--vsh-border-color);
+            border-radius: var(--vsh-border-radius-lg);
+            padding: var(--vsh-space-5);
+            display: flex;
+            align-items: flex-start;
+            gap: var(--vsh-space-4);
+        }
+        
+        .stat-card__icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--vsh-border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+        
+        .stat-card__icon--primary {
+            background: var(--vsh-primary-bg);
+        }
+        
+        .stat-card__icon--success {
+            background: #dcfce7;
+        }
+        
+        .stat-card__icon--warning {
+            background: var(--vsh-warning-bg);
+        }
+        
+        .stat-card__icon--info {
+            background: var(--vsh-info-bg);
+        }
+        
+        .stat-card__info {
+            flex: 1;
+        }
+        
+        .stat-card__value {
+            font-size: var(--vsh-text-2xl);
+            font-weight: var(--vsh-font-bold);
+            color: var(--vsh-text-primary);
+            line-height: 1;
+            margin-bottom: var(--vsh-space-1);
+        }
+        
+        .stat-card__label {
+            font-size: var(--vsh-text-sm);
+            color: var(--vsh-text-secondary);
+        }
+        
+        /* Section Header */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--vsh-space-4);
+            flex-wrap: wrap;
+            gap: var(--vsh-space-3);
+        }
+        
+        .section-header__title {
+            font-size: var(--vsh-text-lg);
+            font-weight: var(--vsh-font-semibold);
+            color: var(--vsh-text-primary);
+            display: flex;
+            align-items: center;
+            gap: var(--vsh-space-2);
+        }
+        
+        /* Filter Tabs */
+        .filter-tabs {
+            display: flex;
+            gap: var(--vsh-space-1);
+            background: var(--vsh-bg-secondary);
+            padding: 4px;
+            border-radius: var(--vsh-border-radius);
+            overflow-x: auto;
+        }
+        
+        .filter-tab {
+            padding: var(--vsh-space-2) var(--vsh-space-4);
+            font-size: var(--vsh-text-sm);
+            font-weight: var(--vsh-font-medium);
+            color: var(--vsh-text-secondary);
+            background: transparent;
+            border: none;
+            border-radius: var(--vsh-border-radius);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all var(--vsh-transition-fast);
+        }
+        
+        .filter-tab:hover {
+            color: var(--vsh-text-primary);
+        }
+        
+        .filter-tab.is-active {
+            background: var(--vsh-bg-primary);
+            color: var(--vsh-primary);
+            box-shadow: var(--vsh-shadow-sm);
+        }
+        
+        /* Apps Grid */
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: var(--vsh-space-4);
+        }
+        
+        /* App Card */
+        .app-card {
+            background: var(--vsh-bg-primary);
+            border: 1px solid var(--vsh-border-color);
+            border-radius: var(--vsh-border-radius-lg);
+            padding: var(--vsh-space-5);
+            cursor: pointer;
+            transition: all var(--vsh-transition-normal);
+            position: relative;
+        }
+        
+        .app-card:hover {
+            border-color: var(--vsh-primary);
+            box-shadow: var(--vsh-shadow-md);
+            transform: translateY(-2px);
+        }
+        
+        .app-card__header {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--vsh-space-3);
+            margin-bottom: var(--vsh-space-3);
+        }
+        
+        .app-card__icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--vsh-border-radius);
+            background: var(--vsh-bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            flex-shrink: 0;
+        }
+        
+        .app-card__title-group {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .app-card__title {
+            font-size: var(--vsh-text-base);
+            font-weight: var(--vsh-font-semibold);
+            color: var(--vsh-text-primary);
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .app-card__category {
+            font-size: var(--vsh-text-xs);
+            color: var(--vsh-text-tertiary);
+        }
+        
+        .app-card__description {
+            font-size: var(--vsh-text-sm);
+            color: var(--vsh-text-secondary);
+            line-height: 1.5;
+            margin-bottom: var(--vsh-space-4);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .app-card__footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .app-card__status {
+            display: flex;
+            align-items: center;
+            gap: var(--vsh-space-1);
+            font-size: var(--vsh-text-xs);
+        }
+        
+        .app-card__status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--vsh-secondary);
+        }
+        
+        .app-card__status-dot--inactive {
+            background: var(--vsh-text-tertiary);
+        }
+        
+        .app-card__btn {
+            padding: var(--vsh-space-2) var(--vsh-space-4);
+            font-size: var(--vsh-text-sm);
+            font-weight: var(--vsh-font-medium);
+            color: var(--vsh-primary);
+            background: var(--vsh-primary-bg);
+            border: none;
+            border-radius: var(--vsh-border-radius);
+            cursor: pointer;
+            transition: all var(--vsh-transition-fast);
+        }
+        
+        .app-card__btn:hover {
+            background: var(--vsh-primary);
+            color: white;
+        }
+        
+        /* App Card Badge */
+        .app-card__badge {
+            position: absolute;
+            top: var(--vsh-space-3);
+            right: var(--vsh-space-3);
+            padding: 2px 8px;
+            font-size: 10px;
+            font-weight: var(--vsh-font-semibold);
+            text-transform: uppercase;
+            border-radius: var(--vsh-border-radius-full);
+        }
+        
+        .app-card__badge--new {
+            background: var(--vsh-secondary);
+            color: white;
+        }
+        
+        .app-card__badge--popular {
+            background: var(--vsh-warning);
+            color: white;
+        }
+        
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            gap: var(--vsh-space-3);
+            flex-wrap: wrap;
+            margin-bottom: var(--vsh-space-6);
+        }
+        
+        .quick-action {
+            display: flex;
+            align-items: center;
+            gap: var(--vsh-space-2);
+            padding: var(--vsh-space-3) var(--vsh-space-4);
+            background: var(--vsh-bg-primary);
+            border: 1px solid var(--vsh-border-color);
+            border-radius: var(--vsh-border-radius);
+            font-size: var(--vsh-text-sm);
+            font-weight: var(--vsh-font-medium);
+            color: var(--vsh-text-primary);
+            cursor: pointer;
+            transition: all var(--vsh-transition-fast);
+        }
+        
+        .quick-action:hover {
+            border-color: var(--vsh-primary);
+            color: var(--vsh-primary);
+        }
+        
+        /* Search in Main */
+        .search-box {
+            position: relative;
+            max-width: 400px;
+        }
+        
+        .search-box__icon {
+            position: absolute;
+            left: var(--vsh-space-3);
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--vsh-text-tertiary);
+        }
+        
+        .search-box__input {
+            width: 100%;
+            padding: var(--vsh-space-3);
+            padding-left: var(--vsh-space-10);
+            font-size: var(--vsh-text-sm);
+            border: 1px solid var(--vsh-border-color);
+            border-radius: var(--vsh-border-radius);
+            background: var(--vsh-bg-primary);
+        }
+        
+        .search-box__input:focus {
+            border-color: var(--vsh-primary);
+            box-shadow: 0 0 0 3px var(--vsh-primary-bg);
+            outline: none;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: var(--vsh-space-12) var(--vsh-space-4);
+        }
+        
+        .empty-state__icon {
+            font-size: 64px;
+            margin-bottom: var(--vsh-space-4);
+            opacity: 0.5;
+        }
+        
+        .empty-state__title {
+            font-size: var(--vsh-text-lg);
+            font-weight: var(--vsh-font-semibold);
+            color: var(--vsh-text-primary);
+            margin-bottom: var(--vsh-space-2);
+        }
+        
+        .empty-state__description {
+            font-size: var(--vsh-text-sm);
+            color: var(--vsh-text-secondary);
+        }
+        
+        /* Recent Activity */
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: var(--vsh-space-3);
+            padding: var(--vsh-space-3) 0;
+            border-bottom: 1px solid var(--vsh-border-color);
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-item__icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--vsh-bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        
+        .activity-item__content {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .activity-item__text {
+            font-size: var(--vsh-text-sm);
+            color: var(--vsh-text-primary);
+        }
+        
+        .activity-item__time {
+            font-size: var(--vsh-text-xs);
+            color: var(--vsh-text-tertiary);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 640px) {
+            .welcome-banner {
+                padding: var(--vsh-space-4);
+            }
+            
+            .welcome-banner__name {
+                font-size: var(--vsh-text-xl);
+            }
+            
+            .apps-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-tabs {
+                width: 100%;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body class="vsh-app vsh-app--with-sidebar">
+    
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="vsh-sidebar vsh-sidebar--dark" id="sidebar">
+        <!-- Sidebar Header -->
+        <div class="vsh-sidebar__header">
+            <a href="../index.html" class="vsh-sidebar__brand">
+                <div class="vsh-sidebar__brand-logo">U3</div>
+                <span class="vsh-sidebar__brand-text">UngDung360</span>
+            </a>
+        </div>
+        
+        <!-- Sidebar Navigation -->
+        <nav class="vsh-sidebar__nav">
+            <!-- Main Menu -->
+            <div class="vsh-sidebar__nav-section">
+                <div class="vsh-sidebar__nav-title">Menu chính</div>
+                <ul class="vsh-sidebar__nav-list">
+                    <li>
+                        <a href="index.html" class="vsh-sidebar__nav-link is-active">
+                            <span class="vsh-sidebar__nav-icon">🏠</span>
+                            <span class="vsh-sidebar__nav-text">Trang chủ</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="vsh-sidebar__nav-link">
+                            <span class="vsh-sidebar__nav-icon">📱</span>
+                            <span class="vsh-sidebar__nav-text">Ứng dụng</span>
+                            <span class="vsh-sidebar__nav-badge">12</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="vsh-sidebar__nav-link">
+                            <span class="vsh-sidebar__nav-icon">📊</span>
+                            <span class="vsh-sidebar__nav-text">Báo cáo</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="vsh-sidebar__nav-link">
+                            <span class="vsh-sidebar__nav-icon">📁</span>
+                            <span class="vsh-sidebar__nav-text">Tài liệu</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Admin Menu (sẽ ẩn/hiện theo role) -->
+            <div class="vsh-sidebar__nav-section" id="adminMenu">
+                <div class="vsh-sidebar__nav-title">Quản trị</div>
+                <ul class="vsh-sidebar__nav-list">
+                    <li>
+                        <a href="#" class="vsh-sidebar__nav-link">
+                            <span class="vsh-sidebar__nav-icon">👥</span>
+                            <span class="vsh-sidebar__nav-text">Người dùng</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="vsh-sidebar__nav-link">
+                            <span class="vsh-sidebar__nav-icon">⚙️</span>
+                            <span class="vsh-sidebar__nav-text">Cài đặt</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        
+        <!-- Sidebar Footer -->
+        <div class="vsh-sidebar__footer">
+            <a href="#" class="vsh-sidebar__nav-link">
+                <span class="vsh-sidebar__nav-icon">❓</span>
+                <span class="vsh-sidebar__nav-text">Trợ giúp</span>
+            </a>
+        </div>
+    </aside>
+    
+    <!-- ===== SIDEBAR OVERLAY (Mobile) ===== -->
+    <div class="vsh-sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    
+    <!-- ===== HEADER ===== -->
+    <header class="vsh-header">
+        <!-- Toggle Sidebar (Mobile) -->
+        <button class="vsh-header__toggle" onclick="toggleSidebar()">
+            ☰
+        </button>
+        
+        <!-- Tenant Info -->
+        <div class="vsh-flex vsh-flex--items-center vsh-flex--gap-3">
+            <div id="tenantLogo" style="width: 32px; height: 32px; background: var(--vsh-primary-bg); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold; color: var(--vsh-primary);">
+                A
+            </div>
+            <div class="vsh-hidden-mobile">
+                <div id="tenantName" style="font-size: 14px; font-weight: 600; color: var(--vsh-text-primary);">Công ty ABC</div>
+                <div style="font-size: 12px; color: var(--vsh-text-tertiary);">Gói Chuyên nghiệp</div>
+            </div>
+        </div>
+        
+        <!-- Search -->
+        <div class="vsh-header__search vsh-hidden-mobile" style="margin-left: auto; margin-right: var(--vsh-space-4);">
+            <span class="vsh-header__search-icon">🔍</span>
+            <input type="text" class="vsh-header__search-input" placeholder="Tìm ứng dụng..." id="searchInput" oninput="filterApps()">
+        </div>
+        
+        <!-- User Menu -->
+        <div class="vsh-dropdown" id="userDropdown">
+            <div class="vsh-header__user" onclick="toggleUserMenu()">
+                <div class="vsh-avatar">
+                    <span id="userInitials">NA</span>
+                </div>
+                <div class="vsh-hidden-mobile">
+                    <div class="vsh-header__user-name" id="userName">Nguyễn Văn A</div>
+                    <div class="vsh-header__user-role" id="userRole">Admin</div>
+                </div>
+                <span class="vsh-hidden-mobile">▼</span>
+            </div>
+            
+            <!-- Dropdown Menu -->
+            <div class="vsh-dropdown__menu">
+                <a href="#" class="vsh-dropdown__item">
+                    <span>👤</span> Thông tin cá nhân
+                </a>
+                <a href="#" class="vsh-dropdown__item">
+                    <span>🔑</span> Đổi mật khẩu
+                </a>
+                <a href="#" class="vsh-dropdown__item">
+                    <span>⚙️</span> Cài đặt
+                </a>
+                <div class="vsh-dropdown__divider"></div>
+                <a href="../login.html" class="vsh-dropdown__item vsh-dropdown__item--danger" onclick="handleLogout()">
+                    <span>🚪</span> Đăng xuất
+                </a>
+            </div>
+        </div>
+    </header>
+    
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="vsh-main">
+        <!-- Welcome Banner -->
+        <div class="welcome-banner">
+            <div class="welcome-banner__content">
+                <div class="welcome-banner__greeting">Xin chào,</div>
+                <div class="welcome-banner__name" id="welcomeName">Nguyễn Văn A! 👋</div>
+                <div class="welcome-banner__date" id="currentDate">Hôm nay là Thứ Hai, ngày 01/01/2024</div>
+            </div>
+        </div>
+        
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-card__icon stat-card__icon--primary">📱</div>
+                <div class="stat-card__info">
+                    <div class="stat-card__value" id="statApps">12</div>
+                    <div class="stat-card__label">Ứng dụng</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card__icon stat-card__icon--success">✅</div>
+                <div class="stat-card__info">
+                    <div class="stat-card__value" id="statActive">8</div>
+                    <div class="stat-card__label">Đang hoạt động</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card__icon stat-card__icon--warning">👥</div>
+                <div class="stat-card__info">
+                    <div class="stat-card__value" id="statUsers">25</div>
+                    <div class="stat-card__label">Người dùng</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card__icon stat-card__icon--info">📈</div>
+                <div class="stat-card__info">
+                    <div class="stat-card__value" id="statVisits">156</div>
+                    <div class="stat-card__label">Truy cập hôm nay</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <button class="quick-action" onclick="openAppStore()">
+                <span>➕</span> Thêm ứng dụng
+            </button>
+            <button class="quick-action" onclick="inviteUser()">
+                <span>👤</span> Mời người dùng
+            </button>
+            <button class="quick-action" onclick="viewReports()">
+                <span>📊</span> Xem báo cáo
+            </button>
+            <button class="quick-action" onclick="openSettings()">
+                <span>⚙️</span> Cài đặt
+            </button>
+        </div>
+        
+        <!-- Apps Section -->
+        <div class="section-header">
+            <h2 class="section-header__title">
+                <span>📱</span> Ứng dụng của bạn
+            </h2>
+            <div class="filter-tabs" id="filterTabs">
+                <button class="filter-tab is-active" data-filter="all" onclick="filterByCategory('all')">
+                    Tất cả
+                </button>
+                <button class="filter-tab" data-filter="management" onclick="filterByCategory('management')">
+                    Quản trị
+                </button>
+                <button class="filter-tab" data-filter="report" onclick="filterByCategory('report')">
+                    Báo cáo
+                </button>
+                <button class="filter-tab" data-filter="operation" onclick="filterByCategory('operation')">
+                    Vận hành
+                </button>
+                <button class="filter-tab" data-filter="communication" onclick="filterByCategory('communication')">
+                    Liên lạc
+                </button>
+            </div>
+        </div>
+        
+        <!-- Search Box (Mobile) -->
+        <div class="search-box vsh-hidden-desktop vsh-mb-4">
+            <span class="search-box__icon">🔍</span>
+            <input type="text" class="search-box__input" placeholder="Tìm ứng dụng..." oninput="filterApps()">
+        </div>
+        
+        <!-- Apps Grid -->
+        <div class="apps-grid" id="appsGrid">
+            <!-- Apps sẽ được render bởi JavaScript -->
+        </div>
+        
+        <!-- Empty State (ẩn mặc định) -->
+        <div class="empty-state vsh-hidden" id="emptyState">
+            <div class="empty-state__icon">📭</div>
+            <h3 class="empty-state__title">Không tìm thấy ứng dụng</h3>
+            <p class="empty-state__description">Thử thay đổi từ khóa tìm kiếm hoặc bộ lọc</p>
+        </div>
+        
+    </main>
+    
+    <!-- ===== APP MODAL ===== -->
+    <div class="vsh-modal-backdrop" id="appModal">
+        <div class="vsh-modal vsh-modal--lg">
+            <div class="vsh-modal__header">
+                <h3 class="vsh-modal__title" id="modalAppName">Tên ứng dụng</h3>
+                <button class="vsh-modal__close" onclick="closeAppModal()">×</button>
+            </div>
+            <div class="vsh-modal__body" style="padding: 0; height: 70vh;">
+                <iframe id="appIframe" src="" style="width: 100%; height: 100%; border: none;"></iframe>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // ===== DATA MẪU =====
+        // Trong thực tế sẽ lấy từ Supabase
+        
+        const DEMO_USER = {
+            id: '1',
+            fullName: 'Nguyễn Văn A',
+            email: 'nguyenvana@abc.com',
+            role: 'CUSTOMER_ADMIN',
+            avatarUrl: null
+        };
+        
+        const DEMO_TENANT = {
+            id: '1',
+            name: 'Công ty ABC Logistics',
+            code: 'abc-logistics',
+            logoUrl: null,
+            primaryColor: '#2563eb',
+            industry: 'logistics'
+        };
+        
+        const DEMO_APPS = [
+            {
+                id: '1',
+                code: 'crm',
+                name: 'CRM Cơ bản',
+                description: 'Quản lý thông tin khách hàng, lịch sử giao dịch và chăm sóc khách hàng hiệu quả.',
+                category: 'management',
+                categoryName: 'Quản trị',
+                icon: '📊',
+                status: 'active',
+                badge: 'popular',
+                url: '#'
+            },
+            {
+                id: '2',
+                code: 'inventory',
+                name: 'Quản lý kho',
+                description: 'Theo dõi tồn kho, nhập xuất hàng hóa và cảnh báo hết hàng tự động.',
+                category: 'operation',
+                categoryName: 'Vận hành',
+                icon: '📦',
+                status: 'active',
+                badge: null,
+                url: '#'
+            },
+            {
+                id: '3',
+                code: 'attendance',
+                name: 'Chấm công',
+                description: 'Quản lý chấm công nhân viên, tính lương và báo cáo nhân sự.',
+                category: 'management',
+                categoryName: 'Quản trị',
+                icon: '👥',
+                status: 'active',
+                badge: 'new',
+                url: '#'
+            },
+            {
+                id: '4',
+                code: 'revenue',
+                name: 'Báo cáo doanh thu',
+                description: 'Thống kê doanh thu, chi phí và lợi nhuận theo thời gian thực.',
+                category: 'report',
+                categoryName: 'Báo cáo',
+                icon: '💰',
+                status: 'active',
+                badge: null,
+                url: '#'
+            },
+            {
+                id: '5',
+                code: 'booking',
+                name: 'Đặt lịch hẹn',
+                description: 'Quản lý lịch hẹn với khách hàng, nhắc nhở tự động qua SMS/Email.',
+                category: 'operation',
+                categoryName: 'Vận hành',
+                icon: '📅',
+                status: 'active',
+                badge: null,
+                url: '#'
+            },
+            {
+                id: '6',
+                code: 'chat',
+                name: 'Chat nội bộ',
+                description: 'Nhắn tin nội bộ giữa các thành viên trong công ty, chia sẻ file.',
+                category: 'communication',
+                categoryName: 'Liên lạc',
+                icon: '💬',
+                status: 'active',
+                badge: null,
+                url: '#'
+            },
+            {
+                id: '7',
+                code: 'tasks',
+                name: 'Quản lý công việc',
+                description: 'Tạo task, phân công và theo dõi tiến độ công việc của team.',
+                category: 'management',
+                categoryName: 'Quản trị',
+                icon: '✅',
+                status: 'active',
+                badge: null,
+                url: '#'
+            },
+            {
+                id: '8',
+                code: 'invoice',
+                name: 'Hóa đơn điện tử',
+                description: 'Tạo và quản lý hóa đơn điện tử theo quy định của cơ quan thuế.',
+                category: 'report',
+                categoryName: 'Báo cáo',
+                icon: '🧾',
+                status: 'active',
+                badge: null,
+                url: '#'
+            },
+            {
+                id: '9',
+                code: 'email-marketing',
+                name: 'Email Marketing',
+                description: 'Gửi email hàng loạt, quản lý chiến dịch marketing tự động.',
+                category: 'communication',
+                categoryName: 'Liên lạc',
+                icon: '📧',
+                status: 'inactive',
+                badge: null,
+                url: '#'
+            },
+            {
+                id: '10',
+                code: 'analytics',
+                name: 'Phân tích dữ liệu',
+                description: 'Dashboard phân tích dữ liệu kinh doanh với biểu đồ trực quan.',
+                category: 'report',
+                categoryName: 'Báo cáo',
+                icon: '📈',
+                status: 'active',
+                badge: 'new',
+                url: '#'
+            },
+            {
+                id: '11',
+                code: 'delivery',
+                name: 'Quản lý giao hàng',
+                description: 'Theo dõi đơn hàng, tình trạng giao hàng và shipper.',
+                category: 'operation',
+                categoryName: 'Vận hành',
+                icon: '🚚',
+                status: 'active',
+                badge: null,
+                url: '#'
+            },
+            {
+                id: '12',
+                code: 'support',
+                name: 'Hỗ trợ khách hàng',
+                description: 'Hệ thống ticket hỗ trợ khách hàng, live chat và FAQ.',
+                category: 'communication',
+                categoryName: 'Liên lạc',
+                icon: '🎧',
+                status: 'active',
+                badge: null,
+                url: '#'
+            }
+        ];
+        
+        // ===== STATE =====
+        let currentFilter = 'all';
+        let searchQuery = '';
+        
+        // ===== INITIALIZATION =====
+        document.addEventListener('DOMContentLoaded', function() {
+            // Render user info
+            renderUserInfo(DEMO_USER);
+            
+            // Render tenant info
+            renderTenantInfo(DEMO_TENANT);
+            
+            // Render apps
+            renderApps(DEMO_APPS);
+            
+            // Render stats
+            renderStats(DEMO_APPS);
+            
+            // Update date
+            updateCurrentDate();
+            
+            // Show/hide admin menu based on role
+            updateMenuByRole(DEMO_USER.role);
+        });
+        
+        // ===== RENDER FUNCTIONS =====
+        
+        function renderUserInfo(user) {
+            document.getElementById('userName').textContent = user.fullName;
+            document.getElementById('userRole').textContent = user.role === 'CUSTOMER_ADMIN' ? 'Admin' : 'Người dùng';
+            document.getElementById('welcomeName').textContent = user.fullName + '! 👋';
+            
+            // Initials for avatar
+            const names = user.fullName.split(' ');
+            const initials = names.length > 1 
+                ? names[0][0] + names[names.length - 1][0]
+                : names[0].substring(0, 2);
+            document.getElementById('userInitials').textContent = initials.toUpperCase();
+        }
+        
+        function renderTenantInfo(tenant) {
+            document.getElementById('tenantName').textContent = tenant.name;
+            
+            // Logo placeholder (first letter of company name)
+            const firstLetter = tenant.name.charAt(0).toUpperCase();
+            document.getElementById('tenantLogo').textContent = firstLetter;
+            
+            // Apply tenant primary color if different
+            if (tenant.primaryColor) {
+                document.documentElement.style.setProperty('--tenant-primary', tenant.primaryColor);
+            }
+        }
+        
+        function renderApps(apps) {
+            const grid = document.getElementById('appsGrid');
+            const emptyState = document.getElementById('emptyState');
+            
+            // Filter apps
+            let filteredApps = apps;
+            
+            if (currentFilter !== 'all') {
+                filteredApps = apps.filter(app => app.category === currentFilter);
+            }
+            
+            if (searchQuery) {
+                const query = searchQuery.toLowerCase();
+                filteredApps = filteredApps.filter(app => 
+                    app.name.toLowerCase().includes(query) ||
+                    app.description.toLowerCase().includes(query)
+                );
+            }
+            
+            // Show empty state if no apps
+            if (filteredApps.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('vsh-hidden');
+                return;
+            }
+            
+            emptyState.classList.add('vsh-hidden');
+            
+            // Render app cards
+            grid.innerHTML = filteredApps.map(app => `
+                <div class="app-card" onclick="openApp('${app.id}')">
+                    ${app.badge ? `<span class="app-card__badge app-card__badge--${app.badge}">${app.badge === 'new' ? 'Mới' : 'Hot'}</span>` : ''}
+                    <div class="app-card__header">
+                        <div class="app-card__icon">${app.icon}</div>
+                        <div class="app-card__title-group">
+                            <div class="app-card__title">${app.name}</div>
+                            <div class="app-card__category">${app.categoryName}</div>
+                        </div>
+                    </div>
+                    <div class="app-card__description">${app.description}</div>
+                    <div class="app-card__footer">
+                        <div class="app-card__status">
+                            <span class="app-card__status-dot ${app.status === 'active' ? '' : 'app-card__status-dot--inactive'}"></span>
+                            <span>${app.status === 'active' ? 'Hoạt động' : 'Tạm dừng'}</span>
+                        </div>
+                        <button class="app-card__btn" onclick="event.stopPropagation(); openApp('${app.id}')">
+                            Mở app
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function renderStats(apps) {
+            const activeApps = apps.filter(app => app.status === 'active').length;
+            
+            document.getElementById('statApps').textContent = apps.length;
+            document.getElementById('statActive').textContent = activeApps;
+            // statUsers và statVisits giữ nguyên demo
+        }
+        
+        function updateCurrentDate() {
+            const days = ['Chủ nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
+            const now = new Date();
+            const dayName = days[now.getDay()];
+            const date = now.toLocaleDateString('vi-VN');
+            
+            document.getElementById('currentDate').textContent = `Hôm nay là ${dayName}, ngày ${date}`;
+        }
+        
+        function updateMenuByRole(role) {
+            const adminMenu = document.getElementById('adminMenu');
+            if (role === 'END_USER') {
+                adminMenu.style.display = 'none';
+            }
+        }
+        
+        // ===== FILTER & SEARCH =====
+        
+        function filterByCategory(category) {
+            currentFilter = category;
+            
+            // Update active tab
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.classList.remove('is-active');
+                if (tab.dataset.filter === category) {
+                    tab.classList.add('is-active');
+                }
+            });
+            
+            renderApps(DEMO_APPS);
+        }
+        
+        function filterApps() {
+            const input = document.getElementById('searchInput') || document.querySelector('.search-box__input');
+            searchQuery = input.value;
+            renderApps(DEMO_APPS);
+        }
+        
+        // ===== SIDEBAR TOGGLE =====
+        
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            
+            sidebar.classList.toggle('is-active');
+            overlay.classList.toggle('is-active');
+        }
+        
+        // ===== USER MENU =====
+        
+        function toggleUserMenu() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('is-active');
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            const dropdown = document.getElementById('userDropdown');
+            if (!dropdown.contains(e.target)) {
+                dropdown.classList.remove('is-active');
+            }
+        });
+        
+        // ===== APP FUNCTIONS =====
+        
+        function openApp(appId) {
+            const app = DEMO_APPS.find(a => a.id === appId);
+            if (!app) return;
+            
+            if (app.url && app.url !== '#') {
+                // Mở trong modal
+                document.getElementById('modalAppName').textContent = app.name;
+                document.getElementById('appIframe').src = app.url;
+                document.getElementById('appModal').classList.add('is-active');
+            } else {
+                // Demo: Alert
+                alert(`Mở ứng dụng: ${app.name}\n\nỨng dụng này sẽ được kết nối sau khi setup backend.`);
+            }
+        }
+        
+        function closeAppModal() {
+            document.getElementById('appModal').classList.remove('is-active');
+            document.getElementById('appIframe').src = '';
+        }
+        
+        // ===== QUICK ACTIONS =====
+        
+        function openAppStore() {
+            alert('Tính năng "Thêm ứng dụng" sẽ mở App Store để bạn chọn thêm ứng dụng mới.');
+        }
+        
+        function inviteUser() {
+            alert('Tính năng "Mời người dùng" cho phép bạn gửi email mời thành viên mới vào hệ thống.');
+        }
+        
+        function viewReports() {
+            alert('Tính năng "Xem báo cáo" sẽ hiển thị các báo cáo tổng hợp về hoạt động của doanh nghiệp.');
+        }
+        
+        function openSettings() {
+            alert('Tính năng "Cài đặt" cho phép bạn tùy chỉnh logo, màu sắc và các thiết lập khác.');
+        }
+        
+        // ===== LOGOUT =====
+        
+        function handleLogout() {
+            // Trong thực tế sẽ gọi Supabase signOut
+            console.log('Logging out...');
+            window.location.href = '../login.html';
+        }
+        
+        // ===== CLOSE MODAL ON ESCAPE =====
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeAppModal();
+            }
+        });
+    </script>
+</body>
+</html>
