@@ -233,4 +233,3 @@ const vshSignIn = (email, password) => VSH_AUTH.signIn(email, password);
 const vshSignOut = () => VSH_AUTH.signOut();
 const vshGetUser = () => VSH_AUTH.getCurrentUser();
 const vshIsLoggedIn = () => VSH_AUTH.isLoggedIn();
-
