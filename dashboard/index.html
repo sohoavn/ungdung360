@@ -480,6 +480,15 @@
             }
         }
     </style>
+    
+    <!-- Supabase JS Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- VSH Scripts (chú ý đường dẫn có ../ vì đang ở thư mục con) -->
+    <script src="../assets/js/vsh-config.js"></script>
+    <script src="../assets/js/vsh-supabase.js"></script>
+    <script src="../assets/js/vsh-auth.js"></script>
+
 </head>
 <body class="vsh-app vsh-app--with-sidebar">
     
@@ -732,246 +741,122 @@
     </div>
     
     <script>
-        // ===== DATA MẪU =====
-        // Trong thực tế sẽ lấy từ Supabase
-        
-        const DEMO_USER = {
-            id: '1',
-            fullName: 'Nguyễn Văn A',
-            email: 'nguyenvana@abc.com',
-            role: 'CUSTOMER_ADMIN',
-            avatarUrl: null
-        };
-        
-        const DEMO_TENANT = {
-            id: '1',
-            name: 'Công ty ABC Logistics',
-            code: 'abc-logistics',
-            logoUrl: null,
-            primaryColor: '#2563eb',
-            industry: 'logistics'
-        };
-        
-        const DEMO_APPS = [
-            {
-                id: '1',
-                code: 'crm',
-                name: 'CRM Cơ bản',
-                description: 'Quản lý thông tin khách hàng, lịch sử giao dịch và chăm sóc khách hàng hiệu quả.',
-                category: 'management',
-                categoryName: 'Quản trị',
-                icon: '📊',
-                status: 'active',
-                badge: 'popular',
-                url: '#'
-            },
-            {
-                id: '2',
-                code: 'inventory',
-                name: 'Quản lý kho',
-                description: 'Theo dõi tồn kho, nhập xuất hàng hóa và cảnh báo hết hàng tự động.',
-                category: 'operation',
-                categoryName: 'Vận hành',
-                icon: '📦',
-                status: 'active',
-                badge: null,
-                url: '#'
-            },
-            {
-                id: '3',
-                code: 'attendance',
-                name: 'Chấm công',
-                description: 'Quản lý chấm công nhân viên, tính lương và báo cáo nhân sự.',
-                category: 'management',
-                categoryName: 'Quản trị',
-                icon: '👥',
-                status: 'active',
-                badge: 'new',
-                url: '#'
-            },
-            {
-                id: '4',
-                code: 'revenue',
-                name: 'Báo cáo doanh thu',
-                description: 'Thống kê doanh thu, chi phí và lợi nhuận theo thời gian thực.',
-                category: 'report',
-                categoryName: 'Báo cáo',
-                icon: '💰',
-                status: 'active',
-                badge: null,
-                url: '#'
-            },
-            {
-                id: '5',
-                code: 'booking',
-                name: 'Đặt lịch hẹn',
-                description: 'Quản lý lịch hẹn với khách hàng, nhắc nhở tự động qua SMS/Email.',
-                category: 'operation',
-                categoryName: 'Vận hành',
-                icon: '📅',
-                status: 'active',
-                badge: null,
-                url: '#'
-            },
-            {
-                id: '6',
-                code: 'chat',
-                name: 'Chat nội bộ',
-                description: 'Nhắn tin nội bộ giữa các thành viên trong công ty, chia sẻ file.',
-                category: 'communication',
-                categoryName: 'Liên lạc',
-                icon: '💬',
-                status: 'active',
-                badge: null,
-                url: '#'
-            },
-            {
-                id: '7',
-                code: 'tasks',
-                name: 'Quản lý công việc',
-                description: 'Tạo task, phân công và theo dõi tiến độ công việc của team.',
-                category: 'management',
-                categoryName: 'Quản trị',
-                icon: '✅',
-                status: 'active',
-                badge: null,
-                url: '#'
-            },
-            {
-                id: '8',
-                code: 'invoice',
-                name: 'Hóa đơn điện tử',
-                description: 'Tạo và quản lý hóa đơn điện tử theo quy định của cơ quan thuế.',
-                category: 'report',
-                categoryName: 'Báo cáo',
-                icon: '🧾',
-                status: 'active',
-                badge: null,
-                url: '#'
-            },
-            {
-                id: '9',
-                code: 'email-marketing',
-                name: 'Email Marketing',
-                description: 'Gửi email hàng loạt, quản lý chiến dịch marketing tự động.',
-                category: 'communication',
-                categoryName: 'Liên lạc',
-                icon: '📧',
-                status: 'inactive',
-                badge: null,
-                url: '#'
-            },
-            {
-                id: '10',
-                code: 'analytics',
-                name: 'Phân tích dữ liệu',
-                description: 'Dashboard phân tích dữ liệu kinh doanh với biểu đồ trực quan.',
-                category: 'report',
-                categoryName: 'Báo cáo',
-                icon: '📈',
-                status: 'active',
-                badge: 'new',
-                url: '#'
-            },
-            {
-                id: '11',
-                code: 'delivery',
-                name: 'Quản lý giao hàng',
-                description: 'Theo dõi đơn hàng, tình trạng giao hàng và shipper.',
-                category: 'operation',
-                categoryName: 'Vận hành',
-                icon: '🚚',
-                status: 'active',
-                badge: null,
-                url: '#'
-            },
-            {
-                id: '12',
-                code: 'support',
-                name: 'Hỗ trợ khách hàng',
-                description: 'Hệ thống ticket hỗ trợ khách hàng, live chat và FAQ.',
-                category: 'communication',
-                categoryName: 'Liên lạc',
-                icon: '🎧',
-                status: 'active',
-                badge: null,
-                url: '#'
-            }
-        ];
-        
         // ===== STATE =====
+        let currentUser = null;
         let currentFilter = 'all';
         let searchQuery = '';
+        let allApps = [];
         
         // ===== INITIALIZATION =====
-        document.addEventListener('DOMContentLoaded', function() {
-            // Render user info
-            renderUserInfo(DEMO_USER);
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Kiểm tra đăng nhập
+            const isLoggedIn = await VSH_AUTH.isLoggedIn();
+            if (!isLoggedIn) {
+                window.location.href = '../login.html';
+                return;
+            }
             
-            // Render tenant info
-            renderTenantInfo(DEMO_TENANT);
+            // Lấy thông tin user
+            currentUser = await VSH_AUTH.getCurrentUser();
+            if (!currentUser) {
+                window.location.href = '../login.html';
+                return;
+            }
             
-            // Render apps
-            renderApps(DEMO_APPS);
-            
-            // Render stats
-            renderStats(DEMO_APPS);
-            
-            // Update date
+            // Hiển thị thông tin
+            renderUserInfo(currentUser);
             updateCurrentDate();
             
-            // Show/hide admin menu based on role
-            updateMenuByRole(DEMO_USER.role);
+            // Load danh sách apps từ Supabase
+            await loadApps();
+            
+            // Render stats
+            renderStats();
         });
         
-        // ===== RENDER FUNCTIONS =====
-        
-        function renderUserInfo(user) {
-            document.getElementById('userName').textContent = user.fullName;
-            document.getElementById('userRole').textContent = user.role === 'CUSTOMER_ADMIN' ? 'Admin' : 'Người dùng';
-            document.getElementById('welcomeName').textContent = user.fullName + '! 👋';
-            
-            // Initials for avatar
-            const names = user.fullName.split(' ');
-            const initials = names.length > 1 
-                ? names[0][0] + names[names.length - 1][0]
-                : names[0].substring(0, 2);
-            document.getElementById('userInitials').textContent = initials.toUpperCase();
-        }
-        
-        function renderTenantInfo(tenant) {
-            document.getElementById('tenantName').textContent = tenant.name;
-            
-            // Logo placeholder (first letter of company name)
-            const firstLetter = tenant.name.charAt(0).toUpperCase();
-            document.getElementById('tenantLogo').textContent = firstLetter;
-            
-            // Apply tenant primary color if different
-            if (tenant.primaryColor) {
-                document.documentElement.style.setProperty('--tenant-primary', tenant.primaryColor);
+        // ===== LOAD APPS TỪ SUPABASE =====
+        async function loadApps() {
+            try {
+                const supabase = getSupabase();
+                if (!supabase) {
+                    console.error('Không thể kết nối Supabase');
+                    return;
+                }
+                
+                // Query lấy tất cả apps
+                const { data, error } = await supabase
+                    .from('apps')
+                    .select('*')
+                    .eq('is_active', true)
+                    .order('sort_order', { ascending: true });
+                
+                if (error) {
+                    console.error('Lỗi load apps:', error);
+                    return;
+                }
+                
+                // Lưu vào state
+                allApps = data || [];
+                console.log('✅ Loaded', allApps.length, 'apps');
+                
+                // Render apps
+                renderApps();
+                
+            } catch (err) {
+                console.error('Exception:', err);
             }
         }
         
-        function renderApps(apps) {
+        // ===== RENDER USER INFO =====
+        function renderUserInfo(user) {
+            // Lấy tên từ metadata hoặc email
+            const fullName = user.user_metadata?.full_name || user.email.split('@')[0];
+            const email = user.email;
+            
+            // Cập nhật các phần hiển thị
+            document.getElementById('userName').textContent = fullName;
+            document.getElementById('userRole').textContent = 'Người dùng';
+            document.getElementById('welcomeName').textContent = fullName + '! 👋';
+            
+            // Initials cho avatar
+            const names = fullName.split(' ');
+            let initials;
+            if (names.length > 1) {
+                initials = names[0][0] + names[names.length - 1][0];
+            } else {
+                initials = fullName.substring(0, 2);
+            }
+            document.getElementById('userInitials').textContent = initials.toUpperCase();
+            
+            // Tenant info (tạm thời dùng tên công ty từ metadata)
+            const company = user.user_metadata?.company || 'Công ty của bạn';
+            document.getElementById('tenantName').textContent = company;
+            document.getElementById('tenantLogo').textContent = company.charAt(0).toUpperCase();
+        }
+        
+        // ===== RENDER APPS =====
+        function renderApps() {
             const grid = document.getElementById('appsGrid');
             const emptyState = document.getElementById('emptyState');
             
-            // Filter apps
-            let filteredApps = apps;
+            // Lọc apps
+            let filteredApps = allApps;
             
+            // Lọc theo category
             if (currentFilter !== 'all') {
-                filteredApps = apps.filter(app => app.category === currentFilter);
+                filteredApps = filteredApps.filter(app => app.category === currentFilter);
             }
             
+            // Lọc theo search
             if (searchQuery) {
                 const query = searchQuery.toLowerCase();
                 filteredApps = filteredApps.filter(app => 
                     app.name.toLowerCase().includes(query) ||
-                    app.description.toLowerCase().includes(query)
+                    (app.description && app.description.toLowerCase().includes(query))
                 );
             }
             
-            // Show empty state if no apps
+            // Hiển thị empty state nếu không có apps
             if (filteredApps.length === 0) {
                 grid.innerHTML = '';
                 emptyState.classList.remove('vsh-hidden');
@@ -980,39 +865,59 @@
             
             emptyState.classList.add('vsh-hidden');
             
-            // Render app cards
-            grid.innerHTML = filteredApps.map(app => `
-                <div class="app-card" onclick="openApp('${app.id}')">
-                    ${app.badge ? `<span class="app-card__badge app-card__badge--${app.badge}">${app.badge === 'new' ? 'Mới' : 'Hot'}</span>` : ''}
-                    <div class="app-card__header">
-                        <div class="app-card__icon">${app.icon}</div>
-                        <div class="app-card__title-group">
-                            <div class="app-card__title">${app.name}</div>
-                            <div class="app-card__category">${app.categoryName}</div>
+            // Map category sang tên tiếng Việt
+            const categoryNames = {
+                'management': 'Quản trị',
+                'operation': 'Vận hành',
+                'report': 'Báo cáo',
+                'communication': 'Liên lạc'
+            };
+            
+            // Render cards
+            grid.innerHTML = filteredApps.map((app, index) => {
+                // Random badge cho demo (chỉ hiển thị một số app)
+                let badgeHtml = '';
+                if (index === 0) {
+                    badgeHtml = '<span class="app-card__badge app-card__badge--popular">Hot</span>';
+                } else if (index === 2 || index === 9) {
+                    badgeHtml = '<span class="app-card__badge app-card__badge--new">Mới</span>';
+                }
+                
+                const categoryName = categoryNames[app.category] || app.category;
+                
+                return `
+                    <div class="app-card" onclick="openApp('${app.id}', '${app.name}')">
+                        ${badgeHtml}
+                        <div class="app-card__header">
+                            <div class="app-card__icon">${app.icon || '📱'}</div>
+                            <div class="app-card__title-group">
+                                <div class="app-card__title">${app.name}</div>
+                                <div class="app-card__category">${categoryName}</div>
+                            </div>
+                        </div>
+                        <div class="app-card__description">${app.description || 'Không có mô tả'}</div>
+                        <div class="app-card__footer">
+                            <div class="app-card__status">
+                                <span class="app-card__status-dot"></span>
+                                <span>Hoạt động</span>
+                            </div>
+                            <button class="app-card__btn" onclick="event.stopPropagation(); openApp('${app.id}', '${app.name}')">
+                                Mở app
+                            </button>
                         </div>
                     </div>
-                    <div class="app-card__description">${app.description}</div>
-                    <div class="app-card__footer">
-                        <div class="app-card__status">
-                            <span class="app-card__status-dot ${app.status === 'active' ? '' : 'app-card__status-dot--inactive'}"></span>
-                            <span>${app.status === 'active' ? 'Hoạt động' : 'Tạm dừng'}</span>
-                        </div>
-                        <button class="app-card__btn" onclick="event.stopPropagation(); openApp('${app.id}')">
-                            Mở app
-                        </button>
-                    </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
         
-        function renderStats(apps) {
-            const activeApps = apps.filter(app => app.status === 'active').length;
-            
-            document.getElementById('statApps').textContent = apps.length;
-            document.getElementById('statActive').textContent = activeApps;
+        // ===== RENDER STATS =====
+        function renderStats() {
+            document.getElementById('statApps').textContent = allApps.length;
+            document.getElementById('statActive').textContent = allApps.filter(a => a.is_active).length;
             // statUsers và statVisits giữ nguyên demo
         }
         
+        // ===== UPDATE DATE =====
         function updateCurrentDate() {
             const days = ['Chủ nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
             const now = new Date();
@@ -1022,15 +927,7 @@
             document.getElementById('currentDate').textContent = `Hôm nay là ${dayName}, ngày ${date}`;
         }
         
-        function updateMenuByRole(role) {
-            const adminMenu = document.getElementById('adminMenu');
-            if (role === 'END_USER') {
-                adminMenu.style.display = 'none';
-            }
-        }
-        
-        // ===== FILTER & SEARCH =====
-        
+        // ===== FILTER BY CATEGORY =====
         function filterByCategory(category) {
             currentFilter = category;
             
@@ -1042,17 +939,19 @@
                 }
             });
             
-            renderApps(DEMO_APPS);
+            renderApps();
         }
         
+        // ===== SEARCH APPS =====
         function filterApps() {
-            const input = document.getElementById('searchInput') || document.querySelector('.search-box__input');
-            searchQuery = input.value;
-            renderApps(DEMO_APPS);
+            const input = document.getElementById('searchInput');
+            if (input) {
+                searchQuery = input.value;
+            }
+            renderApps();
         }
         
-        // ===== SIDEBAR TOGGLE =====
-        
+        // ===== TOGGLE SIDEBAR =====
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebarOverlay');
@@ -1061,8 +960,7 @@
             overlay.classList.toggle('is-active');
         }
         
-        // ===== USER MENU =====
-        
+        // ===== TOGGLE USER MENU =====
         function toggleUserMenu() {
             const dropdown = document.getElementById('userDropdown');
             dropdown.classList.toggle('is-active');
@@ -1071,57 +969,49 @@
         // Close dropdown when clicking outside
         document.addEventListener('click', function(e) {
             const dropdown = document.getElementById('userDropdown');
-            if (!dropdown.contains(e.target)) {
+            if (dropdown && !dropdown.contains(e.target)) {
                 dropdown.classList.remove('is-active');
             }
         });
         
-        // ===== APP FUNCTIONS =====
-        
-        function openApp(appId) {
-            const app = DEMO_APPS.find(a => a.id === appId);
-            if (!app) return;
-            
-            if (app.url && app.url !== '#') {
-                // Mở trong modal
-                document.getElementById('modalAppName').textContent = app.name;
-                document.getElementById('appIframe').src = app.url;
-                document.getElementById('appModal').classList.add('is-active');
-            } else {
-                // Demo: Alert
-                alert(`Mở ứng dụng: ${app.name}\n\nỨng dụng này sẽ được kết nối sau khi setup backend.`);
-            }
+        // ===== OPEN APP =====
+        function openApp(appId, appName) {
+            // Tạm thời hiển thị thông báo
+            // Trong tương lai sẽ mở app trong modal hoặc trang mới
+            alert(`Mở ứng dụng: ${appName}\n\nTính năng này sẽ được kích hoạt trong phiên bản tiếp theo.`);
         }
         
+        // ===== CLOSE APP MODAL =====
         function closeAppModal() {
             document.getElementById('appModal').classList.remove('is-active');
             document.getElementById('appIframe').src = '';
         }
         
         // ===== QUICK ACTIONS =====
-        
         function openAppStore() {
-            alert('Tính năng "Thêm ứng dụng" sẽ mở App Store để bạn chọn thêm ứng dụng mới.');
+            alert('Tính năng "Thêm ứng dụng" sẽ được kích hoạt trong phiên bản tiếp theo.');
         }
         
         function inviteUser() {
-            alert('Tính năng "Mời người dùng" cho phép bạn gửi email mời thành viên mới vào hệ thống.');
+            alert('Tính năng "Mời người dùng" sẽ được kích hoạt trong phiên bản tiếp theo.');
         }
         
         function viewReports() {
-            alert('Tính năng "Xem báo cáo" sẽ hiển thị các báo cáo tổng hợp về hoạt động của doanh nghiệp.');
+            alert('Tính năng "Xem báo cáo" sẽ được kích hoạt trong phiên bản tiếp theo.');
         }
         
         function openSettings() {
-            alert('Tính năng "Cài đặt" cho phép bạn tùy chỉnh logo, màu sắc và các thiết lập khác.');
+            alert('Tính năng "Cài đặt" sẽ được kích hoạt trong phiên bản tiếp theo.');
         }
         
         // ===== LOGOUT =====
-        
-        function handleLogout() {
-            // Trong thực tế sẽ gọi Supabase signOut
-            console.log('Logging out...');
-            window.location.href = '../login.html';
+        async function handleLogout() {
+            const result = await VSH_AUTH.signOut();
+            if (result.success) {
+                window.location.href = '../login.html';
+            } else {
+                alert('Có lỗi khi đăng xuất. Vui lòng thử lại.');
+            }
         }
         
         // ===== CLOSE MODAL ON ESCAPE =====
@@ -1131,5 +1021,7 @@
             }
         });
     </script>
+
 </body>
+
 </html>
