@@ -481,13 +481,13 @@
         }
     </style>
     
-    <!-- Supabase JS Library -->
+     <!-- Supabase JS Library -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
-    <!-- Supabase JS -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- VSH Scripts (chú ý đường dẫn có ../ vì đang ở thư mục con) -->
     <script src="../assets/js/vsh-config.js"></script>
     <script src="../assets/js/vsh-supabase.js"></script>
+    <script src="../assets/js/vsh-auth.js"></script>
 
 </head>
 <body class="vsh-app vsh-app--with-sidebar">
@@ -743,114 +743,120 @@
     <script>
         // ===== STATE =====
         let currentUser = null;
-        let currentTenant = null;
-        let allApps = [];
         let currentFilter = 'all';
         let searchQuery = '';
+        let allApps = [];
         
         // ===== INITIALIZATION =====
-        async function initDashboard() {
+        document.addEventListener('DOMContentLoaded', async function() {
             // Kiểm tra đăng nhập
-            const user = await VSH_AUTH.getCurrentUser();
-            
-            if (!user) {
-                // Chưa đăng nhập -> về trang login
+            const isLoggedIn = await VSH_AUTH.isLoggedIn();
+            if (!isLoggedIn) {
                 window.location.href = '../login.html';
                 return;
             }
             
-            currentUser = user;
-            
-            // Lấy user profile (bao gồm tenant)
-            const profile = await VSH_DATA.getUserProfile(user.id);
-            
-            if (profile) {
-                currentTenant = profile.tenants;
-                
-                // Render thông tin user
-                renderUserInfo(profile);
-                
-                // Render thông tin tenant
-                if (currentTenant) {
-                    renderTenantInfo(currentTenant);
-                }
+            // Lấy thông tin user
+            currentUser = await VSH_AUTH.getCurrentUser();
+            if (!currentUser) {
+                window.location.href = '../login.html';
+                return;
             }
             
-            // Lấy và render danh sách apps
-            allApps = await VSH_DATA.getAllApps();
-            renderApps(allApps);
+            // Hiển thị thông tin
+            renderUserInfo(currentUser);
+            updateCurrentDate();
+            
+            // Load danh sách apps từ Supabase
+            await loadApps();
             
             // Render stats
             renderStats();
-            
-            // Update ngày
-            updateCurrentDate();
+        });
+        
+        // ===== LOAD APPS TỪ SUPABASE =====
+        async function loadApps() {
+            try {
+                const supabase = getSupabase();
+                if (!supabase) {
+                    console.error('Không thể kết nối Supabase');
+                    return;
+                }
+                
+                // Query lấy tất cả apps
+                const { data, error } = await supabase
+                    .from('apps')
+                    .select('*')
+                    .eq('is_active', true)
+                    .order('sort_order', { ascending: true });
+                
+                if (error) {
+                    console.error('Lỗi load apps:', error);
+                    return;
+                }
+                
+                // Lưu vào state
+                allApps = data || [];
+                console.log('✅ Loaded', allApps.length, 'apps');
+                
+                // Render apps
+                renderApps();
+                
+            } catch (err) {
+                console.error('Exception:', err);
+            }
         }
         
-        // Chạy khi trang load xong
-        document.addEventListener('DOMContentLoaded', initDashboard);
-        
-        // ===== RENDER FUNCTIONS =====
-        
-        function renderUserInfo(profile) {
-            const fullName = profile.full_name || profile.email.split('@')[0];
+        // ===== RENDER USER INFO =====
+        function renderUserInfo(user) {
+            // Lấy tên từ metadata hoặc email
+            const fullName = user.user_metadata?.full_name || user.email.split('@')[0];
+            const email = user.email;
             
+            // Cập nhật các phần hiển thị
             document.getElementById('userName').textContent = fullName;
-            document.getElementById('userRole').textContent = 
-                profile.role === 'CUSTOMER_ADMIN' ? 'Admin' : 
-                profile.role === 'SUPER_ADMIN' ? 'Super Admin' : 'Người dùng';
+            document.getElementById('userRole').textContent = 'Người dùng';
             document.getElementById('welcomeName').textContent = fullName + '! 👋';
             
-            // Initials
-            const initials = VSH_UTILS.getInitials(fullName);
-            document.getElementById('userInitials').textContent = initials;
-            
-            // Hiện/ẩn menu admin
-            const adminMenu = document.getElementById('adminMenu');
-            if (profile.role === 'END_USER') {
-                adminMenu.style.display = 'none';
+            // Initials cho avatar
+            const names = fullName.split(' ');
+            let initials;
+            if (names.length > 1) {
+                initials = names[0][0] + names[names.length - 1][0];
+            } else {
+                initials = fullName.substring(0, 2);
             }
+            document.getElementById('userInitials').textContent = initials.toUpperCase();
+            
+            // Tenant info (tạm thời dùng tên công ty từ metadata)
+            const company = user.user_metadata?.company || 'Công ty của bạn';
+            document.getElementById('tenantName').textContent = company;
+            document.getElementById('tenantLogo').textContent = company.charAt(0).toUpperCase();
         }
         
-        function renderTenantInfo(tenant) {
-            document.getElementById('tenantName').textContent = tenant.name;
-            
-            // Logo placeholder
-            const firstLetter = tenant.name.charAt(0).toUpperCase();
-            document.getElementById('tenantLogo').textContent = firstLetter;
-            
-            // Áp dụng màu của tenant
-            if (tenant.primary_color) {
-                document.documentElement.style.setProperty('--tenant-primary', tenant.primary_color);
-            }
-        }
-        
-        function renderApps(apps) {
+        // ===== RENDER APPS =====
+        function renderApps() {
             const grid = document.getElementById('appsGrid');
             const emptyState = document.getElementById('emptyState');
             
-            // Filter apps
-            let filteredApps = apps;
+            // Lọc apps
+            let filteredApps = allApps;
             
+            // Lọc theo category
             if (currentFilter !== 'all') {
-                const categoryMap = {
-                    'management': 'Quản trị',
-                    'report': 'Báo cáo',
-                    'operation': 'Vận hành',
-                    'communication': 'Liên lạc'
-                };
-                filteredApps = apps.filter(app => app.category === categoryMap[currentFilter]);
+                filteredApps = filteredApps.filter(app => app.category === currentFilter);
             }
             
+            // Lọc theo search
             if (searchQuery) {
                 const query = searchQuery.toLowerCase();
                 filteredApps = filteredApps.filter(app => 
                     app.name.toLowerCase().includes(query) ||
-                    app.description.toLowerCase().includes(query)
+                    (app.description && app.description.toLowerCase().includes(query))
                 );
             }
             
-            // Show empty state if no apps
+            // Hiển thị empty state nếu không có apps
             if (filteredApps.length === 0) {
                 grid.innerHTML = '';
                 emptyState.classList.remove('vsh-hidden');
@@ -859,54 +865,73 @@
             
             emptyState.classList.add('vsh-hidden');
             
-            // Render app cards
-            grid.innerHTML = filteredApps.map(app => `
-                <div class="app-card" onclick="openApp('${app.id}')">
-                    <div class="app-card__header">
-                        <div class="app-card__icon">${app.icon || '📱'}</div>
-                        <div class="app-card__title-group">
-                            <div class="app-card__title">${app.name}</div>
-                            <div class="app-card__category">${app.category}</div>
+            // Map category sang tên tiếng Việt
+            const categoryNames = {
+                'management': 'Quản trị',
+                'operation': 'Vận hành',
+                'report': 'Báo cáo',
+                'communication': 'Liên lạc'
+            };
+            
+            // Render cards
+            grid.innerHTML = filteredApps.map((app, index) => {
+                // Random badge cho demo (chỉ hiển thị một số app)
+                let badgeHtml = '';
+                if (index === 0) {
+                    badgeHtml = '<span class="app-card__badge app-card__badge--popular">Hot</span>';
+                } else if (index === 2 || index === 9) {
+                    badgeHtml = '<span class="app-card__badge app-card__badge--new">Mới</span>';
+                }
+                
+                const categoryName = categoryNames[app.category] || app.category;
+                
+                return `
+                    <div class="app-card" onclick="openApp('${app.id}', '${app.name}')">
+                        ${badgeHtml}
+                        <div class="app-card__header">
+                            <div class="app-card__icon">${app.icon || '📱'}</div>
+                            <div class="app-card__title-group">
+                                <div class="app-card__title">${app.name}</div>
+                                <div class="app-card__category">${categoryName}</div>
+                            </div>
+                        </div>
+                        <div class="app-card__description">${app.description || 'Không có mô tả'}</div>
+                        <div class="app-card__footer">
+                            <div class="app-card__status">
+                                <span class="app-card__status-dot"></span>
+                                <span>Hoạt động</span>
+                            </div>
+                            <button class="app-card__btn" onclick="event.stopPropagation(); openApp('${app.id}', '${app.name}')">
+                                Mở app
+                            </button>
                         </div>
                     </div>
-                    <div class="app-card__description">${app.description || ''}</div>
-                    <div class="app-card__footer">
-                        <div class="app-card__status">
-                            <span class="app-card__status-dot"></span>
-                            <span>Hoạt động</span>
-                        </div>
-                        <button class="app-card__btn" onclick="event.stopPropagation(); openApp('${app.id}')">
-                            Mở app
-                        </button>
-                    </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
         
-        async function renderStats() {
+        // ===== RENDER STATS =====
+        function renderStats() {
             document.getElementById('statApps').textContent = allApps.length;
             document.getElementById('statActive').textContent = allApps.filter(a => a.is_active).length;
-            
-            // Đếm users nếu có tenant
-            if (currentTenant) {
-                const userCount = await VSH_DATA.countTenantUsers(currentTenant.id);
-                document.getElementById('statUsers').textContent = userCount;
-            }
+            // statUsers và statVisits giữ nguyên demo
         }
         
+        // ===== UPDATE DATE =====
         function updateCurrentDate() {
             const days = ['Chủ nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
             const now = new Date();
             const dayName = days[now.getDay()];
             const date = now.toLocaleDateString('vi-VN');
+            
             document.getElementById('currentDate').textContent = `Hôm nay là ${dayName}, ngày ${date}`;
         }
         
-        // ===== FILTER & SEARCH =====
-        
+        // ===== FILTER BY CATEGORY =====
         function filterByCategory(category) {
             currentFilter = category;
             
+            // Update active tab
             document.querySelectorAll('.filter-tab').forEach(tab => {
                 tab.classList.remove('is-active');
                 if (tab.dataset.filter === category) {
@@ -914,33 +939,34 @@
                 }
             });
             
-            renderApps(allApps);
+            renderApps();
         }
         
+        // ===== SEARCH APPS =====
         function filterApps() {
-            const input = document.getElementById('searchInput') || document.querySelector('.search-box__input');
+            const input = document.getElementById('searchInput');
             if (input) {
                 searchQuery = input.value;
-                renderApps(allApps);
             }
+            renderApps();
         }
         
-        // ===== SIDEBAR TOGGLE =====
-        
+        // ===== TOGGLE SIDEBAR =====
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebarOverlay');
+            
             sidebar.classList.toggle('is-active');
             overlay.classList.toggle('is-active');
         }
         
-        // ===== USER MENU =====
-        
+        // ===== TOGGLE USER MENU =====
         function toggleUserMenu() {
             const dropdown = document.getElementById('userDropdown');
             dropdown.classList.toggle('is-active');
         }
         
+        // Close dropdown when clicking outside
         document.addEventListener('click', function(e) {
             const dropdown = document.getElementById('userDropdown');
             if (dropdown && !dropdown.contains(e.target)) {
@@ -948,52 +974,43 @@
             }
         });
         
-        // ===== APP FUNCTIONS =====
-        
-        function openApp(appId) {
-            const app = allApps.find(a => a.id === appId);
-            if (!app) return;
-            
-            if (app.url && app.url !== '#' && app.url !== '') {
-                document.getElementById('modalAppName').textContent = app.name;
-                document.getElementById('appIframe').src = app.url;
-                document.getElementById('appModal').classList.add('is-active');
-            } else {
-                VSH_UTILS.showAlert(`Ứng dụng "${app.name}" đang được phát triển`, 'info');
-            }
+        // ===== OPEN APP =====
+        function openApp(appId, appName) {
+            // Tạm thời hiển thị thông báo
+            // Trong tương lai sẽ mở app trong modal hoặc trang mới
+            alert(`Mở ứng dụng: ${appName}\n\nTính năng này sẽ được kích hoạt trong phiên bản tiếp theo.`);
         }
         
+        // ===== CLOSE APP MODAL =====
         function closeAppModal() {
             document.getElementById('appModal').classList.remove('is-active');
             document.getElementById('appIframe').src = '';
         }
         
         // ===== QUICK ACTIONS =====
-        
         function openAppStore() {
-            VSH_UTILS.showAlert('Tính năng App Store đang được phát triển', 'info');
+            alert('Tính năng "Thêm ứng dụng" sẽ được kích hoạt trong phiên bản tiếp theo.');
         }
         
         function inviteUser() {
-            VSH_UTILS.showAlert('Tính năng mời người dùng đang được phát triển', 'info');
+            alert('Tính năng "Mời người dùng" sẽ được kích hoạt trong phiên bản tiếp theo.');
         }
         
         function viewReports() {
-            VSH_UTILS.showAlert('Tính năng báo cáo đang được phát triển', 'info');
+            alert('Tính năng "Xem báo cáo" sẽ được kích hoạt trong phiên bản tiếp theo.');
         }
         
         function openSettings() {
-            VSH_UTILS.showAlert('Tính năng cài đặt đang được phát triển', 'info');
+            alert('Tính năng "Cài đặt" sẽ được kích hoạt trong phiên bản tiếp theo.');
         }
         
         // ===== LOGOUT =====
-        
         async function handleLogout() {
             const result = await VSH_AUTH.signOut();
             if (result.success) {
                 window.location.href = '../login.html';
             } else {
-                VSH_UTILS.showAlert('Không thể đăng xuất: ' + result.error, 'error');
+                alert('Có lỗi khi đăng xuất. Vui lòng thử lại.');
             }
         }
         
@@ -1004,8 +1021,8 @@
             }
         });
     </script>
-
 </body>
 
 </html>
+
 
