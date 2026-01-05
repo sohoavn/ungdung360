@@ -16,6 +16,110 @@
     <link rel="stylesheet" href="assets/css/vsh-layout.css">
     <link rel="stylesheet" href="assets/css/vsh-utilities.css">
     <link rel="stylesheet" href="assets/css/vsh-responsive.css">
+        <!-- Custom CSS cho FAQ -->
+    <style>
+        /* ===== FAQ ACCORDION STYLES ===== */
+        
+        /* FAQ Item Container */
+        .faq-item {
+            margin-bottom: 16px;
+            border-radius: var(--vsh-border-radius-lg);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-item:hover {
+            box-shadow: var(--vsh-shadow-md);
+        }
+        
+        /* FAQ Details Element */
+        .faq-details {
+            cursor: pointer;
+        }
+        
+        /* FAQ Question (Summary) */
+        .faq-question {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--vsh-text-primary);
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            padding: 0;
+            user-select: none;
+        }
+        
+        /* Ẩn marker mặc định của summary trên các trình duyệt */
+        .faq-question::-webkit-details-marker {
+            display: none;
+        }
+        
+        .faq-question::marker {
+            display: none;
+        }
+        
+        /* Icon mở/đóng */
+        .faq-icon {
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background: var(--vsh-primary-bg);
+            color: var(--vsh-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 400;
+            transition: all 0.3s ease;
+        }
+        
+        /* Xoay icon khi mở */
+        .faq-details[open] .faq-icon {
+            background: var(--vsh-primary);
+            color: white;
+            transform: rotate(45deg);
+        }
+        
+        /* FAQ Answer */
+        .faq-answer {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--vsh-border-color);
+            font-size: 15px;
+            line-height: 1.7;
+            color: var(--vsh-text-secondary);
+            animation: faqFadeIn 0.3s ease;
+        }
+        
+        /* Animation khi mở */
+        @keyframes faqFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Highlight khi mở */
+        .faq-details[open] {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.02), rgba(37, 99, 235, 0.05));
+        }
+        
+        /* Hover effect cho question */
+        .faq-question:hover .faq-icon {
+            transform: scale(1.1);
+        }
+        
+        .faq-details[open] .faq-question:hover .faq-icon {
+            transform: rotate(45deg) scale(1.1);
+        }
+    </style>
 </head>
 <body>
     <!-- ===== HEADER ===== -->
@@ -666,95 +770,102 @@
                 </p>
             </div>
             
-            <!-- FAQ Grid -->
+            <!-- FAQ List -->
             <div style="max-width: 800px; margin: 0 auto;">
                 
                 <!-- FAQ Item 1 -->
-                <div class="vsh-card" style="margin-bottom: 16px;">
+                <div class="vsh-card faq-item">
                     <div class="vsh-card__body" style="padding: 24px;">
-                        <details style="cursor: pointer;">
-                            <summary style="font-size: 16px; font-weight: 600; color: var(--vsh-text-primary); list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                        <details class="faq-details">
+                            <summary class="faq-question">
                                 <span>UngDung360 là gì?</span>
-                                <span style="font-size: 20px; color: var(--vsh-primary);">+</span>
+                                <span class="faq-icon">+</span>
                             </summary>
-                            <p style="margin-top: 16px; font-size: 15px; line-height: 1.7; color: var(--vsh-text-secondary);">
+                            <div class="faq-answer">
                                 UngDung360 là nền tảng hệ sinh thái ứng dụng số (SaaS) cho phép doanh nghiệp sử dụng nhiều ứng dụng quản lý trong một hệ thống duy nhất. Mỗi doanh nghiệp có không gian riêng với logo, màu sắc và dữ liệu độc lập.
-                            </p>
+                            </div>
                         </details>
                     </div>
                 </div>
                 
                 <!-- FAQ Item 2 -->
-                <div class="vsh-card" style="margin-bottom: 16px;">
+                <div class="vsh-card faq-item">
                     <div class="vsh-card__body" style="padding: 24px;">
-                        <details style="cursor: pointer;">
-                            <summary style="font-size: 16px; font-weight: 600; color: var(--vsh-text-primary); list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                        <details class="faq-details">
+                            <summary class="faq-question">
                                 <span>Tôi có cần kiến thức kỹ thuật để sử dụng không?</span>
-                                <span style="font-size: 20px; color: var(--vsh-primary);">+</span>
+                                <span class="faq-icon">+</span>
                             </summary>
-                            <p style="margin-top: 16px; font-size: 15px; line-height: 1.7; color: var(--vsh-text-secondary);">
+                            <div class="faq-answer">
                                 Hoàn toàn không! UngDung360 được thiết kế cho người dùng phổ thông. Giao diện trực quan, dễ sử dụng. Bạn chỉ cần biết sử dụng máy tính cơ bản và có kết nối internet.
-                            </p>
+                            </div>
                         </details>
                     </div>
                 </div>
                 
                 <!-- FAQ Item 3 -->
-                <div class="vsh-card" style="margin-bottom: 16px;">
+                <div class="vsh-card faq-item">
                     <div class="vsh-card__body" style="padding: 24px;">
-                        <details style="cursor: pointer;">
-                            <summary style="font-size: 16px; font-weight: 600; color: var(--vsh-text-primary); list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                        <details class="faq-details">
+                            <summary class="faq-question">
                                 <span>Dữ liệu của tôi có an toàn không?</span>
-                                <span style="font-size: 20px; color: var(--vsh-primary);">+</span>
+                                <span class="faq-icon">+</span>
                             </summary>
-                            <p style="margin-top: 16px; font-size: 15px; line-height: 1.7; color: var(--vsh-text-secondary);">
+                            <div class="faq-answer">
                                 Chắc chắn! Chúng tôi sử dụng mã hóa SSL/TLS cho mọi kết nối, dữ liệu được lưu trữ trên cloud server bảo mật cao và được backup hàng ngày. Mỗi khách hàng có cơ sở dữ liệu độc lập, hoàn toàn cách ly với nhau.
-                            </p>
+                            </div>
                         </details>
                     </div>
                 </div>
                 
                 <!-- FAQ Item 4 -->
-                <div class="vsh-card" style="margin-bottom: 16px;">
+                <div class="vsh-card faq-item">
                     <div class="vsh-card__body" style="padding: 24px;">
-                        <details style="cursor: pointer;">
-                            <summary style="font-size: 16px; font-weight: 600; color: var(--vsh-text-primary); list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                        <details class="faq-details">
+                            <summary class="faq-question">
                                 <span>Tôi có thể dùng thử trước khi mua không?</span>
-                                <span style="font-size: 20px; color: var(--vsh-primary);">+</span>
+                                <span class="faq-icon">+</span>
                             </summary>
-                            <p style="margin-top: 16px; font-size: 15px; line-height: 1.7; color: var(--vsh-text-secondary);">
-                                Có! Chúng tôi cung cấp 14 ngày dùng thử miễn phí với đầy đủ tính năng. Không cần nhập thẻ tín dụng. Sau 14 ngày, bạn có thể chọn gói phù hợp hoặc tài khoản sẽ tự động chuyển về gói miễn phí giới hạn.
-                            </p>
+                            <div class="faq-answer">
+                                Có! Chúng tôi cung cấp <strong>14 ngày dùng thử miễn phí</strong> với đầy đủ tính năng. Không cần nhập thẻ tín dụng. Sau 14 ngày, bạn có thể chọn gói phù hợp hoặc tài khoản sẽ tự động chuyển về gói miễn phí giới hạn.
+                            </div>
                         </details>
                     </div>
                 </div>
                 
                 <!-- FAQ Item 5 -->
-                <div class="vsh-card" style="margin-bottom: 16px;">
+                <div class="vsh-card faq-item">
                     <div class="vsh-card__body" style="padding: 24px;">
-                        <details style="cursor: pointer;">
-                            <summary style="font-size: 16px; font-weight: 600; color: var(--vsh-text-primary); list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                        <details class="faq-details">
+                            <summary class="faq-question">
                                 <span>Tôi có thể nâng cấp hoặc hạ gói bất cứ lúc nào không?</span>
-                                <span style="font-size: 20px; color: var(--vsh-primary);">+</span>
+                                <span class="faq-icon">+</span>
                             </summary>
-                            <p style="margin-top: 16px; font-size: 15px; line-height: 1.7; color: var(--vsh-text-secondary);">
+                            <div class="faq-answer">
                                 Hoàn toàn có thể! Bạn có thể nâng cấp gói ngay lập tức và chỉ trả phần chênh lệch. Khi hạ gói, thay đổi sẽ có hiệu lực vào chu kỳ thanh toán tiếp theo. Không có phí ẩn hay ràng buộc hợp đồng.
-                            </p>
+                            </div>
                         </details>
                     </div>
                 </div>
                 
                 <!-- FAQ Item 6 -->
-                <div class="vsh-card" style="margin-bottom: 16px;">
+                <div class="vsh-card faq-item">
                     <div class="vsh-card__body" style="padding: 24px;">
-                        <details style="cursor: pointer;">
-                            <summary style="font-size: 16px; font-weight: 600; color: var(--vsh-text-primary); list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                        <details class="faq-details">
+                            <summary class="faq-question">
                                 <span>Làm sao để liên hệ hỗ trợ kỹ thuật?</span>
-                                <span style="font-size: 20px; color: var(--vsh-primary);">+</span>
+                                <span class="faq-icon">+</span>
                             </summary>
-                            <p style="margin-top: 16px; font-size: 15px; line-height: 1.7; color: var(--vsh-text-secondary);">
-                                Bạn có thể liên hệ chúng tôi qua nhiều kênh: Email hỗ trợ (support@kenhsohoa.com), Live Chat trên website, Hotline (1900-xxxx) hoặc Zalo OA. Gói Chuyên nghiệp trở lên được hỗ trợ ưu tiên với thời gian phản hồi dưới 2 giờ.
-                            </p>
+                            <div class="faq-answer">
+                                Bạn có thể liên hệ chúng tôi qua nhiều kênh:
+                                <ul style="margin-top: 12px; margin-left: 20px; list-style: disc;">
+                                    <li style="margin-bottom: 6px;">Email: support@kenhsohoa.com</li>
+                                    <li style="margin-bottom: 6px;">Live Chat trên website (góc phải màn hình)</li>
+                                    <li style="margin-bottom: 6px;">Hotline: 1900-xxxx (8h-22h hàng ngày)</li>
+                                    <li>Zalo OA: Kênh Số Hóa</li>
+                                </ul>
+                                <p style="margin-top: 12px;">Gói Chuyên nghiệp trở lên được hỗ trợ ưu tiên với thời gian phản hồi dưới 2 giờ.</p>
+                            </div>
                         </details>
                     </div>
                 </div>
@@ -856,4 +967,5 @@
 </body>
 
 </html>
+
 
