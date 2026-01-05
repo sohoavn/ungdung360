@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập - UngDung360 | Kênh Số Hóa</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+    
+    <!-- Font Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- VSH CSS Framework -->
+    <link rel="stylesheet" href="assets/css/vsh-core.css">
+    <link rel="stylesheet" href="assets/css/vsh-components.css">
+    <link rel="stylesheet" href="assets/css/vsh-layout.css">
+    <link rel="stylesheet" href="assets/css/vsh-utilities.css">
+    <link rel="stylesheet" href="assets/css/vsh-responsive.css">
+    
+    <style>
+        /* Custom styles cho trang Login */
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            background-color: var(--vsh-bg-secondary);
+        }
+        
+        /* Phần bên trái - Branding (ẩn trên mobile) */
+        .login-branding {
+            display: none;
+            width: 50%;
+            background: linear-gradient(135deg, var(--vsh-primary) 0%, var(--vsh-primary-dark) 100%);
+            padding: var(--vsh-space-12);
+            color: white;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .login-branding__logo {
+            display: flex;
+            align-items: center;
+            gap: var(--vsh-space-3);
+            margin-bottom: var(--vsh-space-12);
+        }
+        
+        .login-branding__logo-icon {
+            background: rgba(255,255,255,0.2);
+            padding: 10px 14px;
+            border-radius: var(--vsh-border-radius);
+            font-weight: bold;
+        }
+        
+        .login-branding__logo-text {
+            font-size: var(--vsh-text-xl);
+            font-weight: var(--vsh-font-bold);
+        }
+        
+        .login-branding__title {
+            font-size: var(--vsh-text-4xl);
+            font-weight: var(--vsh-font-bold);
+            margin-bottom: var(--vsh-space-4);
+            line-height: 1.2;
+        }
+        
+        .login-branding__subtitle {
+            font-size: var(--vsh-text-lg);
+            opacity: 0.9;
+            margin-bottom: var(--vsh-space-8);
+            line-height: 1.6;
+        }
+        
+        .login-branding__features {
+            display: flex;
+            flex-direction: column;
+            gap: var(--vsh-space-4);
+        }
+        
+        .login-branding__feature {
+            display: flex;
+            align-items: center;
+            gap: var(--vsh-space-3);
+            font-size: var(--vsh-text-base);
+        }
+        
+        .login-branding__feature-icon {
+            width: 24px;
+            height: 24px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+        
+        /* Phần bên phải - Form */
+        .login-form-container {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--vsh-space-6);
+        }
+        
+        .login-form-wrapper {
+            width: 100%;
+            max-width: 420px;
+        }
+        
+        .login-form-header {
+            text-align: center;
+            margin-bottom: var(--vsh-space-8);
+        }
+        
+        .login-form-header__logo {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--vsh-space-2);
+            margin-bottom: var(--vsh-space-6);
+            text-decoration: none;
+            color: var(--vsh-text-primary);
+        }
+        
+        .login-form-header__logo-icon {
+            background: var(--vsh-primary);
+            color: white;
+            padding: 8px 12px;
+            border-radius: var(--vsh-border-radius);
+            font-weight: bold;
+            font-size: var(--vsh-text-sm);
+        }
+        
+        .login-form-header__logo-text {
+            font-size: var(--vsh-text-lg);
+            font-weight: var(--vsh-font-bold);
+        }
+        
+        .login-form-header__title {
+            font-size: var(--vsh-text-2xl);
+            font-weight: var(--vsh-font-bold);
+            margin-bottom: var(--vsh-space-2);
+        }
+        
+        .login-form-header__subtitle {
+            color: var(--vsh-text-secondary);
+            font-size: var(--vsh-text-sm);
+        }
+        
+        /* Form Card */
+        .login-card {
+            background: var(--vsh-bg-primary);
+            border-radius: var(--vsh-border-radius-lg);
+            padding: var(--vsh-space-8);
+            box-shadow: var(--vsh-shadow-lg);
+            border: 1px solid var(--vsh-border-color);
+        }
+        
+        /* Password toggle */
+        .password-wrapper {
+            position: relative;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--vsh-text-tertiary);
+            cursor: pointer;
+            padding: 4px;
+            font-size: 18px;
+        }
+        
+        .password-toggle:hover {
+            color: var(--vsh-text-primary);
+        }
+        
+        .password-wrapper .vsh-input {
+            padding-right: 44px;
+        }
+        
+        /* Divider with text */
+        .login-divider {
+            display: flex;
+            align-items: center;
+            gap: var(--vsh-space-4);
+            margin: var(--vsh-space-6) 0;
+            color: var(--vsh-text-tertiary);
+            font-size: var(--vsh-text-sm);
+        }
+        
+        .login-divider::before,
+        .login-divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background-color: var(--vsh-border-color);
+        }
+        
+        /* Social Login */
+        .social-login {
+            display: flex;
+            flex-direction: column;
+            gap: var(--vsh-space-3);
+        }
+        
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--vsh-space-3);
+            width: 100%;
+            padding: var(--vsh-space-3);
+            border: 1px solid var(--vsh-border-color);
+            border-radius: var(--vsh-border-radius);
+            background: var(--vsh-bg-primary);
+            font-size: var(--vsh-text-sm);
+            font-weight: var(--vsh-font-medium);
+            color: var(--vsh-text-primary);
+            cursor: pointer;
+            transition: all var(--vsh-transition-fast);
+        }
+        
+        .social-btn:hover {
+            background: var(--vsh-bg-secondary);
+            border-color: var(--vsh-border-dark);
+        }
+        
+        .social-btn__icon {
+            width: 20px;
+            height: 20px;
+        }
+        
+        /* Footer links */
+        .login-footer {
+            text-align: center;
+            margin-top: var(--vsh-space-6);
+            font-size: var(--vsh-text-sm);
+            color: var(--vsh-text-secondary);
+        }
+        
+        .login-footer a {
+            color: var(--vsh-primary);
+            font-weight: var(--vsh-font-medium);
+        }
+        
+        /* Alert message */
+        .login-alert {
+            padding: var(--vsh-space-3) var(--vsh-space-4);
+            border-radius: var(--vsh-border-radius);
+            font-size: var(--vsh-text-sm);
+            margin-bottom: var(--vsh-space-4);
+            display: none;
+        }
+        
+        .login-alert--error {
+            background: var(--vsh-danger-bg);
+            color: var(--vsh-danger);
+            border: 1px solid #fca5a5;
+        }
+        
+        .login-alert--success {
+            background: #dcfce7;
+            color: var(--vsh-secondary-dark);
+            border: 1px solid #86efac;
+        }
+        
+        .login-alert.is-visible {
+            display: block;
+        }
+        
+        /* Desktop styles */
+        @media (min-width: 1024px) {
+            .login-branding {
+                display: flex;
+            }
+            
+            .login-form-container {
+                width: 50%;
+            }
+            
+            .login-form-header__logo {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-page">
+        <!-- ===== BRANDING SECTION (Bên trái) ===== -->
+        <div class="login-branding">
+            <!-- Logo -->
+            <div class="login-branding__logo">
+                <span class="login-branding__logo-icon">U360</span>
+                <span class="login-branding__logo-text">Kênh Số Hóa</span>
+            </div>
+            
+            <!-- Content -->
+            <h1 class="login-branding__title">
+                Chào mừng bạn<br>quay trở lại!
+            </h1>
+            <p class="login-branding__subtitle">
+                Đăng nhập để tiếp tục truy cập hệ sinh thái ứng dụng của doanh nghiệp bạn.
+            </p>
+            
+            <!-- Features -->
+            <div class="login-branding__features">
+                <div class="login-branding__feature">
+                    <span class="login-branding__feature-icon">✓</span>
+                    <span>Truy cập 50+ ứng dụng chuyên biệt</span>
+                </div>
+                <div class="login-branding__feature">
+                    <span class="login-branding__feature-icon">✓</span>
+                    <span>Quản lý dữ liệu an toàn, bảo mật</span>
+                </div>
+                <div class="login-branding__feature">
+                    <span class="login-branding__feature-icon">✓</span>
+                    <span>Hỗ trợ kỹ thuật 24/7</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ===== FORM SECTION (Bên phải) ===== -->
+        <div class="login-form-container">
+            <div class="login-form-wrapper">
+                <!-- Header -->
+                <div class="login-form-header">
+                    <!-- Logo (chỉ hiện trên mobile) -->
+                    <a href="index.html" class="login-form-header__logo">
+                        <span class="login-form-header__logo-icon">U360</span>
+                        <span class="login-form-header__logo-text">Kênh Số Hóa</span>
+                    </a>
+                    
+                    <h1 class="login-form-header__title">Đăng nhập</h1>
+                    <p class="login-form-header__subtitle">
+                        Nhập thông tin tài khoản để tiếp tục
+                    </p>
+                </div>
+                
+                <!-- Form Card -->
+                <div class="login-card">
+                    <!-- Alert Messages -->
+                    <div id="loginAlert" class="login-alert login-alert--error">
+                        <span id="loginAlertMessage">Email hoặc mật khẩu không đúng</span>
+                    </div>
+                    
+                    <!-- Login Form -->
+                    <form id="loginForm" onsubmit="handleLogin(event)">
+                        <!-- Email -->
+                        <div class="vsh-form-group">
+                            <label class="vsh-label" for="email">Email</label>
+                            <input 
+                                type="email" 
+                                id="email" 
+                                name="email" 
+                                class="vsh-input" 
+                                placeholder="email@company.com"
+                                required
+                                autocomplete="email"
+                            >
+                        </div>
+                        
+                        <!-- Password -->
+                        <div class="vsh-form-group">
+                            <div class="vsh-flex vsh-flex--between vsh-flex--items-center vsh-mb-2">
+                                <label class="vsh-label vsh-mb-0" for="password">Mật khẩu</label>
+                                <a href="forgot-password.html" class="vsh-text-sm vsh-text-brand">Quên mật khẩu?</a>
+                            </div>
+                            <div class="password-wrapper">
+                                <input 
+                                    type="password" 
+                                    id="password" 
+                                    name="password" 
+                                    class="vsh-input" 
+                                    placeholder="••••••••"
+                                    required
+                                    autocomplete="current-password"
+                                >
+                                <button type="button" class="password-toggle" onclick="togglePassword()">
+                                    <span id="toggleIcon">👁️</span>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Remember me -->
+                        <div class="vsh-form-group">
+                            <label class="vsh-checkbox">
+                                <input type="checkbox" class="vsh-checkbox__input" name="remember" id="remember">
+                                <span>Ghi nhớ đăng nhập</span>
+                            </label>
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <button type="submit" class="vsh-btn vsh-btn--primary vsh-btn--block vsh-btn--lg" id="loginBtn">
+                            Đăng nhập
+                        </button>
+                    </form>
+                    
+                    <!-- Divider -->
+                    <div class="login-divider">hoặc</div>
+                    
+                    <!-- Social Login -->
+                    <div class="social-login">
+                        <button type="button" class="social-btn" onclick="handleGoogleLogin()">
+                            <svg class="social-btn__icon" viewBox="0 0 24 24">
+                                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                            </svg>
+                            <span>Đăng nhập với Google</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Footer -->
+                <div class="login-footer">
+                    Chưa có tài khoản? <a href="register.html">Đăng ký ngay</a>
+                </div>
+                
+                <!-- Back to home -->
+                <div class="vsh-text-center vsh-mt-4">
+                    <a href="index.html" class="vsh-text-sm vsh-text-secondary">
+                        ← Quay lại trang chủ
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // ===== TOGGLE PASSWORD VISIBILITY =====
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.getElementById('toggleIcon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.textContent = '🙈';
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.textContent = '👁️';
+            }
+        }
+        
+        // ===== HANDLE LOGIN =====
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const loginBtn = document.getElementById('loginBtn');
+            const alert = document.getElementById('loginAlert');
+            const alertMessage = document.getElementById('loginAlertMessage');
+            
+            // Show loading state
+            loginBtn.classList.add('vsh-btn--loading');
+            loginBtn.disabled = true;
+            
+            // Simulate login (thay bằng Supabase sau)
+            setTimeout(() => {
+                // Demo: Chấp nhận bất kỳ email/password nào
+                // Trong thực tế sẽ gọi API Supabase
+                
+                console.log('Login attempt:', { email, password });
+                
+                // Demo success - redirect to dashboard
+                // Bỏ comment dòng dưới khi có trang dashboard
+                // window.location.href = 'dashboard/index.html';
+                
+                // Tạm thời: Hiển thị thông báo
+                alert.classList.remove('login-alert--error');
+                alert.classList.add('login-alert--success');
+                alertMessage.textContent = '✓ Đăng nhập thành công! Đang chuyển hướng...';
+                alert.classList.add('is-visible');
+                
+                // Redirect sau 1.5s
+                setTimeout(() => {
+                    // Tạm thời redirect về trang chủ vì chưa có dashboard
+                    window.location.href = 'index.html';
+                }, 1500);
+                
+            }, 1000);
+        }
+        
+        // ===== HANDLE GOOGLE LOGIN =====
+        function handleGoogleLogin() {
+            // Sẽ tích hợp Supabase Google Auth sau
+            alert('Tính năng đăng nhập với Google sẽ được kích hoạt sau khi kết nối Supabase!');
+        }
+        
+        // ===== CHECK IF ALREADY LOGGED IN =====
+        // Sẽ implement sau khi có Supabase
+        // function checkAuth() {
+        //     const session = supabase.auth.session();
+        //     if (session) {
+        //         window.location.href = 'dashboard/index.html';
+        //     }
+        // }
+        // checkAuth();
+    </script>
+</body>
+</html>
