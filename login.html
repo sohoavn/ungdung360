@@ -289,15 +289,13 @@
             }
         }
     </style>
-    <!-- Supabase JS Library -->
+      <!-- Supabase JS Library -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <!-- VSH Scripts -->
-    <!-- Supabase JS -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="assets/js/vsh-config.js"></script>
     <script src="assets/js/vsh-supabase.js"></script>
-    
+    <script src="assets/js/vsh-auth.js"></script> 
 </head>
 <body>
     <div class="login-page">
@@ -444,13 +442,13 @@
     
     <script>
         // ===== KIỂM TRA ĐÃ ĐĂNG NHẬP CHƯA =====
-        async function checkExistingSession() {
+        // Nếu đã đăng nhập rồi thì chuyển đến Dashboard
+        document.addEventListener('DOMContentLoaded', async function() {
             const isLoggedIn = await VSH_AUTH.isLoggedIn();
             if (isLoggedIn) {
                 window.location.href = 'dashboard/index.html';
             }
-        }
-        checkExistingSession();
+        });
         
         // ===== TOGGLE PASSWORD VISIBILITY =====
         function togglePassword() {
@@ -466,72 +464,80 @@
             }
         }
         
-        // ===== HANDLE LOGIN =====
+        // ===== HIỂN THỊ THÔNG BÁO =====
+        function showAlert(message, type = 'error') {
+            const alert = document.getElementById('loginAlert');
+            const alertMessage = document.getElementById('loginAlertMessage');
+            
+            alert.classList.remove('login-alert--error', 'login-alert--success');
+            alert.classList.add(type === 'error' ? 'login-alert--error' : 'login-alert--success');
+            alertMessage.textContent = message;
+            alert.classList.add('is-visible');
+        }
+        
+        function hideAlert() {
+            const alert = document.getElementById('loginAlert');
+            alert.classList.remove('is-visible');
+        }
+        
+        // ===== XỬ LÝ ĐĂNG NHẬP =====
         async function handleLogin(event) {
             event.preventDefault();
             
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
             const loginBtn = document.getElementById('loginBtn');
-            const alert = document.getElementById('loginAlert');
-            const alertMessage = document.getElementById('loginAlertMessage');
             
             // Validate
             if (!email || !password) {
-                alert.classList.remove('login-alert--success');
-                alert.classList.add('login-alert--error');
-                alertMessage.textContent = 'Vui lòng nhập email và mật khẩu';
-                alert.classList.add('is-visible');
+                showAlert('Vui lòng nhập đầy đủ email và mật khẩu');
                 return;
             }
             
-            // Show loading state
+            // Ẩn thông báo cũ
+            hideAlert();
+            
+            // Hiển thị loading
             loginBtn.classList.add('vsh-btn--loading');
             loginBtn.disabled = true;
-            alert.classList.remove('is-visible');
             
-            // Gọi Supabase để đăng nhập
+            // Gọi API đăng nhập
             const result = await VSH_AUTH.signIn(email, password);
             
             if (result.success) {
-                // Thành công
-                alert.classList.remove('login-alert--error');
-                alert.classList.add('login-alert--success');
-                alertMessage.textContent = '✓ Đăng nhập thành công! Đang chuyển hướng...';
-                alert.classList.add('is-visible');
+                // Đăng nhập thành công
+                showAlert('✓ Đăng nhập thành công! Đang chuyển hướng...', 'success');
                 
-                // Redirect sau 1 giây
+                // Chuyển đến Dashboard sau 1 giây
                 setTimeout(() => {
                     window.location.href = 'dashboard/index.html';
                 }, 1000);
             } else {
-                // Thất bại
+                // Đăng nhập thất bại
+                showAlert(result.error);
                 loginBtn.classList.remove('vsh-btn--loading');
                 loginBtn.disabled = false;
-                
-                alert.classList.remove('login-alert--success');
-                alert.classList.add('login-alert--error');
-                
-                // Dịch lỗi sang tiếng Việt
-                let errorMessage = 'Đã có lỗi xảy ra';
-                if (result.error.includes('Invalid login credentials')) {
-                    errorMessage = 'Email hoặc mật khẩu không đúng';
-                } else if (result.error.includes('Email not confirmed')) {
-                    errorMessage = 'Vui lòng xác nhận email trước khi đăng nhập';
-                } else if (result.error.includes('Too many requests')) {
-                    errorMessage = 'Quá nhiều lần thử. Vui lòng đợi vài phút';
-                }
-                
-                alertMessage.textContent = errorMessage;
-                alert.classList.add('is-visible');
             }
         }
         
-        // ===== HANDLE GOOGLE LOGIN =====
+        // ===== ĐĂNG NHẬP VỚI GOOGLE =====
         async function handleGoogleLogin() {
-            const result = await VSH_AUTH.signInWithGoogle();
-            if (!result.success) {
-                VSH_UTILS.showAlert('Không thể đăng nhập bằng Google: ' + result.error, 'error');
+            const supabase = getSupabase();
+            if (!supabase) {
+                showAlert('Không thể kết nối. Vui lòng thử lại.');
+                return;
+            }
+            
+            const { data, error } = await supabase.auth.signInWithOAuth({
+                provider: 'google',
+                options: {
+                    redirectTo: window.location.origin + '/dashboard/index.html'
+                }
+            });
+            
+            if (error) {
+                showAlert('Không thể đăng nhập với Google. Vui lòng thử lại.');
+                console.error(error);
             }
         }
     </script>
@@ -539,5 +545,6 @@
 </body>
 
 </html>
+
 
 
