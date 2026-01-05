@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Apps - Admin UngDung360</title>
+    
+    <!-- Font Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- VSH CSS Framework -->
+    <link rel="stylesheet" href="../assets/css/vsh-core.css">
+    <link rel="stylesheet" href="../assets/css/vsh-components.css">
+    <link rel="stylesheet" href="../assets/css/vsh-layout.css">
+    <link rel="stylesheet" href="../assets/css/vsh-utilities.css">
+    <link rel="stylesheet" href="../assets/css/vsh-responsive.css">
+    
+    <!-- Supabase & Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../assets/js/vsh-config.js"></script>
+    <script src="../assets/js/vsh-supabase.js"></script>
+    <script src="../assets/js/vsh-auth.js"></script>
+    <script src="../assets/js/vsh-admin.js"></script>
+    
+    <style>
+        .admin-header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        }
+        
+        .page-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .search-box {
+            position: relative;
+            width: 300px;
+            max-width: 100%;
+        }
+        
+        .search-box__icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--vsh-text-tertiary);
+        }
+        
+        .search-box__input {
+            width: 100%;
+            padding: 10px 12px 10px 40px;
+            border: 1px solid var(--vsh-border-color);
+            border-radius: var(--vsh-border-radius);
+            font-size: 14px;
+        }
+        
+        .search-box__input:focus {
+            outline: none;
+            border-color: var(--vsh-primary);
+            box-shadow: 0 0 0 3px var(--vsh-primary-bg);
+        }
+        
+        .data-table {
+            overflow-x: auto;
+        }
+        
+        .app-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: var(--vsh-bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .action-btn {
+            padding: 6px 12px;
+            font-size: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            margin-right: 4px;
+        }
+        
+        .action-btn--edit {
+            background: var(--vsh-primary-bg);
+            color: var(--vsh-primary);
+        }
+        
+        .action-btn--edit:hover {
+            background: var(--vsh-primary);
+            color: white;
+        }
+        
+        .action-btn--delete {
+            background: var(--vsh-danger-bg);
+            color: var(--vsh-danger);
+        }
+        
+        .action-btn--delete:hover {
+            background: var(--vsh-danger);
+            color: white;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--vsh-text-secondary);
+        }
+        
+        .empty-state__icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+        
+        /* Form Grid */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        
+        .form-grid--full {
+            grid-column: 1 / -1;
+        }
+        
+        /* Icon Picker */
+        .icon-picker {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 12px;
+            background: var(--vsh-bg-secondary);
+            border-radius: var(--vsh-border-radius);
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        
+        .icon-picker__item {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+        
+        .icon-picker__item:hover {
+            background: var(--vsh-bg-primary);
+        }
+        
+        .icon-picker__item.is-selected {
+            border-color: var(--vsh-primary);
+            background: var(--vsh-primary-bg);
+        }
+        
+        @media (max-width: 640px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-box {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body class="vsh-app vsh-app--with-sidebar">
+    
+    <!-- SIDEBAR -->
+    <aside class="vsh-sidebar vsh-sidebar--dark" id="sidebar">
+        <div class="vsh-sidebar__header">
+            <a href="index.html" class="vsh-sidebar__brand">
+                <div class="vsh-sidebar__brand-logo" style="background: #ef4444;">A</div>
+                <span class="vsh-sidebar__brand-text">Admin Panel</span>
+            </a>
+        </div>
+        
+        <nav class="vsh-sidebar__nav">
+            <div class="vsh-sidebar__nav-section">
+                <div class="vsh-sidebar__nav-title">Quản trị</div>
+                <ul class="vsh-sidebar__nav-list">
+                    <li>
+                        <a href="index.html" class="vsh-sidebar__nav-link">
+                            <span class="vsh-sidebar__nav-icon">📊</span>
+                            <span class="vsh-sidebar__nav-text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="tenants.html" class="vsh-sidebar__nav-link">
+                            <span class="vsh-sidebar__nav-icon">🏢</span>
+                            <span class="vsh-sidebar__nav-text">Quản lý Tenants</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="users.html" class="vsh-sidebar__nav-link">
+                            <span class="vsh-sidebar__nav-icon">👥</span>
+                            <span class="vsh-sidebar__nav-text">Quản lý Users</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="apps.html" class="vsh-sidebar__nav-link is-active">
+                            <span class="vsh-sidebar__nav-icon">📱</span>
+                            <span class="vsh-sidebar__nav-text">Quản lý Apps</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="vsh-sidebar__nav-section">
+                <div class="vsh-sidebar__nav-title">Khác</div>
+                <ul class="vsh-sidebar__nav-list">
+                    <li>
+                        <a href="../dashboard/index.html" class="vsh-sidebar__nav-link">
+                            <span class="vsh-sidebar__nav-icon">🏠</span>
+                            <span class="vsh-sidebar__nav-text">User Dashboard</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        
+        <div class="vsh-sidebar__footer">
+            <a href="#" class="vsh-sidebar__nav-link" onclick="handleLogout()">
+                <span class="vsh-sidebar__nav-icon">🚪</span>
+                <span class="vsh-sidebar__nav-text">Đăng xuất</span>
+            </a>
+        </div>
+    </aside>
+    
+    <!-- OVERLAY -->
+    <div class="vsh-sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    
+    <!-- HEADER -->
+    <header class="vsh-header admin-header">
+        <button class="vsh-header__toggle" onclick="toggleSidebar()" style="color: white;">☰</button>
+        
+        <div class="vsh-header__logo" style="margin-left: 16px;">
+            <span style="background: #ef4444; color: white; padding: 6px 10px; border-radius: 6px; font-size: 12px;">ADMIN</span>
+            <span class="vsh-hidden-mobile" style="color: white; margin-left: 8px;">Quản lý Apps</span>
+        </div>
+        
+        <div class="vsh-header__actions" style="margin-left: auto;">
+            <div class="vsh-avatar" style="background: #ef4444; cursor: pointer;" onclick="handleLogout()">
+                <span id="userInitials">SA</span>
+            </div>
+        </div>
+    </header>
+    
+    <!-- MAIN CONTENT -->
+    <main class="vsh-main">
+        <!-- Page Header -->
+        <div class="vsh-page-header">
+            <div class="vsh-page-header__top">
+                <h1 class="vsh-page-header__title">📱 Quản lý Apps</h1>
+            </div>
+            <p class="vsh-page-header__description">
+                Quản lý danh sách ứng dụng trong hệ thống
+            </p>
+        </div>
+        
+        <!-- Toolbar -->
+        <div class="page-toolbar">
+            <div class="search-box">
+                <span class="search-box__icon">🔍</span>
+                <input type="text" class="search-box__input" placeholder="Tìm kiếm app..." id="searchInput" oninput="filterApps()">
+            </div>
+            
+            <button class="vsh-btn vsh-btn--primary" onclick="openCreateModal()">
+                ➕ Thêm App mới
+            </button>
+        </div>
+        
+        <!-- Data Table -->
+        <div class="vsh-card">
+            <div class="vsh-card__body data-table">
+                <table class="vsh-table vsh-table--hover" id="appsTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 60px;">Icon</th>
+                            <th>Tên App</th>
+                            <th>Code</th>
+                            <th>Danh mục</th>
+                            <th>Miễn phí</th>
+                            <th>Trạng thái</th>
+                            <th>Thứ tự</th>
+                            <th style="width: 130px;">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="appsBody">
+                        <!-- Data will be loaded here -->
+                    </tbody>
+                </table>
+                
+                <!-- Empty State -->
+                <div class="empty-state vsh-hidden" id="emptyState">
+                    <div class="empty-state__icon">📱</div>
+                    <h3>Chưa có app nào</h3>
+                    <p>Nhấn "Thêm App mới" để tạo ứng dụng đầu tiên</p>
+                </div>
+                
+                <!-- Loading -->
+                <div class="empty-state" id="loadingState">
+                    <div class="vsh-spinner vsh-spinner--lg"></div>
+                    <p style="margin-top: 16px;">Đang tải dữ liệu...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- MODAL: Create/Edit App -->
+    <div class="vsh-modal-backdrop" id="appModal">
+        <div class="vsh-modal vsh-modal--lg">
+            <div class="vsh-modal__header">
+                <h3 class="vsh-modal__title" id="modalTitle">Thêm App mới</h3>
+                <button class="vsh-modal__close" onclick="closeModal()">×</button>
+            </div>
+            <div class="vsh-modal__body">
+                <form id="appForm" onsubmit="handleSubmit(event)">
+                    <input type="hidden" id="appId">
+                    
+                    <div class="form-grid">
+                        <div class="vsh-form-group">
+                            <label class="vsh-label vsh-label--required">Tên App</label>
+                            <input type="text" class="vsh-input" id="appName" placeholder="VD: Quản lý kho" required>
+                        </div>
+                        
+                        <div class="vsh-form-group">
+                            <label class="vsh-label vsh-label--required">Code</label>
+                            <input type="text" class="vsh-input" id="appCode" placeholder="VD: inventory" required>
+                            <span class="vsh-help-text">Code duy nhất, không dấu, viết thường</span>
+                        </div>
+                        
+                        <div class="vsh-form-group form-grid--full">
+                            <label class="vsh-label">Mô tả</label>
+                            <textarea class="vsh-textarea" id="appDescription" rows="2" placeholder="Mô tả ngắn về ứng dụng..."></textarea>
+                        </div>
+                        
+                        <div class="vsh-form-group form-grid--full">
+                            <label class="vsh-label">Chọn Icon</label>
+                            <input type="hidden" id="appIcon" value="📱">
+                            <div class="icon-picker" id="iconPicker">
+                                <!-- Icons will be rendered here -->
+                            </div>
+                        </div>
+                        
+                        <div class="vsh-form-group">
+                            <label class="vsh-label">Danh mục</label>
+                            <select class="vsh-select" id="appCategory">
+                                <option value="management">Quản trị</option>
+                                <option value="operation">Vận hành</option>
+                                <option value="report">Báo cáo</option>
+                                <option value="communication">Liên lạc</option>
+                                <option value="other">Khác</option>
+                            </select>
+                        </div>
+                        
+                        <div class="vsh-form-group">
+                            <label class="vsh-label">Thứ tự hiển thị</label>
+                            <input type="number" class="vsh-input" id="appSortOrder" value="0" min="0">
+                        </div>
+                        
+                        <div class="vsh-form-group form-grid--full">
+                            <label class="vsh-label">URL App (nếu có)</label>
+                            <input type="url" class="vsh-input" id="appUrl" placeholder="https://...">
+                        </div>
+                        
+                        <div class="vsh-form-group">
+                            <label class="vsh-checkbox">
+                                <input type="checkbox" class="vsh-checkbox__input" id="appIsFree">
+                                <span>Miễn phí</span>
+                            </label>
+                        </div>
+                        
+                        <div class="vsh-form-group">
+                            <label class="vsh-checkbox">
+                                <input type="checkbox" class="vsh-checkbox__input" id="appIsActive" checked>
+                                <span>Đang hoạt động</span>
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="vsh-modal__footer">
+                <button type="button" class="vsh-btn vsh-btn--secondary" onclick="closeModal()">Hủy</button>
+                <button type="submit" form="appForm" class="vsh-btn vsh-btn--primary" id="submitBtn">Tạo mới</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- MODAL: Confirm Delete -->
+    <div class="vsh-modal-backdrop" id="deleteModal">
+        <div class="vsh-modal vsh-modal--sm">
+            <div class="vsh-modal__header">
+                <h3 class="vsh-modal__title">⚠️ Xác nhận xóa</h3>
+                <button class="vsh-modal__close" onclick="closeDeleteModal()">×</button>
+            </div>
+            <div class="vsh-modal__body">
+                <p>Bạn có chắc chắn muốn xóa app <strong id="deleteAppName"></strong>?</p>
+                <p class="vsh-text-danger" style="margin-top: 8px; font-size: 14px;">
+                    ⚠️ Hành động này không thể hoàn tác!
+                </p>
+            </div>
+            <div class="vsh-modal__footer">
+                <button type="button" class="vsh-btn vsh-btn--secondary" onclick="closeDeleteModal()">Hủy</button>
+                <button type="button" class="vsh-btn vsh-btn--danger" id="confirmDeleteBtn" onclick="confirmDelete()">Xóa</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // ===== CONSTANTS =====
+        const AVAILABLE_ICONS = [
+            '📊', '📱', '📦', '👥', '💰', '📅', '💬', '✅', '🧾', '📧',
+            '📈', '🚚', '🎧', '🏢', '📋', '⚙️', '🔔', '📁', '🔍', '📝',
+            '💳', '🛒', '📞', '🎯', '🔐', '📤', '📥', '🗓️', '⏰', '🎓',
+            '🏥', '🍽️', '🏭', '💼', '🌐', '📡', '🔧', '📌', '🎨', '📷'
+        ];
+        
+        // ===== STATE =====
+        let allApps = [];
+        let editingAppId = null;
+        let deletingAppId = null;
+        let selectedIcon = '📱';
+        
+        // ===== INITIALIZATION =====
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Kiểm tra quyền admin
+            const isLoggedIn = await VSH_AUTH.isLoggedIn();
+            if (!isLoggedIn) {
+                window.location.href = '../login.html';
+                return;
+            }
+            
+            const isAdmin = await VSH_ADMIN.isSuperAdmin();
+            if (!isAdmin) {
+                alert('Bạn không có quyền truy cập!');
+                window.location.href = '../dashboard/index.html';
+                return;
+            }
+            
+            // Load user info
+            const user = await VSH_AUTH.getCurrentUser();
+            if (user) {
+                const name = user.user_metadata?.full_name || user.email.split('@')[0];
+                const initials = name.split(' ').map(n => n[0]).join('').substring(0, 2);
+                document.getElementById('userInitials').textContent = initials.toUpperCase();
+            }
+            
+            // Render icon picker
+            renderIconPicker();
+            
+            // Load apps
+            await loadApps();
+        });
+        
+        // ===== RENDER ICON PICKER =====
+        function renderIconPicker() {
+            const picker = document.getElementById('iconPicker');
+            picker.innerHTML = AVAILABLE_ICONS.map(icon => `
+                <div class="icon-picker__item ${icon === selectedIcon ? 'is-selected' : ''}" 
+                     onclick="selectIcon('${icon}')" 
+                     data-icon="${icon}">
+                    ${icon}
+                </div>
+            `).join('');
+        }
+        
+        function selectIcon(icon) {
+            selectedIcon = icon;
+            document.getElementById('appIcon').value = icon;
+            
+            // Update UI
+            document.querySelectorAll('.icon-picker__item').forEach(item => {
+                item.classList.remove('is-selected');
+                if (item.dataset.icon === icon) {
+                    item.classList.add('is-selected');
+                }
+            });
+        }
+        
+        // ===== LOAD APPS =====
+        async function loadApps() {
+            document.getElementById('loadingState').classList.remove('vsh-hidden');
+            document.getElementById('emptyState').classList.add('vsh-hidden');
+            document.getElementById('appsBody').innerHTML = '';
+            
+            const result = await VSH_ADMIN.getAllApps();
+            
+            document.getElementById('loadingState').classList.add('vsh-hidden');
+            
+            if (result.success) {
+                allApps = result.data;
+                renderApps(allApps);
+            } else {
+                alert('Lỗi tải dữ liệu: ' + result.error);
+            }
+        }
+        
+        // ===== RENDER APPS =====
+        function renderApps(apps) {
+            const tbody = document.getElementById('appsBody');
+            const emptyState = document.getElementById('emptyState');
+            
+            if (apps.length === 0) {
+                tbody.innerHTML = '';
+                emptyState.classList.remove('vsh-hidden');
+                return;
+            }
+            
+            emptyState.classList.add('vsh-hidden');
+            
+            const categoryNames = {
+                'management': 'Quản trị',
+                'operation': 'Vận hành',
+                'report': 'Báo cáo',
+                'communication': 'Liên lạc',
+                'other': 'Khác'
+            };
+            
+            tbody.innerHTML = apps.map(app => `
+                <tr>
+                    <td>
+                        <div class="app-icon">${app.icon || '📱'}</div>
+                    </td>
+                    <td>
+                        <strong>${app.name}</strong>
+                        ${app.description ? `<br><small style="color: var(--vsh-text-tertiary);">${app.description.substring(0, 50)}...</small>` : ''}
+                    </td>
+                    <td><code style="background: var(--vsh-bg-secondary); padding: 2px 6px; border-radius: 4px; font-size: 12px;">${app.code}</code></td>
+                    <td>${categoryNames[app.category] || app.category}</td>
+                    <td>${app.is_free ? '<span class="vsh-badge vsh-badge--success">Miễn phí</span>' : '<span class="vsh-badge vsh-badge--warning">Trả phí</span>'}</td>
+                    <td>${app.is_active ? '<span class="vsh-badge vsh-badge--success">Hoạt động</span>' : '<span class="vsh-badge vsh-badge--gray">Tắt</span>'}</td>
+                    <td>${app.sort_order}</td>
+                    <td>
+                        <button class="action-btn action-btn--edit" onclick="openEditModal('${app.id}')">✏️ Sửa</button>
+                        <button class="action-btn action-btn--delete" onclick="openDeleteModal('${app.id}', '${app.name}')">🗑️</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        
+        // ===== FILTER APPS =====
+        function filterApps() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            
+            if (!query) {
+                renderApps(allApps);
+                return;
+            }
+            
+            const filtered = allApps.filter(a => 
+                a.name.toLowerCase().includes(query) ||
+                a.code.toLowerCase().includes(query) ||
+                (a.description && a.description.toLowerCase().includes(query))
+            );
+            
+            renderApps(filtered);
+        }
+        
+        // ===== MODAL: CREATE =====
+        function openCreateModal() {
+            editingAppId = null;
+            selectedIcon = '📱';
+            
+            document.getElementById('modalTitle').textContent = 'Thêm App mới';
+            document.getElementById('submitBtn').textContent = 'Tạo mới';
+            document.getElementById('appForm').reset();
+            document.getElementById('appIcon').value = '📱';
+            document.getElementById('appIsActive').checked = true;
+            
+            renderIconPicker();
+            document.getElementById('appModal').classList.add('is-active');
+        }
+        
+        // ===== MODAL: EDIT =====
+        function openEditModal(appId) {
+            const app = allApps.find(a => a.id === appId);
+            if (!app) return;
+            
+            editingAppId = appId;
+            selectedIcon = app.icon || '📱';
+            
+            document.getElementById('modalTitle').textContent = 'Chỉnh sửa App';
+            document.getElementById('submitBtn').textContent = 'Cập nhật';
+            
+            // Fill form
+            document.getElementById('appId').value = app.id;
+            document.getElementById('appName').value = app.name;
+            document.getElementById('appCode').value = app.code;
+            document.getElementById('appDescription').value = app.description || '';
+            document.getElementById('appIcon').value = app.icon || '📱';
+            document.getElementById('appCategory').value = app.category || 'other';
+            document.getElementById('appSortOrder').value = app.sort_order || 0;
+            document.getElementById('appUrl').value = app.app_url || '';
+            document.getElementById('appIsFree').checked = app.is_free === true;
+            document.getElementById('appIsActive').checked = app.is_active !== false;
+            
+            renderIconPicker();
+            document.getElementById('appModal').classList.add('is-active');
+        }
+        
+        // ===== CLOSE MODAL =====
+        function closeModal() {
+            document.getElementById('appModal').classList.remove('is-active');
+            editingAppId = null;
+        }
+        
+        // ===== HANDLE SUBMIT =====
+        async function handleSubmit(event) {
+            event.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.classList.add('vsh-btn--loading');
+            submitBtn.disabled = true;
+            
+            const appData = {
+                name: document.getElementById('appName').value.trim(),
+                code: document.getElementById('appCode').value.trim().toLowerCase().replace(/[^a-z0-9-]/g, ''),
+                description: document.getElementById('appDescription').value.trim() || null,
+                icon: document.getElementById('appIcon').value || '📱',
+                category: document.getElementById('appCategory').value,
+                sort_order: parseInt(document.getElementById('appSortOrder').value) || 0,
+                app_url: document.getElementById('appUrl').value.trim() || null,
+                is_free: document.getElementById('appIsFree').checked,
+                is_active: document.getElementById('appIsActive').checked
+            };
+            
+            let result;
+            if (editingAppId) {
+                result = await VSH_ADMIN.updateApp(editingAppId, appData);
+            } else {
+                result = await VSH_ADMIN.createApp(appData);
+            }
+            
+            submitBtn.classList.remove('vsh-btn--loading');
+            submitBtn.disabled = false;
+            
+            if (result.success) {
+                closeModal();
+                await loadApps();
+                alert(editingAppId ? 'Cập nhật thành công!' : 'Tạo mới thành công!');
+            } else {
+                alert('Lỗi: ' + result.error);
+            }
+        }
+        
+        // ===== DELETE MODAL =====
+        function openDeleteModal(appId, appName) {
+            deletingAppId = appId;
+            document.getElementById('deleteAppName').textContent = appName;
+            document.getElementById('deleteModal').classList.add('is-active');
+        }
+        
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').classList.remove('is-active');
+            deletingAppId = null;
+        }
+        
+        async function confirmDelete() {
+            if (!deletingAppId) return;
+            
+            const btn = document.getElementById('confirmDeleteBtn');
+            btn.classList.add('vsh-btn--loading');
+            btn.disabled = true;
+            
+            const result = await VSH_ADMIN.deleteApp(deletingAppId);
+            
+            btn.classList.remove('vsh-btn--loading');
+            btn.disabled = false;
+            
+            if (result.success) {
+                closeDeleteModal();
+                await loadApps();
+                alert('Đã xóa thành công!');
+            } else {
+                alert('Lỗi: ' + result.error);
+            }
+        }
+        
+        // ===== SIDEBAR & LOGOUT =====
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('is-active');
+            document.getElementById('sidebarOverlay').classList.toggle('is-active');
+        }
+        
+        async function handleLogout() {
+            await VSH_AUTH.signOut();
+            window.location.href = '../login.html';
+        }
+        
+        // Close modal on Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+                closeDeleteModal();
+            }
+        });
+    </script>
+</body>
+</html>
