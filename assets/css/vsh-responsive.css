@@ -1,0 +1,748 @@
+/*
+ * ═══════════════════════════════════════════════════════════
+ * VSH PLATFORM - RESPONSIVE CSS
+ * Version: 1.0.0
+ * Author: Kênh Số Hóa (kenhsohoa.com)
+ * ═══════════════════════════════════════════════════════════
+ * File này chứa:
+ * - Responsive breakpoints
+ * - Responsive utilities (ẩn/hiện)
+ * - Responsive grid
+ * - Responsive layout (Header, Sidebar)
+ * - Responsive typography
+ * ═══════════════════════════════════════════════════════════
+ * 
+ * BREAKPOINTS:
+ * - Mobile:  < 640px
+ * - Tablet:  640px - 1024px
+ * - Desktop: > 1024px
+ * ═══════════════════════════════════════════════════════════
+ */
+
+/* ============================================
+   1. MOBILE FIRST (Mặc định cho mobile)
+   Các style ở đây áp dụng cho tất cả màn hình
+   ============================================ */
+
+/* --- Typography Responsive --- */
+h1 { font-size: var(--vsh-text-3xl); }
+h2 { font-size: var(--vsh-text-2xl); }
+.vsh-hero__title { font-size: var(--vsh-text-3xl); }
+.vsh-hero__description { font-size: var(--vsh-text-base); }
+
+/* --- Grid mặc định 1 cột trên mobile --- */
+.vsh-grid--responsive {
+  grid-template-columns: 1fr;
+}
+
+/* --- Footer Grid --- */
+.vsh-footer__grid {
+  grid-template-columns: 1fr;
+  gap: var(--vsh-space-6);
+}
+
+/* --- Header Mobile --- */
+.vsh-header__nav {
+  display: none; /* Ẩn nav trên mobile */
+}
+
+.vsh-header__toggle {
+  display: flex; /* Hiện toggle button trên mobile */
+}
+
+.vsh-header__search {
+  display: none; /* Ẩn search trên mobile */
+}
+
+.vsh-header__user-name,
+.vsh-header__user-role {
+  display: none; /* Ẩn tên user trên mobile */
+}
+
+/* --- Sidebar Mobile --- */
+.vsh-sidebar {
+  transform: translateX(-100%); /* Ẩn sidebar mặc định */
+}
+
+.vsh-sidebar.is-active {
+  transform: translateX(0); /* Hiện khi active */
+}
+
+/* Overlay khi sidebar mở */
+.vsh-sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: calc(var(--vsh-z-fixed) - 1);
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--vsh-transition-normal);
+}
+
+.vsh-sidebar-overlay.is-active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Main content không có margin trên mobile */
+.vsh-app--with-sidebar .vsh-main {
+  margin-left: 0;
+}
+
+.vsh-app--with-sidebar .vsh-header {
+  left: 0;
+}
+
+/* --- Cards Grid --- */
+.vsh-grid--auto-fit {
+  grid-template-columns: 1fr;
+}
+
+/* --- Hero Actions --- */
+.vsh-hero__actions {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.vsh-hero__actions .vsh-btn {
+  width: 100%;
+}
+
+/* --- Table Responsive --- */
+.vsh-table-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* --- Modal Full Screen trên Mobile --- */
+.vsh-modal {
+  max-width: 100%;
+  max-height: 100%;
+  margin: 0;
+  border-radius: 0;
+}
+
+.vsh-modal-backdrop {
+  padding: 0;
+}
+
+/* --- Form inputs full width --- */
+.vsh-header__search {
+  width: 100%;
+}
+
+
+/* ============================================
+   2. TABLET (từ 640px trở lên)
+   ============================================ */
+
+@media (min-width: 640px) {
+  /* Typography */
+  h1 { font-size: var(--vsh-text-4xl); }
+  h2 { font-size: var(--vsh-text-3xl); }
+  .vsh-hero__title { font-size: var(--vsh-text-4xl); }
+  .vsh-hero__description { font-size: var(--vsh-text-lg); }
+
+  /* Grid 2 cột trên tablet */
+  .vsh-grid--responsive {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Auto-fit grid */
+  .vsh-grid--auto-fit {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+
+  /* Footer Grid 2 cột */
+  .vsh-footer__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Hero Actions ngang */
+  .vsh-hero__actions {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .vsh-hero__actions .vsh-btn {
+    width: auto;
+  }
+
+  /* Modal không full screen */
+  .vsh-modal {
+    max-width: 500px;
+    max-height: 90vh;
+    margin: var(--vsh-space-4);
+    border-radius: var(--vsh-border-radius-lg);
+  }
+
+  .vsh-modal-backdrop {
+    padding: var(--vsh-space-4);
+  }
+
+  /* Header Search hiện */
+  .vsh-header__search {
+    display: block;
+    width: 200px;
+  }
+
+  /* Container padding lớn hơn */
+  .vsh-container {
+    padding-left: var(--vsh-space-6);
+    padding-right: var(--vsh-space-6);
+  }
+
+  /* Responsive utilities - ẩn trên tablet trở lên */
+  .vsh-hidden-sm {
+    display: none !important;
+  }
+
+  /* Responsive utilities - hiện trên tablet trở lên */
+  .vsh-block-sm {
+    display: block !important;
+  }
+
+  .vsh-flex-sm {
+    display: flex !important;
+  }
+
+  .vsh-grid-sm {
+    display: grid !important;
+  }
+
+  /* Grid columns cho tablet */
+  .vsh-grid--cols-2-sm {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .vsh-grid--cols-3-sm {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Text align cho tablet */
+  .vsh-text-left-sm { text-align: left !important; }
+  .vsh-text-center-sm { text-align: center !important; }
+  .vsh-text-right-sm { text-align: right !important; }
+}
+
+
+/* ============================================
+   3. DESKTOP NHỎ (từ 768px trở lên)
+   ============================================ */
+
+@media (min-width: 768px) {
+  /* Grid 3 cột */
+  .vsh-grid--cols-3-md {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Footer Grid */
+  .vsh-footer__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  /* Header search rộng hơn */
+  .vsh-header__search {
+    width: 250px;
+  }
+
+  /* Responsive utilities */
+  .vsh-hidden-md {
+    display: none !important;
+  }
+
+  .vsh-block-md {
+    display: block !important;
+  }
+
+  .vsh-flex-md {
+    display: flex !important;
+  }
+}
+
+
+/* ============================================
+   4. DESKTOP (từ 1024px trở lên)
+   ============================================ */
+
+@media (min-width: 1024px) {
+  /* Typography lớn hơn */
+  h1 { font-size: var(--vsh-text-5xl); }
+  .vsh-hero__title { font-size: var(--vsh-text-5xl); }
+  .vsh-hero__description { font-size: var(--vsh-text-xl); }
+
+  /* Grid 3-4 cột */
+  .vsh-grid--responsive {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .vsh-grid--cols-4-lg {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  /* Footer Grid đầy đủ */
+  .vsh-footer__grid {
+    grid-template-columns: 2fr repeat(3, 1fr);
+  }
+
+  /* Header đầy đủ */
+  .vsh-header__nav {
+    display: flex; /* Hiện navigation */
+  }
+
+  .vsh-header__toggle {
+    display: none; /* Ẩn toggle button */
+  }
+
+  .vsh-header__search {
+    width: 300px;
+  }
+
+  .vsh-header__user-name,
+  .vsh-header__user-role {
+    display: block; /* Hiện tên user */
+  }
+
+  /* Sidebar cố định, không cần toggle */
+  .vsh-sidebar {
+    transform: translateX(0); /* Luôn hiện */
+  }
+
+  /* Main content có margin cho sidebar */
+  .vsh-app--with-sidebar .vsh-main {
+    margin-left: var(--vsh-sidebar-width);
+  }
+
+  .vsh-app--with-sidebar .vsh-header {
+    left: var(--vsh-sidebar-width);
+  }
+
+  /* Collapsed sidebar */
+  .vsh-app--sidebar-collapsed .vsh-main {
+    margin-left: var(--vsh-sidebar-collapsed-width);
+  }
+
+  .vsh-app--sidebar-collapsed .vsh-header {
+    left: var(--vsh-sidebar-collapsed-width);
+  }
+
+  /* Overlay không cần trên desktop */
+  .vsh-sidebar-overlay {
+    display: none;
+  }
+
+  /* Hero với 2 cột (text + image) */
+  .vsh-hero--split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--vsh-space-12);
+    align-items: center;
+    text-align: left;
+  }
+
+  .vsh-hero--split .vsh-hero__actions {
+    justify-content: flex-start;
+  }
+
+  .vsh-hero--split .vsh-hero__image {
+    margin-top: 0;
+  }
+
+  /* Responsive utilities */
+  .vsh-hidden-lg {
+    display: none !important;
+  }
+
+  .vsh-block-lg {
+    display: block !important;
+  }
+
+  .vsh-flex-lg {
+    display: flex !important;
+  }
+
+  /* Grid columns cho desktop */
+  .vsh-grid--cols-4-lg {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .vsh-grid--cols-5-lg {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .vsh-grid--cols-6-lg {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  /* Text align cho desktop */
+  .vsh-text-left-lg { text-align: left !important; }
+  .vsh-text-center-lg { text-align: center !important; }
+  .vsh-text-right-lg { text-align: right !important; }
+}
+
+
+/* ============================================
+   5. DESKTOP LỚN (từ 1280px trở lên)
+   ============================================ */
+
+@media (min-width: 1280px) {
+  /* Container max width */
+  .vsh-container {
+    max-width: 1280px;
+  }
+
+  /* Grid 4 cột */
+  .vsh-grid--responsive {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  /* Responsive utilities */
+  .vsh-hidden-xl {
+    display: none !important;
+  }
+
+  .vsh-block-xl {
+    display: block !important;
+  }
+
+  .vsh-flex-xl {
+    display: flex !important;
+  }
+}
+
+
+/* ============================================
+   6. MÀN HÌNH SIÊU LỚN (từ 1536px trở lên)
+   ============================================ */
+
+@media (min-width: 1536px) {
+  .vsh-container {
+    max-width: 1400px;
+  }
+
+  /* Responsive utilities */
+  .vsh-hidden-2xl {
+    display: none !important;
+  }
+
+  .vsh-block-2xl {
+    display: block !important;
+  }
+}
+
+
+/* ============================================
+   7. RESPONSIVE VISIBILITY UTILITIES
+   Các class ẩn/hiện theo breakpoint
+   ============================================ */
+
+/* Ẩn trên mobile, hiện từ tablet trở lên */
+.vsh-hidden-mobile {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .vsh-hidden-mobile {
+    display: block;
+  }
+}
+
+/* Ẩn trên tablet trở lên, chỉ hiện trên mobile */
+.vsh-hidden-tablet-up {
+  display: block;
+}
+
+@media (min-width: 640px) {
+  .vsh-hidden-tablet-up {
+    display: none;
+  }
+}
+
+/* Ẩn trên desktop, hiện trên mobile/tablet */
+.vsh-hidden-desktop {
+  display: block;
+}
+
+@media (min-width: 1024px) {
+  .vsh-hidden-desktop {
+    display: none;
+  }
+}
+
+/* Chỉ hiện trên desktop */
+.vsh-visible-desktop {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .vsh-visible-desktop {
+    display: block;
+  }
+}
+
+/* Flex variants */
+.vsh-flex-mobile {
+  display: flex;
+}
+
+@media (min-width: 640px) {
+  .vsh-flex-mobile {
+    display: none;
+  }
+}
+
+.vsh-flex-desktop {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .vsh-flex-desktop {
+    display: flex;
+  }
+}
+
+
+/* ============================================
+   8. RESPONSIVE SPACING
+   Thay đổi spacing theo màn hình
+   ============================================ */
+
+/* Padding responsive cho sections */
+.vsh-section {
+  padding: var(--vsh-space-10) 0;
+}
+
+@media (min-width: 640px) {
+  .vsh-section {
+    padding: var(--vsh-space-12) 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .vsh-section {
+    padding: var(--vsh-space-16) 0;
+  }
+}
+
+/* Hero padding */
+.vsh-hero {
+  padding: var(--vsh-space-10) 0;
+  padding-top: calc(var(--vsh-header-height) + var(--vsh-space-10));
+}
+
+@media (min-width: 640px) {
+  .vsh-hero {
+    padding: var(--vsh-space-12) 0;
+    padding-top: calc(var(--vsh-header-height) + var(--vsh-space-12));
+  }
+}
+
+@media (min-width: 1024px) {
+  .vsh-hero {
+    padding: var(--vsh-space-16) 0;
+    padding-top: calc(var(--vsh-header-height) + var(--vsh-space-16));
+  }
+}
+
+/* Main content padding */
+.vsh-main {
+  padding: var(--vsh-space-4);
+  padding-top: calc(var(--vsh-header-height) + var(--vsh-space-4));
+}
+
+@media (min-width: 640px) {
+  .vsh-main {
+    padding: var(--vsh-space-5);
+    padding-top: calc(var(--vsh-header-height) + var(--vsh-space-5));
+  }
+}
+
+@media (min-width: 1024px) {
+  .vsh-main {
+    padding: var(--vsh-space-6);
+    padding-top: calc(var(--vsh-header-height) + var(--vsh-space-6));
+  }
+}
+
+
+/* ============================================
+   9. RESPONSIVE FLEXBOX
+   ============================================ */
+
+/* Stack trên mobile, row trên tablet+ */
+.vsh-flex--responsive {
+  display: flex;
+  flex-direction: column;
+  gap: var(--vsh-space-4);
+}
+
+@media (min-width: 640px) {
+  .vsh-flex--responsive {
+    flex-direction: row;
+  }
+}
+
+/* Reverse order trên mobile */
+.vsh-flex--reverse-mobile {
+  flex-direction: column-reverse;
+}
+
+@media (min-width: 640px) {
+  .vsh-flex--reverse-mobile {
+    flex-direction: row;
+  }
+}
+
+
+/* ============================================
+   10. RESPONSIVE TYPOGRAPHY
+   ============================================ */
+
+/* Heading responsive */
+.vsh-heading-responsive {
+  font-size: var(--vsh-text-2xl);
+}
+
+@media (min-width: 640px) {
+  .vsh-heading-responsive {
+    font-size: var(--vsh-text-3xl);
+  }
+}
+
+@media (min-width: 1024px) {
+  .vsh-heading-responsive {
+    font-size: var(--vsh-text-4xl);
+  }
+}
+
+/* Subheading responsive */
+.vsh-subheading-responsive {
+  font-size: var(--vsh-text-base);
+}
+
+@media (min-width: 640px) {
+  .vsh-subheading-responsive {
+    font-size: var(--vsh-text-lg);
+  }
+}
+
+@media (min-width: 1024px) {
+  .vsh-subheading-responsive {
+    font-size: var(--vsh-text-xl);
+  }
+}
+
+
+/* ============================================
+   11. PRINT STYLES (IN ẤN)
+   ============================================ */
+
+@media print {
+  /* Ẩn các phần không cần in */
+  .vsh-header,
+  .vsh-sidebar,
+  .vsh-footer,
+  .vsh-btn,
+  .vsh-modal-backdrop,
+  .vsh-no-print {
+    display: none !important;
+  }
+
+  /* Main content full width */
+  .vsh-main {
+    margin-left: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Màu nền trắng */
+  body {
+    background: white !important;
+  }
+
+  /* Text màu đen */
+  * {
+    color: black !important;
+  }
+
+  /* Link hiển thị URL */
+  a[href]:after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+  }
+}
+
+
+/* ============================================
+   12. LANDSCAPE / PORTRAIT ORIENTATION
+   ============================================ */
+
+/* Chỉ áp dụng cho điện thoại ngang */
+@media (max-width: 896px) and (orientation: landscape) {
+  .vsh-hero {
+    padding-top: calc(var(--vsh-header-height) + var(--vsh-space-6));
+    padding-bottom: var(--vsh-space-6);
+  }
+
+  .vsh-hero__title {
+    font-size: var(--vsh-text-2xl);
+  }
+
+  .vsh-modal {
+    max-height: 95vh;
+  }
+}
+
+
+/* ============================================
+   13. REDUCED MOTION
+   Cho người dùng không muốn animation
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+
+/* ============================================
+   14. DARK MODE (Tùy chọn)
+   Nếu muốn hỗ trợ dark mode tự động
+   ============================================ */
+
+@media (prefers-color-scheme: dark) {
+  /* 
+   * Uncomment nếu muốn tự động dark mode
+   * Hoặc dùng class .vsh-dark trên body để toggle
+   */
+  
+  /*
+  :root {
+    --vsh-bg-primary: #1e293b;
+    --vsh-bg-secondary: #0f172a;
+    --vsh-bg-tertiary: #334155;
+    --vsh-text-primary: #f1f5f9;
+    --vsh-text-secondary: #94a3b8;
+    --vsh-text-tertiary: #64748b;
+    --vsh-border-color: #334155;
+  }
+  */
+}
+
+/* Manual dark mode với class */
+.vsh-dark {
+  --vsh-bg-primary: #1e293b;
+  --vsh-bg-secondary: #0f172a;
+  --vsh-bg-tertiary: #334155;
+  --vsh-text-primary: #f1f5f9;
+  --vsh-text-secondary: #94a3b8;
+  --vsh-text-tertiary: #64748b;
+  --vsh-border-color: #334155;
+  --vsh-border-dark: #475569;
+}

@@ -1,0 +1,854 @@
+/*
+ * ═══════════════════════════════════════════════════════════
+ * VSH PLATFORM - LAYOUT CSS
+ * Version: 1.0.0
+ * Author: Kênh Số Hóa (kenhsohoa.com)
+ * ═══════════════════════════════════════════════════════════
+ * File này chứa:
+ * - Container (Khung chứa nội dung)
+ * - Grid System (Hệ thống lưới)
+ * - Flexbox Helpers
+ * - App Layout (Header, Sidebar, Main)
+ * ═══════════════════════════════════════════════════════════
+ */
+
+/* ============================================
+   1. CONTAINER (KHUNG CHỨA)
+   ============================================ */
+
+/* Container cơ bản - giới hạn chiều rộng và căn giữa */
+.vsh-container {
+  width: 100%;
+  max-width: var(--vsh-container-max-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--vsh-space-4);
+  padding-right: var(--vsh-space-4);
+}
+
+/* Container full width */
+.vsh-container--fluid {
+  max-width: none;
+}
+
+/* Container nhỏ (cho form, login) */
+.vsh-container--sm {
+  max-width: 640px;
+}
+
+/* Container vừa */
+.vsh-container--md {
+  max-width: 768px;
+}
+
+/* Container lớn */
+.vsh-container--lg {
+  max-width: 1024px;
+}
+
+
+/* ============================================
+   2. GRID SYSTEM (HỆ THỐNG LƯỚI)
+   Sử dụng CSS Grid - linh hoạt và mạnh mẽ
+   ============================================ */
+
+/* Grid cơ bản */
+.vsh-grid {
+  display: grid;
+  gap: var(--vsh-space-4);
+}
+
+/* Grid theo số cột */
+.vsh-grid--cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+.vsh-grid--cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.vsh-grid--cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.vsh-grid--cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.vsh-grid--cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.vsh-grid--cols-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+
+/* Grid auto-fit (tự động chia cột) */
+.vsh-grid--auto-fit {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.vsh-grid--auto-fill {
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+
+/* Gap (khoảng cách) */
+.vsh-grid--gap-0 { gap: 0; }
+.vsh-grid--gap-2 { gap: var(--vsh-space-2); }
+.vsh-grid--gap-4 { gap: var(--vsh-space-4); }
+.vsh-grid--gap-6 { gap: var(--vsh-space-6); }
+.vsh-grid--gap-8 { gap: var(--vsh-space-8); }
+
+
+/* ============================================
+   3. FLEXBOX HELPERS
+   ============================================ */
+
+/* Flex cơ bản */
+.vsh-flex {
+  display: flex;
+}
+
+/* Flex Direction */
+.vsh-flex--row { flex-direction: row; }
+.vsh-flex--col { flex-direction: column; }
+.vsh-flex--row-reverse { flex-direction: row-reverse; }
+.vsh-flex--col-reverse { flex-direction: column-reverse; }
+
+/* Justify Content */
+.vsh-flex--start { justify-content: flex-start; }
+.vsh-flex--center { justify-content: center; }
+.vsh-flex--end { justify-content: flex-end; }
+.vsh-flex--between { justify-content: space-between; }
+.vsh-flex--around { justify-content: space-around; }
+.vsh-flex--evenly { justify-content: space-evenly; }
+
+/* Align Items */
+.vsh-flex--items-start { align-items: flex-start; }
+.vsh-flex--items-center { align-items: center; }
+.vsh-flex--items-end { align-items: flex-end; }
+.vsh-flex--items-stretch { align-items: stretch; }
+
+/* Flex Wrap */
+.vsh-flex--wrap { flex-wrap: wrap; }
+.vsh-flex--nowrap { flex-wrap: nowrap; }
+
+/* Flex Gap */
+.vsh-flex--gap-1 { gap: var(--vsh-space-1); }
+.vsh-flex--gap-2 { gap: var(--vsh-space-2); }
+.vsh-flex--gap-3 { gap: var(--vsh-space-3); }
+.vsh-flex--gap-4 { gap: var(--vsh-space-4); }
+.vsh-flex--gap-6 { gap: var(--vsh-space-6); }
+.vsh-flex--gap-8 { gap: var(--vsh-space-8); }
+
+/* Shorthand: căn giữa cả 2 chiều */
+.vsh-flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Flex Item */
+.vsh-flex-1 { flex: 1; }
+.vsh-flex-auto { flex: auto; }
+.vsh-flex-none { flex: none; }
+.vsh-flex-shrink-0 { flex-shrink: 0; }
+.vsh-flex-grow { flex-grow: 1; }
+
+
+/* ============================================
+   4. APP LAYOUT (BỐ CỤC ỨNG DỤNG)
+   Dùng cho Dashboard với Header + Sidebar + Main
+   ============================================ */
+
+/* --- App Wrapper (Bọc toàn bộ trang) --- */
+.vsh-app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- App với Sidebar --- */
+.vsh-app--with-sidebar {
+  display: flex;
+}
+
+.vsh-app--with-sidebar .vsh-main {
+  flex: 1;
+  margin-left: var(--vsh-sidebar-width);
+  min-height: 100vh;
+  transition: margin-left var(--vsh-transition-normal);
+}
+
+/* Khi sidebar collapsed */
+.vsh-app--sidebar-collapsed .vsh-main {
+  margin-left: var(--vsh-sidebar-collapsed-width);
+}
+
+
+/* ============================================
+   5. HEADER (THANH TRÊN CÙNG)
+   ============================================ */
+
+.vsh-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--vsh-header-height);
+  background-color: var(--vsh-bg-primary);
+  border-bottom: 1px solid var(--vsh-border-color);
+  display: flex;
+  align-items: center;
+  padding: 0 var(--vsh-space-4);
+  z-index: var(--vsh-z-fixed);
+}
+
+/* Header với Sidebar */
+.vsh-app--with-sidebar .vsh-header {
+  left: var(--vsh-sidebar-width);
+  transition: left var(--vsh-transition-normal);
+}
+
+.vsh-app--sidebar-collapsed .vsh-header {
+  left: var(--vsh-sidebar-collapsed-width);
+}
+
+/* --- Header Logo (dùng cho Landing Page) --- */
+.vsh-header__logo {
+  display: flex;
+  align-items: center;
+  gap: var(--vsh-space-2);
+  font-size: var(--vsh-text-xl);
+  font-weight: var(--vsh-font-bold);
+  color: var(--vsh-primary);
+  text-decoration: none;
+}
+
+.vsh-header__logo:hover {
+  text-decoration: none;
+}
+
+.vsh-header__logo img {
+  height: 32px;
+  width: auto;
+}
+
+/* --- Header Navigation --- */
+.vsh-header__nav {
+  display: flex;
+  align-items: center;
+  gap: var(--vsh-space-1);
+  margin-left: var(--vsh-space-8);
+}
+
+.vsh-header__nav-link {
+  padding: var(--vsh-space-2) var(--vsh-space-3);
+  font-size: var(--vsh-text-sm);
+  font-weight: var(--vsh-font-medium);
+  color: var(--vsh-text-secondary);
+  border-radius: var(--vsh-border-radius);
+  transition: all var(--vsh-transition-fast);
+}
+
+.vsh-header__nav-link:hover {
+  color: var(--vsh-text-primary);
+  background-color: var(--vsh-bg-secondary);
+  text-decoration: none;
+}
+
+.vsh-header__nav-link.is-active {
+  color: var(--vsh-primary);
+}
+
+/* --- Header Actions (bên phải) --- */
+.vsh-header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--vsh-space-3);
+  margin-left: auto;
+}
+
+/* --- Header Toggle Button (cho Sidebar) --- */
+.vsh-header__toggle {
+  display: none; /* Ẩn mặc định, hiện trên mobile */
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--vsh-text-xl);
+  color: var(--vsh-text-secondary);
+  cursor: pointer;
+  border-radius: var(--vsh-border-radius);
+  transition: all var(--vsh-transition-fast);
+}
+
+.vsh-header__toggle:hover {
+  background-color: var(--vsh-bg-secondary);
+  color: var(--vsh-text-primary);
+}
+
+/* --- Header Search --- */
+.vsh-header__search {
+  position: relative;
+  width: 300px;
+}
+
+.vsh-header__search-icon {
+  position: absolute;
+  left: var(--vsh-space-3);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--vsh-text-tertiary);
+  pointer-events: none;
+}
+
+.vsh-header__search-input {
+  width: 100%;
+  padding: var(--vsh-space-2) var(--vsh-space-3);
+  padding-left: var(--vsh-space-10);
+  font-size: var(--vsh-text-sm);
+  background-color: var(--vsh-bg-secondary);
+  border: 1px solid transparent;
+  border-radius: var(--vsh-border-radius);
+  transition: all var(--vsh-transition-fast);
+}
+
+.vsh-header__search-input:focus {
+  background-color: var(--vsh-bg-primary);
+  border-color: var(--vsh-primary);
+  box-shadow: 0 0 0 3px var(--vsh-primary-bg);
+}
+
+/* --- Header User Menu --- */
+.vsh-header__user {
+  display: flex;
+  align-items: center;
+  gap: var(--vsh-space-3);
+  padding: var(--vsh-space-1) var(--vsh-space-2);
+  cursor: pointer;
+  border-radius: var(--vsh-border-radius);
+  transition: background-color var(--vsh-transition-fast);
+}
+
+.vsh-header__user:hover {
+  background-color: var(--vsh-bg-secondary);
+}
+
+.vsh-header__user-name {
+  font-size: var(--vsh-text-sm);
+  font-weight: var(--vsh-font-medium);
+  color: var(--vsh-text-primary);
+}
+
+.vsh-header__user-role {
+  font-size: var(--vsh-text-xs);
+  color: var(--vsh-text-tertiary);
+}
+
+
+/* ============================================
+   6. SIDEBAR (THANH BÊN TRÁI)
+   ============================================ */
+
+.vsh-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: var(--vsh-sidebar-width);
+  background-color: var(--vsh-bg-primary);
+  border-right: 1px solid var(--vsh-border-color);
+  display: flex;
+  flex-direction: column;
+  z-index: var(--vsh-z-fixed);
+  transition: width var(--vsh-transition-normal), transform var(--vsh-transition-normal);
+  overflow: hidden;
+}
+
+/* Sidebar Dark */
+.vsh-sidebar--dark {
+  background-color: var(--vsh-bg-dark);
+  border-right-color: rgba(255, 255, 255, 0.1);
+}
+
+.vsh-sidebar--dark .vsh-sidebar__brand-text,
+.vsh-sidebar--dark .vsh-sidebar__nav-text,
+.vsh-sidebar--dark .vsh-sidebar__nav-link {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.vsh-sidebar--dark .vsh-sidebar__nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--vsh-text-white);
+}
+
+.vsh-sidebar--dark .vsh-sidebar__nav-link.is-active {
+  background-color: var(--vsh-primary);
+  color: var(--vsh-text-white);
+}
+
+/* --- Sidebar Header/Brand --- */
+.vsh-sidebar__header {
+  height: var(--vsh-header-height);
+  display: flex;
+  align-items: center;
+  padding: 0 var(--vsh-space-4);
+  border-bottom: 1px solid var(--vsh-border-color);
+  flex-shrink: 0;
+}
+
+.vsh-sidebar--dark .vsh-sidebar__header {
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.vsh-sidebar__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--vsh-space-3);
+  text-decoration: none;
+}
+
+.vsh-sidebar__brand:hover {
+  text-decoration: none;
+}
+
+.vsh-sidebar__brand-logo {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--vsh-primary);
+  color: var(--vsh-text-white);
+  font-weight: var(--vsh-font-bold);
+  font-size: var(--vsh-text-lg);
+  border-radius: var(--vsh-border-radius);
+  flex-shrink: 0;
+}
+
+.vsh-sidebar__brand-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: var(--vsh-border-radius);
+}
+
+.vsh-sidebar__brand-text {
+  font-size: var(--vsh-text-lg);
+  font-weight: var(--vsh-font-bold);
+  color: var(--vsh-text-primary);
+  white-space: nowrap;
+}
+
+/* --- Sidebar Navigation --- */
+.vsh-sidebar__nav {
+  flex: 1;
+  padding: var(--vsh-space-4);
+  overflow-y: auto;
+}
+
+.vsh-sidebar__nav-section {
+  margin-bottom: var(--vsh-space-6);
+}
+
+.vsh-sidebar__nav-title {
+  font-size: var(--vsh-text-xs);
+  font-weight: var(--vsh-font-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--vsh-text-tertiary);
+  margin-bottom: var(--vsh-space-2);
+  padding: 0 var(--vsh-space-3);
+}
+
+.vsh-sidebar__nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--vsh-space-1);
+}
+
+.vsh-sidebar__nav-link {
+  display: flex;
+  align-items: center;
+  gap: var(--vsh-space-3);
+  padding: var(--vsh-space-2) var(--vsh-space-3);
+  font-size: var(--vsh-text-sm);
+  font-weight: var(--vsh-font-medium);
+  color: var(--vsh-text-secondary);
+  border-radius: var(--vsh-border-radius);
+  transition: all var(--vsh-transition-fast);
+  cursor: pointer;
+}
+
+.vsh-sidebar__nav-link:hover {
+  background-color: var(--vsh-bg-secondary);
+  color: var(--vsh-text-primary);
+  text-decoration: none;
+}
+
+.vsh-sidebar__nav-link.is-active {
+  background-color: var(--vsh-primary-bg);
+  color: var(--vsh-primary);
+}
+
+.vsh-sidebar__nav-icon {
+  width: 20px;
+  font-size: var(--vsh-text-lg);
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.vsh-sidebar__nav-text {
+  flex: 1;
+  white-space: nowrap;
+}
+
+.vsh-sidebar__nav-badge {
+  font-size: var(--vsh-text-xs);
+  padding: 2px 6px;
+  background-color: var(--vsh-danger);
+  color: var(--vsh-text-white);
+  border-radius: var(--vsh-border-radius-full);
+}
+
+/* --- Sidebar Footer --- */
+.vsh-sidebar__footer {
+  padding: var(--vsh-space-4);
+  border-top: 1px solid var(--vsh-border-color);
+  flex-shrink: 0;
+}
+
+.vsh-sidebar--dark .vsh-sidebar__footer {
+  border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+/* --- Sidebar Collapsed (Thu gọn) --- */
+.vsh-app--sidebar-collapsed .vsh-sidebar {
+  width: var(--vsh-sidebar-collapsed-width);
+}
+
+.vsh-app--sidebar-collapsed .vsh-sidebar__brand-text,
+.vsh-app--sidebar-collapsed .vsh-sidebar__nav-text,
+.vsh-app--sidebar-collapsed .vsh-sidebar__nav-title,
+.vsh-app--sidebar-collapsed .vsh-sidebar__nav-badge {
+  display: none;
+}
+
+.vsh-app--sidebar-collapsed .vsh-sidebar__nav-link {
+  justify-content: center;
+  padding: var(--vsh-space-3);
+}
+
+.vsh-app--sidebar-collapsed .vsh-sidebar__nav-icon {
+  margin: 0;
+}
+
+
+/* ============================================
+   7. MAIN CONTENT (VÙNG NỘI DUNG CHÍNH)
+   ============================================ */
+
+.vsh-main {
+  flex: 1;
+  padding: var(--vsh-space-6);
+  padding-top: calc(var(--vsh-header-height) + var(--vsh-space-6));
+  background-color: var(--vsh-bg-secondary);
+  min-height: 100vh;
+}
+
+/* Main content không có header */
+.vsh-main--no-header {
+  padding-top: var(--vsh-space-6);
+}
+
+/* Main content full height */
+.vsh-main--full {
+  padding: 0;
+}
+
+
+/* ============================================
+   8. PAGE HEADER (TIÊU ĐỀ TRANG)
+   ============================================ */
+
+.vsh-page-header {
+  margin-bottom: var(--vsh-space-6);
+}
+
+.vsh-page-header__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--vsh-space-2);
+}
+
+.vsh-page-header__title {
+  font-size: var(--vsh-text-2xl);
+  font-weight: var(--vsh-font-bold);
+  color: var(--vsh-text-primary);
+  margin: 0;
+}
+
+.vsh-page-header__description {
+  font-size: var(--vsh-text-sm);
+  color: var(--vsh-text-secondary);
+  margin: 0;
+}
+
+.vsh-page-header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--vsh-space-3);
+}
+
+/* --- Breadcrumb --- */
+.vsh-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: var(--vsh-space-2);
+  font-size: var(--vsh-text-sm);
+  margin-bottom: var(--vsh-space-2);
+}
+
+.vsh-breadcrumb__item {
+  color: var(--vsh-text-secondary);
+}
+
+.vsh-breadcrumb__item:hover {
+  color: var(--vsh-primary);
+}
+
+.vsh-breadcrumb__separator {
+  color: var(--vsh-text-tertiary);
+}
+
+.vsh-breadcrumb__item.is-active {
+  color: var(--vsh-text-primary);
+  font-weight: var(--vsh-font-medium);
+}
+
+
+/* ============================================
+   9. SECTION (PHẦN NỘI DUNG)
+   Dùng cho Landing Page
+   ============================================ */
+
+.vsh-section {
+  padding: var(--vsh-space-16) 0;
+}
+
+.vsh-section--sm {
+  padding: var(--vsh-space-10) 0;
+}
+
+.vsh-section--lg {
+  padding: var(--vsh-space-20) 0;
+}
+
+.vsh-section--gray {
+  background-color: var(--vsh-bg-secondary);
+}
+
+.vsh-section--dark {
+  background-color: var(--vsh-bg-dark);
+  color: var(--vsh-text-white);
+}
+
+.vsh-section--dark h1,
+.vsh-section--dark h2,
+.vsh-section--dark h3 {
+  color: var(--vsh-text-white);
+}
+
+.vsh-section--dark p {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Section Header (Tiêu đề section) */
+.vsh-section__header {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto var(--vsh-space-12);
+}
+
+.vsh-section__title {
+  font-size: var(--vsh-text-3xl);
+  margin-bottom: var(--vsh-space-4);
+}
+
+.vsh-section__subtitle {
+  font-size: var(--vsh-text-lg);
+  color: var(--vsh-text-secondary);
+}
+
+
+/* ============================================
+   10. HERO SECTION (PHẦN GIỚI THIỆU)
+   ============================================ */
+
+.vsh-hero {
+  padding: var(--vsh-space-16) 0;
+  padding-top: calc(var(--vsh-header-height) + var(--vsh-space-16));
+  text-align: center;
+}
+
+.vsh-hero--left {
+  text-align: left;
+}
+
+.vsh-hero__content {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.vsh-hero--left .vsh-hero__content {
+  margin: 0;
+}
+
+.vsh-hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--vsh-space-2);
+  padding: var(--vsh-space-1) var(--vsh-space-3);
+  background-color: var(--vsh-primary-bg);
+  color: var(--vsh-primary);
+  font-size: var(--vsh-text-sm);
+  font-weight: var(--vsh-font-medium);
+  border-radius: var(--vsh-border-radius-full);
+  margin-bottom: var(--vsh-space-4);
+}
+
+.vsh-hero__title {
+  font-size: var(--vsh-text-5xl);
+  font-weight: var(--vsh-font-bold);
+  line-height: 1.1;
+  margin-bottom: var(--vsh-space-6);
+}
+
+.vsh-hero__title span {
+  color: var(--vsh-primary);
+}
+
+.vsh-hero__description {
+  font-size: var(--vsh-text-xl);
+  color: var(--vsh-text-secondary);
+  margin-bottom: var(--vsh-space-8);
+  line-height: var(--vsh-leading-relaxed);
+}
+
+.vsh-hero__actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--vsh-space-4);
+  flex-wrap: wrap;
+}
+
+.vsh-hero--left .vsh-hero__actions {
+  justify-content: flex-start;
+}
+
+.vsh-hero__image {
+  margin-top: var(--vsh-space-12);
+}
+
+.vsh-hero__image img {
+  max-width: 100%;
+  border-radius: var(--vsh-border-radius-lg);
+  box-shadow: var(--vsh-shadow-xl);
+}
+
+
+/* ============================================
+   11. FOOTER (CHÂN TRANG)
+   ============================================ */
+
+.vsh-footer {
+  background-color: var(--vsh-bg-dark);
+  color: rgba(255, 255, 255, 0.7);
+  padding: var(--vsh-space-16) 0 var(--vsh-space-8);
+}
+
+.vsh-footer__grid {
+  display: grid;
+  grid-template-columns: 2fr repeat(3, 1fr);
+  gap: var(--vsh-space-8);
+  margin-bottom: var(--vsh-space-12);
+}
+
+.vsh-footer__brand {
+  margin-bottom: var(--vsh-space-4);
+}
+
+.vsh-footer__brand-logo {
+  display: flex;
+  align-items: center;
+  gap: var(--vsh-space-2);
+  font-size: var(--vsh-text-xl);
+  font-weight: var(--vsh-font-bold);
+  color: var(--vsh-text-white);
+  margin-bottom: var(--vsh-space-4);
+}
+
+.vsh-footer__brand-desc {
+  font-size: var(--vsh-text-sm);
+  line-height: var(--vsh-leading-relaxed);
+  margin-bottom: var(--vsh-space-4);
+}
+
+.vsh-footer__social {
+  display: flex;
+  gap: var(--vsh-space-3);
+}
+
+.vsh-footer__social-link {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--vsh-text-white);
+  border-radius: var(--vsh-border-radius);
+  transition: background-color var(--vsh-transition-fast);
+}
+
+.vsh-footer__social-link:hover {
+  background-color: var(--vsh-primary);
+  text-decoration: none;
+}
+
+.vsh-footer__title {
+  font-size: var(--vsh-text-base);
+  font-weight: var(--vsh-font-semibold);
+  color: var(--vsh-text-white);
+  margin-bottom: var(--vsh-space-4);
+}
+
+.vsh-footer__links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--vsh-space-3);
+}
+
+.vsh-footer__link {
+  font-size: var(--vsh-text-sm);
+  color: rgba(255, 255, 255, 0.7);
+  transition: color var(--vsh-transition-fast);
+}
+
+.vsh-footer__link:hover {
+  color: var(--vsh-text-white);
+  text-decoration: none;
+}
+
+.vsh-footer__bottom {
+  padding-top: var(--vsh-space-8);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--vsh-text-sm);
+}
+
+.vsh-footer__copyright {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.vsh-footer__bottom-links {
+  display: flex;
+  gap: var(--vsh-space-6);
+}
+
+.vsh-footer__bottom-link {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.vsh-footer__bottom-link:hover {
+  color: var(--vsh-text-white);
+  text-decoration: none;
+}

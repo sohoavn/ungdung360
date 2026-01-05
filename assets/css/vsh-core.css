@@ -1,0 +1,431 @@
+/*
+ * ═══════════════════════════════════════════════════════════
+ * VSH PLATFORM - CORE CSS
+ * Version: 1.0.0
+ * Author: Kênh Số Hóa (kenhsohoa.com)
+ * ═══════════════════════════════════════════════════════════
+ * File này chứa:
+ * - CSS Reset (làm đồng bộ trình duyệt)
+ * - CSS Variables (biến màu sắc, kích thước)
+ * - Typography (font chữ, heading)
+ * ═══════════════════════════════════════════════════════════
+ */
+
+/* ============================================
+   PHẦN 1: CSS VARIABLES (BIẾN)
+   Đây là nơi định nghĩa tất cả màu sắc, kích thước
+   Muốn đổi màu toàn bộ web? Chỉ cần sửa ở đây!
+   ============================================ */
+
+:root {
+  /* --- MÀU THƯƠNG HIỆU --- */
+  --vsh-primary: #2563eb;           /* Xanh dương chính */
+  --vsh-primary-dark: #1d4ed8;      /* Xanh đậm (hover) */
+  --vsh-primary-light: #3b82f6;     /* Xanh nhạt */
+  --vsh-primary-bg: #eff6ff;        /* Nền xanh rất nhạt */
+
+  --vsh-secondary: #10b981;         /* Xanh lá - thành công */
+  --vsh-secondary-dark: #059669;
+  --vsh-secondary-light: #34d399;
+
+  --vsh-warning: #f59e0b;           /* Vàng cam - cảnh báo */
+  --vsh-warning-dark: #d97706;
+  --vsh-warning-light: #fbbf24;
+  --vsh-warning-bg: #fffbeb;
+
+  --vsh-danger: #ef4444;            /* Đỏ - nguy hiểm/lỗi */
+  --vsh-danger-dark: #dc2626;
+  --vsh-danger-light: #f87171;
+  --vsh-danger-bg: #fef2f2;
+
+  --vsh-info: #06b6d4;              /* Cyan - thông tin */
+  --vsh-info-dark: #0891b2;
+  --vsh-info-light: #22d3ee;
+  --vsh-info-bg: #ecfeff;
+
+  /* --- MÀU NỀN --- */
+  --vsh-bg-primary: #ffffff;        /* Nền trắng chính */
+  --vsh-bg-secondary: #f8fafc;      /* Nền xám nhạt */
+  --vsh-bg-tertiary: #f1f5f9;       /* Nền xám đậm hơn */
+  --vsh-bg-dark: #1e293b;           /* Nền tối */
+  --vsh-bg-darker: #0f172a;         /* Nền tối nhất */
+
+  /* --- MÀU CHỮ --- */
+  --vsh-text-primary: #1e293b;      /* Chữ đen chính */
+  --vsh-text-secondary: #64748b;    /* Chữ xám */
+  --vsh-text-tertiary: #94a3b8;     /* Chữ xám nhạt */
+  --vsh-text-white: #ffffff;        /* Chữ trắng */
+  --vsh-text-link: #2563eb;         /* Chữ link */
+
+  /* --- ĐƯỜNG VIỀN --- */
+  --vsh-border-color: #e2e8f0;      /* Màu viền mặc định */
+  --vsh-border-dark: #cbd5e1;       /* Viền đậm hơn */
+  --vsh-border-radius: 8px;         /* Bo góc mặc định */
+  --vsh-border-radius-sm: 4px;      /* Bo góc nhỏ */
+  --vsh-border-radius-lg: 12px;     /* Bo góc lớn */
+  --vsh-border-radius-xl: 16px;     /* Bo góc rất lớn */
+  --vsh-border-radius-full: 9999px; /* Bo tròn hoàn toàn */
+
+  /* --- BÓNG ĐỔ --- */
+  --vsh-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --vsh-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  --vsh-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --vsh-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --vsh-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+
+  /* --- KHOẢNG CÁCH (Spacing) --- */
+  /* Dựa trên hệ thống 4px/8px */
+  --vsh-space-0: 0;
+  --vsh-space-1: 4px;
+  --vsh-space-2: 8px;
+  --vsh-space-3: 12px;
+  --vsh-space-4: 16px;
+  --vsh-space-5: 20px;
+  --vsh-space-6: 24px;
+  --vsh-space-8: 32px;
+  --vsh-space-10: 40px;
+  --vsh-space-12: 48px;
+  --vsh-space-16: 64px;
+  --vsh-space-20: 80px;
+
+  /* --- FONT CHỮ --- */
+  --vsh-font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --vsh-font-family-mono: 'Fira Code', 'Consolas', monospace;
+  
+  /* Kích thước chữ */
+  --vsh-text-xs: 12px;
+  --vsh-text-sm: 14px;
+  --vsh-text-base: 16px;
+  --vsh-text-lg: 18px;
+  --vsh-text-xl: 20px;
+  --vsh-text-2xl: 24px;
+  --vsh-text-3xl: 30px;
+  --vsh-text-4xl: 36px;
+  --vsh-text-5xl: 48px;
+
+  /* Độ đậm chữ */
+  --vsh-font-normal: 400;
+  --vsh-font-medium: 500;
+  --vsh-font-semibold: 600;
+  --vsh-font-bold: 700;
+
+  /* Chiều cao dòng */
+  --vsh-leading-tight: 1.25;
+  --vsh-leading-normal: 1.5;
+  --vsh-leading-relaxed: 1.625;
+
+  /* --- KÍCH THƯỚC LAYOUT --- */
+  --vsh-header-height: 64px;
+  --vsh-sidebar-width: 260px;
+  --vsh-sidebar-collapsed-width: 72px;
+  --vsh-container-max-width: 1200px;
+
+  /* --- HIỆU ỨNG CHUYỂN ĐỘNG --- */
+  --vsh-transition-fast: 150ms ease;
+  --vsh-transition-normal: 250ms ease;
+  --vsh-transition-slow: 350ms ease;
+
+  /* --- Z-INDEX (Thứ tự xếp chồng) --- */
+  --vsh-z-dropdown: 100;
+  --vsh-z-sticky: 200;
+  --vsh-z-fixed: 300;
+  --vsh-z-modal-backdrop: 400;
+  --vsh-z-modal: 500;
+  --vsh-z-tooltip: 600;
+  --vsh-z-toast: 700;
+
+  /* --- BIẾN CHO KHÁCH HÀNG (Tenant) --- */
+  /* Các biến này sẽ được JavaScript thay đổi theo từng khách */
+  --tenant-primary: var(--vsh-primary);
+  --tenant-primary-dark: var(--vsh-primary-dark);
+  --tenant-logo-url: none;
+}
+
+
+/* ============================================
+   PHẦN 2: CSS RESET
+   Làm cho các trình duyệt hiển thị giống nhau
+   ============================================ */
+
+/* Reset tất cả margin và padding mặc định */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Tính kích thước bao gồm cả padding và border */
+}
+
+/* Thiết lập cho thẻ html */
+html {
+  font-size: 16px;              /* 1rem = 16px */
+  scroll-behavior: smooth;       /* Cuộn mượt khi click anchor link */
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Thiết lập cho body */
+body {
+  font-family: var(--vsh-font-family);
+  font-size: var(--vsh-text-base);
+  font-weight: var(--vsh-font-normal);
+  line-height: var(--vsh-leading-normal);
+  color: var(--vsh-text-primary);
+  background-color: var(--vsh-bg-primary);
+  -webkit-font-smoothing: antialiased;  /* Chữ mượt trên Mac */
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Reset các thẻ danh sách */
+ul, ol {
+  list-style: none;
+}
+
+/* Reset link */
+a {
+  color: var(--vsh-text-link);
+  text-decoration: none;
+  transition: color var(--vsh-transition-fast);
+}
+
+a:hover {
+  color: var(--vsh-primary-dark);
+  text-decoration: underline;
+}
+
+/* Reset hình ảnh */
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Reset input và button */
+input, button, textarea, select {
+  font: inherit;              /* Kế thừa font từ parent */
+  color: inherit;
+  background: none;
+  border: none;
+  outline: none;
+}
+
+/* Reset button */
+button {
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+/* Reset table */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* Ẩn phần tử có thuộc tính hidden */
+[hidden] {
+  display: none !important;
+}
+
+
+/* ============================================
+   PHẦN 3: TYPOGRAPHY (KIỂU CHỮ)
+   Định dạng cho các heading và văn bản
+   ============================================ */
+
+/* --- HEADINGS (Tiêu đề) --- */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: var(--vsh-font-bold);
+  line-height: var(--vsh-leading-tight);
+  color: var(--vsh-text-primary);
+  margin-bottom: var(--vsh-space-4);
+}
+
+h1 {
+  font-size: var(--vsh-text-4xl);  /* 36px */
+}
+
+h2 {
+  font-size: var(--vsh-text-3xl);  /* 30px */
+}
+
+h3 {
+  font-size: var(--vsh-text-2xl);  /* 24px */
+}
+
+h4 {
+  font-size: var(--vsh-text-xl);   /* 20px */
+}
+
+h5 {
+  font-size: var(--vsh-text-lg);   /* 18px */
+}
+
+h6 {
+  font-size: var(--vsh-text-base); /* 16px */
+}
+
+/* --- PARAGRAPH (Đoạn văn) --- */
+p {
+  margin-bottom: var(--vsh-space-4);
+  color: var(--vsh-text-secondary);
+}
+
+/* Đoạn văn lớn (dùng cho mô tả) */
+.vsh-text-lead {
+  font-size: var(--vsh-text-lg);
+  line-height: var(--vsh-leading-relaxed);
+  color: var(--vsh-text-secondary);
+}
+
+/* Đoạn văn nhỏ */
+.vsh-text-small {
+  font-size: var(--vsh-text-sm);
+}
+
+/* Chữ rất nhỏ (caption, helper) */
+.vsh-text-tiny {
+  font-size: var(--vsh-text-xs);
+  color: var(--vsh-text-tertiary);
+}
+
+/* --- TEXT STYLES (Kiểu chữ đặc biệt) --- */
+
+/* Chữ đậm */
+strong, b, .vsh-bold {
+  font-weight: var(--vsh-font-bold);
+}
+
+/* Chữ medium */
+.vsh-medium {
+  font-weight: var(--vsh-font-medium);
+}
+
+/* Chữ nghiêng */
+em, i, .vsh-italic {
+  font-style: italic;
+}
+
+/* Gạch chân */
+.vsh-underline {
+  text-decoration: underline;
+}
+
+/* Gạch ngang (xóa) */
+.vsh-line-through {
+  text-decoration: line-through;
+}
+
+/* Chữ in hoa */
+.vsh-uppercase {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Chữ viết thường */
+.vsh-lowercase {
+  text-transform: lowercase;
+}
+
+/* Viết hoa chữ đầu */
+.vsh-capitalize {
+  text-transform: capitalize;
+}
+
+/* --- TEXT COLORS (Màu chữ) --- */
+.vsh-text-primary-color {
+  color: var(--vsh-primary);
+}
+
+.vsh-text-secondary-color {
+  color: var(--vsh-text-secondary);
+}
+
+.vsh-text-success {
+  color: var(--vsh-secondary);
+}
+
+.vsh-text-warning {
+  color: var(--vsh-warning);
+}
+
+.vsh-text-danger {
+  color: var(--vsh-danger);
+}
+
+.vsh-text-info {
+  color: var(--vsh-info);
+}
+
+.vsh-text-muted {
+  color: var(--vsh-text-tertiary);
+}
+
+.vsh-text-white {
+  color: var(--vsh-text-white);
+}
+
+/* --- LINKS (Liên kết) --- */
+.vsh-link {
+  color: var(--vsh-text-link);
+  text-decoration: none;
+  transition: color var(--vsh-transition-fast);
+}
+
+.vsh-link:hover {
+  color: var(--vsh-primary-dark);
+  text-decoration: underline;
+}
+
+/* Link không có gạch chân khi hover */
+.vsh-link--no-underline:hover {
+  text-decoration: none;
+}
+
+/* --- CODE (Mã nguồn) --- */
+code {
+  font-family: var(--vsh-font-family-mono);
+  font-size: 0.875em;
+  background-color: var(--vsh-bg-tertiary);
+  padding: 2px 6px;
+  border-radius: var(--vsh-border-radius-sm);
+  color: var(--vsh-danger);
+}
+
+pre {
+  font-family: var(--vsh-font-family-mono);
+  font-size: var(--vsh-text-sm);
+  background-color: var(--vsh-bg-dark);
+  color: var(--vsh-text-white);
+  padding: var(--vsh-space-4);
+  border-radius: var(--vsh-border-radius);
+  overflow-x: auto;
+  margin-bottom: var(--vsh-space-4);
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+}
+
+/* --- BLOCKQUOTE (Trích dẫn) --- */
+blockquote {
+  border-left: 4px solid var(--vsh-primary);
+  padding-left: var(--vsh-space-4);
+  margin: var(--vsh-space-4) 0;
+  font-style: italic;
+  color: var(--vsh-text-secondary);
+}
+
+/* --- HR (Đường kẻ ngang) --- */
+hr {
+  border: none;
+  border-top: 1px solid var(--vsh-border-color);
+  margin: var(--vsh-space-6) 0;
+}
+
+/* --- SELECTION (Khi bôi đen text) --- */
+::selection {
+  background-color: var(--vsh-primary);
+  color: var(--vsh-text-white);
+}
