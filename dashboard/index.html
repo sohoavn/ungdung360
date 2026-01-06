@@ -480,6 +480,11 @@
             }
         }
     </style>
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../assets/js/vsh-config.js"></script>
+    <script src="../assets/js/vsh-supabase.js"></script>
+
 </head>
 <body class="vsh-app vsh-app--with-sidebar">
     
@@ -732,223 +737,87 @@
     </div>
     
     <script>
-        // ===== DATA MẪU =====
-        // Trong thực tế sẽ lấy từ Supabase
-        
-        const DEMO_USER = {
-            id: '1',
-            fullName: 'Nguyễn Văn A',
-            email: 'nguyenvana@abc.com',
-            role: 'CUSTOMER_ADMIN',
-            avatarUrl: null
-        };
-        
-        const DEMO_TENANT = {
-            id: '1',
-            name: 'Công ty ABC Logistics',
-            code: 'abc-logistics',
-            logoUrl: null,
-            primaryColor: '#2563eb',
-            industry: 'logistics'
-        };
-        
-        const DEMO_APPS = [
-            {
-                id: '1',
-                code: 'crm',
-                name: 'CRM Cơ bản',
-                description: 'Quản lý thông tin khách hàng, lịch sử giao dịch và chăm sóc khách hàng hiệu quả.',
-                category: 'management',
-                categoryName: 'Quản trị',
-                icon: '📊',
-                status: 'active',
-                badge: 'popular',
-                url: '#'
-            },
-            {
-                id: '2',
-                code: 'inventory',
-                name: 'Quản lý kho',
-                description: 'Theo dõi tồn kho, nhập xuất hàng hóa và cảnh báo hết hàng tự động.',
-                category: 'operation',
-                categoryName: 'Vận hành',
-                icon: '📦',
-                status: 'active',
-                badge: null,
-                url: '#'
-            },
-            {
-                id: '3',
-                code: 'attendance',
-                name: 'Chấm công',
-                description: 'Quản lý chấm công nhân viên, tính lương và báo cáo nhân sự.',
-                category: 'management',
-                categoryName: 'Quản trị',
-                icon: '👥',
-                status: 'active',
-                badge: 'new',
-                url: '#'
-            },
-            {
-                id: '4',
-                code: 'revenue',
-                name: 'Báo cáo doanh thu',
-                description: 'Thống kê doanh thu, chi phí và lợi nhuận theo thời gian thực.',
-                category: 'report',
-                categoryName: 'Báo cáo',
-                icon: '💰',
-                status: 'active',
-                badge: null,
-                url: '#'
-            },
-            {
-                id: '5',
-                code: 'booking',
-                name: 'Đặt lịch hẹn',
-                description: 'Quản lý lịch hẹn với khách hàng, nhắc nhở tự động qua SMS/Email.',
-                category: 'operation',
-                categoryName: 'Vận hành',
-                icon: '📅',
-                status: 'active',
-                badge: null,
-                url: '#'
-            },
-            {
-                id: '6',
-                code: 'chat',
-                name: 'Chat nội bộ',
-                description: 'Nhắn tin nội bộ giữa các thành viên trong công ty, chia sẻ file.',
-                category: 'communication',
-                categoryName: 'Liên lạc',
-                icon: '💬',
-                status: 'active',
-                badge: null,
-                url: '#'
-            },
-            {
-                id: '7',
-                code: 'tasks',
-                name: 'Quản lý công việc',
-                description: 'Tạo task, phân công và theo dõi tiến độ công việc của team.',
-                category: 'management',
-                categoryName: 'Quản trị',
-                icon: '✅',
-                status: 'active',
-                badge: null,
-                url: '#'
-            },
-            {
-                id: '8',
-                code: 'invoice',
-                name: 'Hóa đơn điện tử',
-                description: 'Tạo và quản lý hóa đơn điện tử theo quy định của cơ quan thuế.',
-                category: 'report',
-                categoryName: 'Báo cáo',
-                icon: '🧾',
-                status: 'active',
-                badge: null,
-                url: '#'
-            },
-            {
-                id: '9',
-                code: 'email-marketing',
-                name: 'Email Marketing',
-                description: 'Gửi email hàng loạt, quản lý chiến dịch marketing tự động.',
-                category: 'communication',
-                categoryName: 'Liên lạc',
-                icon: '📧',
-                status: 'inactive',
-                badge: null,
-                url: '#'
-            },
-            {
-                id: '10',
-                code: 'analytics',
-                name: 'Phân tích dữ liệu',
-                description: 'Dashboard phân tích dữ liệu kinh doanh với biểu đồ trực quan.',
-                category: 'report',
-                categoryName: 'Báo cáo',
-                icon: '📈',
-                status: 'active',
-                badge: 'new',
-                url: '#'
-            },
-            {
-                id: '11',
-                code: 'delivery',
-                name: 'Quản lý giao hàng',
-                description: 'Theo dõi đơn hàng, tình trạng giao hàng và shipper.',
-                category: 'operation',
-                categoryName: 'Vận hành',
-                icon: '🚚',
-                status: 'active',
-                badge: null,
-                url: '#'
-            },
-            {
-                id: '12',
-                code: 'support',
-                name: 'Hỗ trợ khách hàng',
-                description: 'Hệ thống ticket hỗ trợ khách hàng, live chat và FAQ.',
-                category: 'communication',
-                categoryName: 'Liên lạc',
-                icon: '🎧',
-                status: 'active',
-                badge: null,
-                url: '#'
-            }
-        ];
-        
         // ===== STATE =====
+        let currentUser = null;
+        let currentTenant = null;
+        let allApps = [];
         let currentFilter = 'all';
         let searchQuery = '';
         
         // ===== INITIALIZATION =====
-        document.addEventListener('DOMContentLoaded', function() {
-            // Render user info
-            renderUserInfo(DEMO_USER);
+        async function initDashboard() {
+            // Kiểm tra đăng nhập
+            const user = await VSH_AUTH.getCurrentUser();
             
-            // Render tenant info
-            renderTenantInfo(DEMO_TENANT);
+            if (!user) {
+                // Chưa đăng nhập -> về trang login
+                window.location.href = '../login.html';
+                return;
+            }
             
-            // Render apps
-            renderApps(DEMO_APPS);
+            currentUser = user;
+            
+            // Lấy user profile (bao gồm tenant)
+            const profile = await VSH_DATA.getUserProfile(user.id);
+            
+            if (profile) {
+                currentTenant = profile.tenants;
+                
+                // Render thông tin user
+                renderUserInfo(profile);
+                
+                // Render thông tin tenant
+                if (currentTenant) {
+                    renderTenantInfo(currentTenant);
+                }
+            }
+            
+            // Lấy và render danh sách apps
+            allApps = await VSH_DATA.getAllApps();
+            renderApps(allApps);
             
             // Render stats
-            renderStats(DEMO_APPS);
+            renderStats();
             
-            // Update date
+            // Update ngày
             updateCurrentDate();
-            
-            // Show/hide admin menu based on role
-            updateMenuByRole(DEMO_USER.role);
-        });
+        }
+        
+        // Chạy khi trang load xong
+        document.addEventListener('DOMContentLoaded', initDashboard);
         
         // ===== RENDER FUNCTIONS =====
         
-        function renderUserInfo(user) {
-            document.getElementById('userName').textContent = user.fullName;
-            document.getElementById('userRole').textContent = user.role === 'CUSTOMER_ADMIN' ? 'Admin' : 'Người dùng';
-            document.getElementById('welcomeName').textContent = user.fullName + '! 👋';
+        function renderUserInfo(profile) {
+            const fullName = profile.full_name || profile.email.split('@')[0];
             
-            // Initials for avatar
-            const names = user.fullName.split(' ');
-            const initials = names.length > 1 
-                ? names[0][0] + names[names.length - 1][0]
-                : names[0].substring(0, 2);
-            document.getElementById('userInitials').textContent = initials.toUpperCase();
+            document.getElementById('userName').textContent = fullName;
+            document.getElementById('userRole').textContent = 
+                profile.role === 'CUSTOMER_ADMIN' ? 'Admin' : 
+                profile.role === 'SUPER_ADMIN' ? 'Super Admin' : 'Người dùng';
+            document.getElementById('welcomeName').textContent = fullName + '! 👋';
+            
+            // Initials
+            const initials = VSH_UTILS.getInitials(fullName);
+            document.getElementById('userInitials').textContent = initials;
+            
+            // Hiện/ẩn menu admin
+            const adminMenu = document.getElementById('adminMenu');
+            if (profile.role === 'END_USER') {
+                adminMenu.style.display = 'none';
+            }
         }
         
         function renderTenantInfo(tenant) {
             document.getElementById('tenantName').textContent = tenant.name;
             
-            // Logo placeholder (first letter of company name)
+            // Logo placeholder
             const firstLetter = tenant.name.charAt(0).toUpperCase();
             document.getElementById('tenantLogo').textContent = firstLetter;
             
-            // Apply tenant primary color if different
-            if (tenant.primaryColor) {
-                document.documentElement.style.setProperty('--tenant-primary', tenant.primaryColor);
+            // Áp dụng màu của tenant
+            if (tenant.primary_color) {
+                document.documentElement.style.setProperty('--tenant-primary', tenant.primary_color);
             }
         }
         
@@ -960,7 +829,13 @@
             let filteredApps = apps;
             
             if (currentFilter !== 'all') {
-                filteredApps = apps.filter(app => app.category === currentFilter);
+                const categoryMap = {
+                    'management': 'Quản trị',
+                    'report': 'Báo cáo',
+                    'operation': 'Vận hành',
+                    'communication': 'Liên lạc'
+                };
+                filteredApps = apps.filter(app => app.category === categoryMap[currentFilter]);
             }
             
             if (searchQuery) {
@@ -983,19 +858,18 @@
             // Render app cards
             grid.innerHTML = filteredApps.map(app => `
                 <div class="app-card" onclick="openApp('${app.id}')">
-                    ${app.badge ? `<span class="app-card__badge app-card__badge--${app.badge}">${app.badge === 'new' ? 'Mới' : 'Hot'}</span>` : ''}
                     <div class="app-card__header">
-                        <div class="app-card__icon">${app.icon}</div>
+                        <div class="app-card__icon">${app.icon || '📱'}</div>
                         <div class="app-card__title-group">
                             <div class="app-card__title">${app.name}</div>
-                            <div class="app-card__category">${app.categoryName}</div>
+                            <div class="app-card__category">${app.category}</div>
                         </div>
                     </div>
-                    <div class="app-card__description">${app.description}</div>
+                    <div class="app-card__description">${app.description || ''}</div>
                     <div class="app-card__footer">
                         <div class="app-card__status">
-                            <span class="app-card__status-dot ${app.status === 'active' ? '' : 'app-card__status-dot--inactive'}"></span>
-                            <span>${app.status === 'active' ? 'Hoạt động' : 'Tạm dừng'}</span>
+                            <span class="app-card__status-dot"></span>
+                            <span>Hoạt động</span>
                         </div>
                         <button class="app-card__btn" onclick="event.stopPropagation(); openApp('${app.id}')">
                             Mở app
@@ -1005,12 +879,15 @@
             `).join('');
         }
         
-        function renderStats(apps) {
-            const activeApps = apps.filter(app => app.status === 'active').length;
+        async function renderStats() {
+            document.getElementById('statApps').textContent = allApps.length;
+            document.getElementById('statActive').textContent = allApps.filter(a => a.is_active).length;
             
-            document.getElementById('statApps').textContent = apps.length;
-            document.getElementById('statActive').textContent = activeApps;
-            // statUsers và statVisits giữ nguyên demo
+            // Đếm users nếu có tenant
+            if (currentTenant) {
+                const userCount = await VSH_DATA.countTenantUsers(currentTenant.id);
+                document.getElementById('statUsers').textContent = userCount;
+            }
         }
         
         function updateCurrentDate() {
@@ -1018,15 +895,7 @@
             const now = new Date();
             const dayName = days[now.getDay()];
             const date = now.toLocaleDateString('vi-VN');
-            
             document.getElementById('currentDate').textContent = `Hôm nay là ${dayName}, ngày ${date}`;
-        }
-        
-        function updateMenuByRole(role) {
-            const adminMenu = document.getElementById('adminMenu');
-            if (role === 'END_USER') {
-                adminMenu.style.display = 'none';
-            }
         }
         
         // ===== FILTER & SEARCH =====
@@ -1034,7 +903,6 @@
         function filterByCategory(category) {
             currentFilter = category;
             
-            // Update active tab
             document.querySelectorAll('.filter-tab').forEach(tab => {
                 tab.classList.remove('is-active');
                 if (tab.dataset.filter === category) {
@@ -1042,13 +910,15 @@
                 }
             });
             
-            renderApps(DEMO_APPS);
+            renderApps(allApps);
         }
         
         function filterApps() {
             const input = document.getElementById('searchInput') || document.querySelector('.search-box__input');
-            searchQuery = input.value;
-            renderApps(DEMO_APPS);
+            if (input) {
+                searchQuery = input.value;
+                renderApps(allApps);
+            }
         }
         
         // ===== SIDEBAR TOGGLE =====
@@ -1056,7 +926,6 @@
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebarOverlay');
-            
             sidebar.classList.toggle('is-active');
             overlay.classList.toggle('is-active');
         }
@@ -1068,10 +937,9 @@
             dropdown.classList.toggle('is-active');
         }
         
-        // Close dropdown when clicking outside
         document.addEventListener('click', function(e) {
             const dropdown = document.getElementById('userDropdown');
-            if (!dropdown.contains(e.target)) {
+            if (dropdown && !dropdown.contains(e.target)) {
                 dropdown.classList.remove('is-active');
             }
         });
@@ -1079,17 +947,15 @@
         // ===== APP FUNCTIONS =====
         
         function openApp(appId) {
-            const app = DEMO_APPS.find(a => a.id === appId);
+            const app = allApps.find(a => a.id === appId);
             if (!app) return;
             
-            if (app.url && app.url !== '#') {
-                // Mở trong modal
+            if (app.url && app.url !== '#' && app.url !== '') {
                 document.getElementById('modalAppName').textContent = app.name;
                 document.getElementById('appIframe').src = app.url;
                 document.getElementById('appModal').classList.add('is-active');
             } else {
-                // Demo: Alert
-                alert(`Mở ứng dụng: ${app.name}\n\nỨng dụng này sẽ được kết nối sau khi setup backend.`);
+                VSH_UTILS.showAlert(`Ứng dụng "${app.name}" đang được phát triển`, 'info');
             }
         }
         
@@ -1101,27 +967,30 @@
         // ===== QUICK ACTIONS =====
         
         function openAppStore() {
-            alert('Tính năng "Thêm ứng dụng" sẽ mở App Store để bạn chọn thêm ứng dụng mới.');
+            VSH_UTILS.showAlert('Tính năng App Store đang được phát triển', 'info');
         }
         
         function inviteUser() {
-            alert('Tính năng "Mời người dùng" cho phép bạn gửi email mời thành viên mới vào hệ thống.');
+            VSH_UTILS.showAlert('Tính năng mời người dùng đang được phát triển', 'info');
         }
         
         function viewReports() {
-            alert('Tính năng "Xem báo cáo" sẽ hiển thị các báo cáo tổng hợp về hoạt động của doanh nghiệp.');
+            VSH_UTILS.showAlert('Tính năng báo cáo đang được phát triển', 'info');
         }
         
         function openSettings() {
-            alert('Tính năng "Cài đặt" cho phép bạn tùy chỉnh logo, màu sắc và các thiết lập khác.');
+            VSH_UTILS.showAlert('Tính năng cài đặt đang được phát triển', 'info');
         }
         
         // ===== LOGOUT =====
         
-        function handleLogout() {
-            // Trong thực tế sẽ gọi Supabase signOut
-            console.log('Logging out...');
-            window.location.href = '../login.html';
+        async function handleLogout() {
+            const result = await VSH_AUTH.signOut();
+            if (result.success) {
+                window.location.href = '../login.html';
+            } else {
+                VSH_UTILS.showAlert('Không thể đăng xuất: ' + result.error, 'error');
+            }
         }
         
         // ===== CLOSE MODAL ON ESCAPE =====
@@ -1131,5 +1000,7 @@
             }
         });
     </script>
+
 </body>
 </html>
+
