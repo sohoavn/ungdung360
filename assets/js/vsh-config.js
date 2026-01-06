@@ -1,37 +1,43 @@
-/*
- * ═══════════════════════════════════════════════════════════
- * VSH PLATFORM - CONFIG
- * Cấu hình kết nối Supabase
- * ═══════════════════════════════════════════════════════════
+/**
+ * =====================================================
+ * VSH PLATFORM - CONFIGURATION
+ * =====================================================
+ * File cấu hình chứa các thông tin kết nối Supabase
+ * 
+ * HƯỚNG DẪN: Thay thế YOUR_PROJECT_URL và YOUR_ANON_KEY
+ * bằng thông tin từ Supabase Dashboard của bạn
+ * =====================================================
  */
 
 const VSH_CONFIG = {
-    // ⚠️ THAY THẾ BẰNG THÔNG TIN SUPABASE CỦA BẠN
-    SUPABASE_URL: 'https://sjtcxwesuijqfmijnagf.supabase.co',
-    SUPABASE_ANON_KEY: 'sb_publishable_lzPHp2YNNCdygbkwaArXvg_w-8j2AuM',
+    // ===== SUPABASE =====
+    // Lấy từ: Supabase Dashboard > Project Settings > API
     
-    // Cấu hình khác
+    SUPABASE_URL: 'https://sjtcxwesuijqfmijnagf.supabase.co',
+    // Ví dụ: 'https://abcdefghijk.supabase.co'
+    
+    SUPABASE_ANON_KEY: 'sb_publishable_lzPHp2YNNCdygbkwaArXvg_w-8j2AuM',
+    // Ví dụ: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.xxxxx'
+    
+    // ===== APP INFO =====
     APP_NAME: 'UngDung360',
     APP_VERSION: '1.0.0',
     
-    // Roles
-    ROLES: {
-        SUPER_ADMIN: 'SUPER_ADMIN',
-        CUSTOMER_ADMIN: 'CUSTOMER_ADMIN',
-        END_USER: 'END_USER'
+    // ===== ROUTES (Đường dẫn) =====
+    ROUTES: {
+        HOME: '/index.html',
+        LOGIN: '/login.html',
+        REGISTER: '/register.html',
+        DASHBOARD: '/dashboard/index.html',
+        FORGOT_PASSWORD: '/forgot-password.html'
     },
     
-    // Plans
-    PLANS: {
-        STARTER: { name: 'Khởi nghiệp', maxUsers: 10, maxApps: 5 },
-        PROFESSIONAL: { name: 'Chuyên nghiệp', maxUsers: 50, maxApps: 20 },
-        ENTERPRISE: { name: 'Doanh nghiệp', maxUsers: -1, maxApps: -1 }
-    }
+    // ===== DEFAULT VALUES =====
+    DEFAULT_PRIMARY_COLOR: '#2563eb',
+    DEFAULT_PLAN: 'starter'
 };
 
-// Xuất config để sử dụng ở các file khác
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = VSH_CONFIG;
+// Kiểm tra config đã được thiết lập chưa
+if (VSH_CONFIG.SUPABASE_URL === 'YOUR_PROJECT_URL') {
+    console.warn('⚠️ VSH_CONFIG: Chưa cấu hình SUPABASE_URL! Hãy cập nhật file vsh-config.js');
 }
-
-
