@@ -38,6 +38,7 @@ const VSH_CONFIG = {
 };
 
 // Kiểm tra config đã được thiết lập chưa
-if (VSH_CONFIG.SUPABASE_URL === 'YOUR_PROJECT_URL') {
+if (VSH_CONFIG.SUPABASE_URL === 'https://sjtcxwesuijqfmijnagf.supabase.co') {
     console.warn('⚠️ VSH_CONFIG: Chưa cấu hình SUPABASE_URL! Hãy cập nhật file vsh-config.js');
 }
+
