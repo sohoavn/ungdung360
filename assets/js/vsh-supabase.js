@@ -1,10 +1,3 @@
-/*
- * ═══════════════════════════════════════════════════════════
- * VSH PLATFORM - SUPABASE CLIENT
- * Khởi tạo và quản lý kết nối Supabase
- * ═══════════════════════════════════════════════════════════
- */
-
 // Khởi tạo Supabase Client
 const supabase = window.supabase.createClient(
     VSH_CONFIG.SUPABASE_URL,
@@ -401,3 +394,4 @@ style.textContent = `
 document.head.appendChild(style);
 
 console.log('✅ VSH Supabase Client loaded successfully');
+
