@@ -289,6 +289,11 @@
             }
         }
     </style>
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="assets/js/vsh-config.js"></script>
+    <script src="assets/js/vsh-supabase.js"></script>
+
 </head>
 <body>
     <div class="login-page">
@@ -434,6 +439,15 @@
     </div>
     
     <script>
+        // ===== KIỂM TRA ĐÃ ĐĂNG NHẬP CHƯA =====
+        async function checkExistingSession() {
+            const isLoggedIn = await VSH_AUTH.isLoggedIn();
+            if (isLoggedIn) {
+                window.location.href = 'dashboard/index.html';
+            }
+        }
+        checkExistingSession();
+        
         // ===== TOGGLE PASSWORD VISIBILITY =====
         function togglePassword() {
             const passwordInput = document.getElementById('password');
@@ -449,61 +463,76 @@
         }
         
         // ===== HANDLE LOGIN =====
-        function handleLogin(event) {
+        async function handleLogin(event) {
             event.preventDefault();
             
-            const email = document.getElementById('email').value;
+            const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
             const loginBtn = document.getElementById('loginBtn');
             const alert = document.getElementById('loginAlert');
             const alertMessage = document.getElementById('loginAlertMessage');
             
+            // Validate
+            if (!email || !password) {
+                alert.classList.remove('login-alert--success');
+                alert.classList.add('login-alert--error');
+                alertMessage.textContent = 'Vui lòng nhập email và mật khẩu';
+                alert.classList.add('is-visible');
+                return;
+            }
+            
             // Show loading state
             loginBtn.classList.add('vsh-btn--loading');
             loginBtn.disabled = true;
+            alert.classList.remove('is-visible');
             
-            // Simulate login (thay bằng Supabase sau)
-            setTimeout(() => {
-                // Demo: Chấp nhận bất kỳ email/password nào
-                // Trong thực tế sẽ gọi API Supabase
-                
-                console.log('Login attempt:', { email, password });
-                
-                // Demo success - redirect to dashboard
-                // Bỏ comment dòng dưới khi có trang dashboard
-                // window.location.href = 'dashboard/index.html';
-                
-                // Tạm thời: Hiển thị thông báo
+            // Gọi Supabase để đăng nhập
+            const result = await VSH_AUTH.signIn(email, password);
+            
+            if (result.success) {
+                // Thành công
                 alert.classList.remove('login-alert--error');
                 alert.classList.add('login-alert--success');
                 alertMessage.textContent = '✓ Đăng nhập thành công! Đang chuyển hướng...';
                 alert.classList.add('is-visible');
                 
-                // Redirect sau 1.5s
+                // Redirect sau 1 giây
                 setTimeout(() => {
-                    // Tạm thời redirect về trang chủ vì chưa có dashboard
                     window.location.href = 'dashboard/index.html';
-                }, 1500);
+                }, 1000);
+            } else {
+                // Thất bại
+                loginBtn.classList.remove('vsh-btn--loading');
+                loginBtn.disabled = false;
                 
-            }, 1000);
+                alert.classList.remove('login-alert--success');
+                alert.classList.add('login-alert--error');
+                
+                // Dịch lỗi sang tiếng Việt
+                let errorMessage = 'Đã có lỗi xảy ra';
+                if (result.error.includes('Invalid login credentials')) {
+                    errorMessage = 'Email hoặc mật khẩu không đúng';
+                } else if (result.error.includes('Email not confirmed')) {
+                    errorMessage = 'Vui lòng xác nhận email trước khi đăng nhập';
+                } else if (result.error.includes('Too many requests')) {
+                    errorMessage = 'Quá nhiều lần thử. Vui lòng đợi vài phút';
+                }
+                
+                alertMessage.textContent = errorMessage;
+                alert.classList.add('is-visible');
+            }
         }
         
         // ===== HANDLE GOOGLE LOGIN =====
-        function handleGoogleLogin() {
-            // Sẽ tích hợp Supabase Google Auth sau
-            alert('Tính năng đăng nhập với Google sẽ được kích hoạt sau khi kết nối Supabase!');
+        async function handleGoogleLogin() {
+            const result = await VSH_AUTH.signInWithGoogle();
+            if (!result.success) {
+                VSH_UTILS.showAlert('Không thể đăng nhập bằng Google: ' + result.error, 'error');
+            }
         }
-        
-        // ===== CHECK IF ALREADY LOGGED IN =====
-        // Sẽ implement sau khi có Supabase
-        // function checkAuth() {
-        //     const session = supabase.auth.session();
-        //     if (session) {
-        //         window.location.href = 'dashboard/index.html';
-        //     }
-        // }
-        // checkAuth();
     </script>
+
 </body>
 </html>
+
 
