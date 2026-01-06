@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gán Apps cho Tenant - Admin UngDung360</title>
+    
+    <!-- Font Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- VSH CSS Framework -->
+    <link rel="stylesheet" href="../assets/css/vsh-core.css">
+    <link rel="stylesheet" href="../assets/css/vsh-components.css">
+    <link rel="stylesheet" href="../assets/css/vsh-layout.css">
+    <link rel="stylesheet" href="../assets/css/vsh-utilities.css">
+    <link rel="stylesheet" href="../assets/css/vsh-responsive.css">
+    
+    <!-- Supabase & Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../assets/js/vsh-config.js"></script>
+    <script src="../assets/js/vsh-supabase.js"></script>
+    <script src="../assets/js/vsh-auth.js"></script>
+    <script src="../assets/js/vsh-admin.js"></script>
+    
+    <style>
+        .admin-header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        }
+        
+        .select-tenant {
+            max-width: 400px;
+            margin-bottom: 24px;
+        }
+        
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+        
+        .app-card {
+            background: white;
+            border: 2px solid var(--vsh-border-color);
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .app-card:hover {
+            border-color: var(--vsh-primary);
+        }
+        
+        .app-card.is-selected {
+            border-color: var(--vsh-secondary);
+            background: #f0fdf4;
+        }
+        
+        .app-card__header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .app-card__icon {
+            width: 48px;
+            height: 48px;
+            background: var(--vsh-bg-secondary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .app-card__name {
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        .app-card__category {
+            font-size: 12px;
+            color: var(--vsh-text-tertiary);
+        }
+        
+        .app-card__desc {
+            font-size: 13px;
+            color: var(--vsh-text-secondary);
+            line-height: 1.5;
+        }
+        
+        .app-card__checkbox {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--vsh-border-color);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+        }
+        
+        .app-card.is-selected .app-card__checkbox {
+            background: var(--vsh-secondary);
+            border-color: var(--vsh-secondary);
+            color: white;
+        }
+        
+        .action-bar {
+            position: sticky;
+            bottom: 0;
+            background: white;
+            padding: 16px 24px;
+            border-top: 1px solid var(--vsh-border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 24px -24px -24px;
+        }
+        
+        .no-tenant {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--vsh-text-secondary);
+        }
+    </style>
+</head>
+<body class="vsh-app vsh-app--with-sidebar">
+    
+    <!-- SIDEBAR -->
+    <aside class="vsh-sidebar vsh-sidebar--dark" id="sidebar">
+        <div class="vsh-sidebar__header">
+            <a href="index.html" class="vsh-sidebar__brand">
+                <div class="vsh-sidebar__brand-logo" style="background: #ef4444;">A</div>
+                <span class="vsh-sidebar__brand-text">Admin Panel</span>
+            </a>
+        </div>
+        
+        <nav class="vsh-sidebar__nav">
+            <div class="vsh-sidebar__nav-section">
+                <div class="vsh-sidebar__nav-title">Quản trị</div>
+                <ul class="vsh-sidebar__nav-list">
+                    <li><a href="index.html" class="vsh-sidebar__nav-link"><span class="vsh-sidebar__nav-icon">📊</span><span class="vsh-sidebar__nav-text">Dashboard</span></a></li>
+                    <li><a href="tenants.html" class="vsh-sidebar__nav-link"><span class="vsh-sidebar__nav-icon">🏢</span><span class="vsh-sidebar__nav-text">Quản lý Tenants</span></a></li>
+                    <li><a href="users.html" class="vsh-sidebar__nav-link"><span class="vsh-sidebar__nav-icon">👥</span><span class="vsh-sidebar__nav-text">Quản lý Users</span></a></li>
+                    <li><a href="apps.html" class="vsh-sidebar__nav-link"><span class="vsh-sidebar__nav-icon">📱</span><span class="vsh-sidebar__nav-text">Quản lý Apps</span></a></li>
+                    <li><a href="tenant-apps.html" class="vsh-sidebar__nav-link is-active"><span class="vsh-sidebar__nav-icon">🔗</span><span class="vsh-sidebar__nav-text">Gán Apps</span></a></li>
+                </ul>
+            </div>
+        </nav>
+        
+        <div class="vsh-sidebar__footer">
+            <a href="#" class="vsh-sidebar__nav-link" onclick="handleLogout()">
+                <span class="vsh-sidebar__nav-icon">🚪</span>
+                <span class="vsh-sidebar__nav-text">Đăng xuất</span>
+            </a>
+        </div>
+    </aside>
+    
+    <div class="vsh-sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    
+    <!-- HEADER -->
+    <header class="vsh-header admin-header">
+        <button class="vsh-header__toggle" onclick="toggleSidebar()" style="color: white;">☰</button>
+        <div class="vsh-header__logo" style="margin-left: 16px;">
+            <span style="background: #ef4444; color: white; padding: 6px 10px; border-radius: 6px; font-size: 12px;">ADMIN</span>
+            <span class="vsh-hidden-mobile" style="color: white; margin-left: 8px;">Gán Apps cho Tenant</span>
+        </div>
+        <div class="vsh-header__actions" style="margin-left: auto;">
+            <div class="vsh-avatar" style="background: #ef4444; cursor: pointer;" onclick="handleLogout()">
+                <span id="userInitials">SA</span>
+            </div>
+        </div>
+    </header>
+    
+    <!-- MAIN -->
+    <main class="vsh-main">
+        <div class="vsh-page-header">
+            <h1 class="vsh-page-header__title">🔗 Gán Apps cho Tenant</h1>
+            <p class="vsh-page-header__description">Chọn tenant và tick các app muốn kích hoạt</p>
+        </div>
+        
+        <!-- Select Tenant -->
+        <div class="select-tenant">
+            <label class="vsh-label">Chọn Tenant</label>
+            <select class="vsh-select" id="tenantSelect" onchange="loadTenantApps()">
+                <option value="">-- Chọn một tenant --</option>
+            </select>
+        </div>
+        
+        <!-- No Tenant Selected -->
+        <div class="no-tenant" id="noTenantState">
+            <div style="font-size: 64px; margin-bottom: 16px;">🏢</div>
+            <h3>Chưa chọn Tenant</h3>
+            <p>Vui lòng chọn một tenant từ danh sách ở trên</p>
+        </div>
+        
+        <!-- Apps Content -->
+        <div id="appsContent" style="display: none;">
+            <div class="vsh-card">
+                <div class="vsh-card__header">
+                    <h3 class="vsh-card__title">Danh sách Apps</h3>
+                    <span class="vsh-badge vsh-badge--primary" id="selectedCount">0 đã chọn</span>
+                </div>
+                <div class="vsh-card__body">
+                    <div class="apps-grid" id="appsGrid">
+                        <!-- Apps will be rendered here -->
+                    </div>
+                </div>
+                
+                <!-- Action Bar -->
+                <div class="action-bar">
+                    <span id="statusText" style="color: var(--vsh-text-secondary); font-size: 14px;">Thay đổi sẽ được lưu tự động</span>
+                    <button class="vsh-btn vsh-btn--primary" id="saveBtn" onclick="saveChanges()">
+                        💾 Lưu thay đổi
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <script>
+        let allTenants = [];
+        let allApps = [];
+        let tenantApps = []; // Apps đã gán cho tenant hiện tại
+        let selectedTenantId = null;
+        
+        // ===== INITIALIZATION =====
+        document.addEventListener('DOMContentLoaded', async function() {
+            const isLoggedIn = await VSH_AUTH.isLoggedIn();
+            if (!isLoggedIn) {
+                window.location.href = '../login.html';
+                return;
+            }
+            
+            const isAdmin = await VSH_ADMIN.isSuperAdmin();
+            if (!isAdmin) {
+                alert('Bạn không có quyền truy cập!');
+                window.location.href = '../dashboard/index.html';
+                return;
+            }
+            
+            await loadTenants();
+            await loadApps();
+        });
+        
+        // ===== LOAD TENANTS =====
+        async function loadTenants() {
+            const result = await VSH_ADMIN.getAllTenants();
+            if (result.success) {
+                allTenants = result.data;
+                
+                const select = document.getElementById('tenantSelect');
+                allTenants.forEach(t => {
+                    const option = document.createElement('option');
+                    option.value = t.id;
+                    option.textContent = t.name;
+                    select.appendChild(option);
+                });
+            }
+        }
+        
+        // ===== LOAD APPS =====
+        async function loadApps() {
+            const result = await VSH_ADMIN.getAllApps();
+            if (result.success) {
+                allApps = result.data;
+            }
+        }
+        
+        // ===== LOAD TENANT APPS =====
+        async function loadTenantApps() {
+            selectedTenantId = document.getElementById('tenantSelect').value;
+            
+            if (!selectedTenantId) {
+                document.getElementById('noTenantState').style.display = 'block';
+                document.getElementById('appsContent').style.display = 'none';
+                return;
+            }
+            
+            document.getElementById('noTenantState').style.display = 'none';
+            document.getElementById('appsContent').style.display = 'block';
+            
+            // Lấy danh sách apps đã gán cho tenant này
+            const supabase = getSupabase();
+            const { data, error } = await supabase
+                .from('tenant_apps')
+                .select('app_id')
+                .eq('tenant_id', selectedTenantId);
+            
+            tenantApps = data ? data.map(ta => ta.app_id) : [];
+            
+            renderApps();
+        }
+        
+        // ===== RENDER APPS =====
+        function renderApps() {
+            const grid = document.getElementById('appsGrid');
+            
+            const categoryNames = {
+                'management': 'Quản trị',
+                'operation': 'Vận hành',
+                'report': 'Báo cáo',
+                'communication': 'Liên lạc'
+            };
+            
+            grid.innerHTML = allApps.map(app => {
+                const isSelected = tenantApps.includes(app.id);
+                
+                return `
+                    <div class="app-card ${isSelected ? 'is-selected' : ''}" 
+                         onclick="toggleApp('${app.id}')" 
+                         data-app-id="${app.id}"
+                         style="position: relative;">
+                        <div class="app-card__checkbox">
+                            ${isSelected ? '✓' : ''}
+                        </div>
+                        <div class="app-card__header">
+                            <div class="app-card__icon">${app.icon || '📱'}</div>
+                            <div>
+                                <div class="app-card__name">${app.name}</div>
+                                <div class="app-card__category">${categoryNames[app.category] || app.category}</div>
+                            </div>
+                        </div>
+                        <div class="app-card__desc">${app.description || ''}</div>
+                    </div>
+                `;
+            }).join('');
+            
+            updateSelectedCount();
+        }
+        
+        // ===== TOGGLE APP =====
+        function toggleApp(appId) {
+            const index = tenantApps.indexOf(appId);
+            
+            if (index > -1) {
+                tenantApps.splice(index, 1);
+            } else {
+                tenantApps.push(appId);
+            }
+            
+            // Update UI
+            const card = document.querySelector(`[data-app-id="${appId}"]`);
+            if (card) {
+                card.classList.toggle('is-selected');
+                const checkbox = card.querySelector('.app-card__checkbox');
+                checkbox.textContent = card.classList.contains('is-selected') ? '✓' : '';
+            }
+            
+            updateSelectedCount();
+        }
+        
+        // ===== UPDATE COUNT =====
+        function updateSelectedCount() {
+            document.getElementById('selectedCount').textContent = tenantApps.length + ' đã chọn';
+        }
+        
+        // ===== SAVE CHANGES =====
+        async function saveChanges() {
+            if (!selectedTenantId) return;
+            
+            const btn = document.getElementById('saveBtn');
+            btn.classList.add('vsh-btn--loading');
+            btn.disabled = true;
+            
+            const supabase = getSupabase();
+            
+            // Xóa tất cả tenant_apps cũ của tenant này
+            await supabase
+                .from('tenant_apps')
+                .delete()
+                .eq('tenant_id', selectedTenantId);
+            
+            // Thêm các apps mới
+            if (tenantApps.length > 0) {
+                const newRecords = tenantApps.map(appId => ({
+                    tenant_id: selectedTenantId,
+                    app_id: appId,
+                    is_active: true
+                }));
+                
+                await supabase
+                    .from('tenant_apps')
+                    .insert(newRecords);
+            }
+            
+            btn.classList.remove('vsh-btn--loading');
+            btn.disabled = false;
+            
+            document.getElementById('statusText').textContent = '✓ Đã lưu thành công!';
+            document.getElementById('statusText').style.color = 'var(--vsh-secondary)';
+            
+            setTimeout(() => {
+                document.getElementById('statusText').textContent = 'Thay đổi sẽ được lưu tự động';
+                document.getElementById('statusText').style.color = 'var(--vsh-text-secondary)';
+            }, 3000);
+        }
+        
+        // ===== UTILS =====
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('is-active');
+            document.getElementById('sidebarOverlay').classList.toggle('is-active');
+        }
+        
+        async function handleLogout() {
+            await VSH_AUTH.signOut();
+            window.location.href = '../login.html';
+        }
+    </script>
+</body>
+</html>
