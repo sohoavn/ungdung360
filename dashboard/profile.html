@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông tin cá nhân - UngDung360</title>
+    
+    <!-- Font Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- VSH CSS Framework -->
+    <link rel="stylesheet" href="../assets/css/vsh-core.css">
+    <link rel="stylesheet" href="../assets/css/vsh-components.css">
+    <link rel="stylesheet" href="../assets/css/vsh-layout.css">
+    <link rel="stylesheet" href="../assets/css/vsh-utilities.css">
+    <link rel="stylesheet" href="../assets/css/vsh-responsive.css">
+    
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../assets/js/vsh-config.js"></script>
+    <script src="../assets/js/vsh-supabase.js"></script>
+    <script src="../assets/js/vsh-auth.js"></script>
+    
+    <style>
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 32px;
+            padding: 24px;
+            background: white;
+            border-radius: 12px;
+            border: 1px solid var(--vsh-border-color);
+        }
+        
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--vsh-primary), var(--vsh-primary-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: 700;
+            color: white;
+            flex-shrink: 0;
+        }
+        
+        .profile-info h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        
+        .profile-info p {
+            color: var(--vsh-text-secondary);
+            margin-bottom: 8px;
+        }
+        
+        .profile-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            background: var(--vsh-primary-bg);
+            color: var(--vsh-primary);
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .profile-form {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid var(--vsh-border-color);
+            padding: 24px;
+        }
+        
+        .form-section-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--vsh-border-color);
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+        
+        .form-grid--full {
+            grid-column: 1 / -1;
+        }
+        
+        .profile-alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+        
+        .profile-alert--success {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .profile-alert--error {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+        
+        .profile-alert.is-visible {
+            display: block;
+        }
+        
+        @media (max-width: 640px) {
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="vsh-app vsh-app--with-sidebar">
+    
+    <!-- SIDEBAR -->
+    <aside class="vsh-sidebar vsh-sidebar--dark" id="sidebar">
+        <div class="vsh-sidebar__header">
+            <a href="index.html" class="vsh-sidebar__brand">
+                <div class="vsh-sidebar__brand-logo">U3</div>
+                <span class="vsh-sidebar__brand-text">UngDung360</span>
+            </a>
+        </div>
+        
+        <nav class="vsh-sidebar__nav">
+            <div class="vsh-sidebar__nav-section">
+                <div class="vsh-sidebar__nav-title">Menu chính</div>
+                <ul class="vsh-sidebar__nav-list">
+                    <li>
+                        <a href="index.html" class="vsh-sidebar__nav-link">
+                            <span class="vsh-sidebar__nav-icon">🏠</span>
+                            <span class="vsh-sidebar__nav-text">Trang chủ</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="profile.html" class="vsh-sidebar__nav-link is-active">
+                            <span class="vsh-sidebar__nav-icon">👤</span>
+                            <span class="vsh-sidebar__nav-text">Thông tin cá nhân</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="vsh-sidebar__nav-section" id="adminSection" style="display: none;">
+                <div class="vsh-sidebar__nav-title">Quản trị</div>
+                <ul class="vsh-sidebar__nav-list">
+                    <li>
+                        <a href="../admin/index.html" class="vsh-sidebar__nav-link">
+                            <span class="vsh-sidebar__nav-icon">⚙️</span>
+                            <span class="vsh-sidebar__nav-text">Admin Panel</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        
+        <div class="vsh-sidebar__footer">
+            <a href="#" class="vsh-sidebar__nav-link" onclick="handleLogout()">
+                <span class="vsh-sidebar__nav-icon">🚪</span>
+                <span class="vsh-sidebar__nav-text">Đăng xuất</span>
+            </a>
+        </div>
+    </aside>
+    
+    <!-- OVERLAY -->
+    <div class="vsh-sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    
+    <!-- HEADER -->
+    <header class="vsh-header">
+        <button class="vsh-header__toggle" onclick="toggleSidebar()">☰</button>
+        
+        <div style="margin-left: auto; display: flex; align-items: center; gap: 12px;">
+            <div class="vsh-avatar" style="cursor: pointer;">
+                <span id="headerInitials">U</span>
+            </div>
+        </div>
+    </header>
+    
+    <!-- MAIN -->
+    <main class="vsh-main">
+        <!-- Page Header -->
+        <div class="vsh-page-header">
+            <h1 class="vsh-page-header__title">👤 Thông tin cá nhân</h1>
+            <p class="vsh-page-header__description">Quản lý thông tin tài khoản của bạn</p>
+        </div>
+        
+        <!-- Profile Header -->
+        <div class="profile-header">
+            <div class="profile-avatar" id="profileAvatar">U</div>
+            <div class="profile-info">
+                <h2 id="profileName">Đang tải...</h2>
+                <p id="profileEmail">...</p>
+                <span class="profile-badge" id="profileRole">
+                    <span>👤</span> Người dùng
+                </span>
+            </div>
+        </div>
+        
+        <!-- Alert -->
+        <div id="profileAlert" class="profile-alert"></div>
+        
+        <!-- Profile Form -->
+        <div class="profile-form">
+            <h3 class="form-section-title">Thông tin cơ bản</h3>
+            
+            <form id="profileForm" onsubmit="handleUpdateProfile(event)">
+                <div class="form-grid">
+                    <div class="vsh-form-group">
+                        <label class="vsh-label">Họ và tên</label>
+                        <input type="text" class="vsh-input" id="fullName" placeholder="Nhập họ và tên">
+                    </div>
+                    
+                    <div class="vsh-form-group">
+                        <label class="vsh-label">Số điện thoại</label>
+                        <input type="tel" class="vsh-input" id="phone" placeholder="0901234567">
+                    </div>
+                    
+                    <div class="vsh-form-group form-grid--full">
+                        <label class="vsh-label">Email</label>
+                        <input type="email" class="vsh-input" id="email" disabled style="background: var(--vsh-bg-secondary);">
+                        <span class="vsh-help-text">Email không thể thay đổi</span>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 24px;">
+                    <button type="submit" class="vsh-btn vsh-btn--primary" id="saveBtn">
+                        💾 Lưu thay đổi
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Change Password Section -->
+        <div class="profile-form" style="margin-top: 24px;">
+            <h3 class="form-section-title">Đổi mật khẩu</h3>
+            
+            <form id="passwordForm" onsubmit="handleChangePassword(event)">
+                <div class="form-grid">
+                    <div class="vsh-form-group">
+                        <label class="vsh-label">Mật khẩu mới</label>
+                        <input type="password" class="vsh-input" id="newPassword" placeholder="Tối thiểu 6 ký tự" minlength="6">
+                    </div>
+                    
+                    <div class="vsh-form-group">
+                        <label class="vsh-label">Xác nhận mật khẩu mới</label>
+                        <input type="password" class="vsh-input" id="confirmPassword" placeholder="Nhập lại mật khẩu">
+                    </div>
+                </div>
+                
+                <div style="margin-top: 24px;">
+                    <button type="submit" class="vsh-btn vsh-btn--secondary" id="passwordBtn">
+                        🔑 Đổi mật khẩu
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+    
+    <script>
+        let currentUser = null;
+        let currentProfile = null;
+        
+        // ===== INITIALIZATION =====
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Kiểm tra đăng nhập
+            const isLoggedIn = await VSH_AUTH.isLoggedIn();
+            if (!isLoggedIn) {
+                window.location.href = '../login.html';
+                return;
+            }
+            
+            // Lấy thông tin user
+            currentUser = await VSH_AUTH.getCurrentUser();
+            if (!currentUser) {
+                window.location.href = '../login.html';
+                return;
+            }
+            
+            // Load profile
+            await loadProfile();
+            
+            // Kiểm tra Super Admin để hiện menu
+            await checkAdminAccess();
+        });
+        
+        // ===== LOAD PROFILE =====
+        async function loadProfile() {
+            const supabase = getSupabase();
+            
+            // Lấy profile từ database
+            const { data: profile, error } = await supabase
+                .from('profiles')
+                .select('*')
+                .eq('id', currentUser.id)
+                .single();
+            
+            if (profile) {
+                currentProfile = profile;
+            }
+            
+            // Hiển thị thông tin
+            const fullName = currentProfile?.full_name || currentUser.user_metadata?.full_name || 'Chưa cập nhật';
+            const email = currentUser.email;
+            const phone = currentProfile?.phone || '';
+            const isSuperAdmin = currentProfile?.is_super_admin || false;
+            
+            // Avatar initials
+            const initials = fullName !== 'Chưa cập nhật' 
+                ? fullName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()
+                : 'U';
+            
+            document.getElementById('profileAvatar').textContent = initials;
+            document.getElementById('headerInitials').textContent = initials;
+            document.getElementById('profileName').textContent = fullName;
+            document.getElementById('profileEmail').textContent = email;
+            
+            // Role badge
+            if (isSuperAdmin) {
+                document.getElementById('profileRole').innerHTML = '<span>👑</span> Super Admin';
+                document.getElementById('profileRole').style.background = '#fef3c7';
+                document.getElementById('profileRole').style.color = '#d97706';
+            }
+            
+            // Fill form
+            document.getElementById('fullName').value = fullName !== 'Chưa cập nhật' ? fullName : '';
+            document.getElementById('phone').value = phone;
+            document.getElementById('email').value = email;
+        }
+        
+        // ===== CHECK ADMIN ACCESS =====
+        async function checkAdminAccess() {
+            if (currentProfile?.is_super_admin) {
+                document.getElementById('adminSection').style.display = 'block';
+            }
+        }
+        
+        // ===== SHOW ALERT =====
+        function showAlert(message, type) {
+            const alert = document.getElementById('profileAlert');
+            alert.className = 'profile-alert profile-alert--' + type + ' is-visible';
+            alert.textContent = message;
+            
+            // Auto hide after 5 seconds
+            setTimeout(() => {
+                alert.classList.remove('is-visible');
+            }, 5000);
+        }
+        
+        // ===== UPDATE PROFILE =====
+        async function handleUpdateProfile(event) {
+            event.preventDefault();
+            
+            const fullName = document.getElementById('fullName').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const btn = document.getElementById('saveBtn');
+            
+            if (!fullName) {
+                showAlert('Vui lòng nhập họ và tên', 'error');
+                return;
+            }
+            
+            btn.classList.add('vsh-btn--loading');
+            btn.disabled = true;
+            
+            const supabase = getSupabase();
+            
+            const { error } = await supabase
+                .from('profiles')
+                .update({
+                    full_name: fullName,
+                    phone: phone || null,
+                    updated_at: new Date().toISOString()
+                })
+                .eq('id', currentUser.id);
+            
+            btn.classList.remove('vsh-btn--loading');
+            btn.disabled = false;
+            
+            if (error) {
+                showAlert('Lỗi: ' + error.message, 'error');
+            } else {
+                showAlert('✓ Đã cập nhật thông tin thành công!', 'success');
+                
+                // Cập nhật hiển thị
+                document.getElementById('profileName').textContent = fullName;
+                const initials = fullName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                document.getElementById('profileAvatar').textContent = initials;
+                document.getElementById('headerInitials').textContent = initials;
+            }
+        }
+        
+        // ===== CHANGE PASSWORD =====
+        async function handleChangePassword(event) {
+            event.preventDefault();
+            
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const btn = document.getElementById('passwordBtn');
+            
+            if (!newPassword || !confirmPassword) {
+                showAlert('Vui lòng nhập đầy đủ mật khẩu', 'error');
+                return;
+            }
+            
+            if (newPassword.length < 6) {
+                showAlert('Mật khẩu phải có ít nhất 6 ký tự', 'error');
+                return;
+            }
+            
+            if (newPassword !== confirmPassword) {
+                showAlert('Mật khẩu xác nhận không khớp', 'error');
+                return;
+            }
+            
+            btn.classList.add('vsh-btn--loading');
+            btn.disabled = true;
+            
+            const supabase = getSupabase();
+            
+            const { error } = await supabase.auth.updateUser({
+                password: newPassword
+            });
+            
+            btn.classList.remove('vsh-btn--loading');
+            btn.disabled = false;
+            
+            if (error) {
+                showAlert('Lỗi: ' + error.message, 'error');
+            } else {
+                showAlert('✓ Đã đổi mật khẩu thành công!', 'success');
+                document.getElementById('passwordForm').reset();
+            }
+        }
+        
+        // ===== SIDEBAR & LOGOUT =====
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('is-active');
+            document.getElementById('sidebarOverlay').classList.toggle('is-active');
+        }
+        
+        async function handleLogout() {
+            await VSH_AUTH.signOut();
+            window.location.href = '../login.html';
+        }
+    </script>
+</body>
+</html>
