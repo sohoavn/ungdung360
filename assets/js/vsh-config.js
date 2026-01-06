@@ -8,7 +8,7 @@
 const VSH_CONFIG = {
     // ⚠️ THAY THẾ BẰNG THÔNG TIN SUPABASE CỦA BẠN
     SUPABASE_URL: 'https://nnjdtlljieyhmskzlyzw.supabase.co',
-    SUPABASE_ANON_KEY: 'sb_publishable_IXt69Gm_UEez891BptgjXQ_BoO9ru9n',
+    SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5uamR0bGxqaWV5aG1za3pseXp3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc2Mjc5NjYsImV4cCI6MjA4MzIwMzk2Nn0.lMzIyw12zlOK_2bdX2FXgEgnBvPFL8QLMulO2nNtcnU',
     
     // Cấu hình khác
     APP_NAME: 'UngDung360',
@@ -33,3 +33,4 @@ const VSH_CONFIG = {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = VSH_CONFIG;
 }
+
