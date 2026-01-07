@@ -23,6 +23,43 @@
     <style>
         /* ===== CUSTOM DASHBOARD STYLES ===== */
         
+        /* Trial Banner */
+        .trial-banner {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 1px solid #f59e0b;
+            border-radius: var(--vsh-border-radius);
+            padding: var(--vsh-space-3) var(--vsh-space-4);
+            margin-bottom: var(--vsh-space-4);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: var(--vsh-space-3);
+        }
+        
+        .trial-banner__text {
+            display: flex;
+            align-items: center;
+            gap: var(--vsh-space-2);
+            color: #92400e;
+            font-size: var(--vsh-text-sm);
+            font-weight: var(--vsh-font-medium);
+        }
+        
+        .trial-banner__days {
+            font-weight: var(--vsh-font-bold);
+            color: #b45309;
+        }
+        
+        .trial-banner--expired {
+            background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);
+            border-color: #ef4444;
+        }
+        
+        .trial-banner--expired .trial-banner__text {
+            color: #dc2626;
+        }
+        
         /* Welcome Banner */
         .welcome-banner {
             background: linear-gradient(135deg, var(--vsh-primary) 0%, var(--vsh-primary-dark) 100%);
@@ -73,9 +110,18 @@
             margin-bottom: var(--vsh-space-2);
         }
         
+        .welcome-banner__company {
+            font-size: var(--vsh-text-base);
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            gap: var(--vsh-space-2);
+        }
+        
         .welcome-banner__date {
             font-size: var(--vsh-text-sm);
             opacity: 0.8;
+            margin-top: var(--vsh-space-2);
         }
         
         /* Stats Grid */
@@ -107,25 +153,12 @@
             flex-shrink: 0;
         }
         
-        .stat-card__icon--primary {
-            background: var(--vsh-primary-bg);
-        }
+        .stat-card__icon--primary { background: var(--vsh-primary-bg); }
+        .stat-card__icon--success { background: #dcfce7; }
+        .stat-card__icon--warning { background: var(--vsh-warning-bg); }
+        .stat-card__icon--info { background: var(--vsh-info-bg); }
         
-        .stat-card__icon--success {
-            background: #dcfce7;
-        }
-        
-        .stat-card__icon--warning {
-            background: var(--vsh-warning-bg);
-        }
-        
-        .stat-card__icon--info {
-            background: var(--vsh-info-bg);
-        }
-        
-        .stat-card__info {
-            flex: 1;
-        }
+        .stat-card__info { flex: 1; }
         
         .stat-card__value {
             font-size: var(--vsh-text-2xl);
@@ -182,9 +215,7 @@
             transition: all var(--vsh-transition-fast);
         }
         
-        .filter-tab:hover {
-            color: var(--vsh-text-primary);
-        }
+        .filter-tab:hover { color: var(--vsh-text-primary); }
         
         .filter-tab.is-active {
             background: var(--vsh-bg-primary);
@@ -235,10 +266,7 @@
             flex-shrink: 0;
         }
         
-        .app-card__title-group {
-            flex: 1;
-            min-width: 0;
-        }
+        .app-card__title-group { flex: 1; min-width: 0; }
         
         .app-card__title {
             font-size: var(--vsh-text-base);
@@ -286,10 +314,6 @@
             background: var(--vsh-secondary);
         }
         
-        .app-card__status-dot--inactive {
-            background: var(--vsh-text-tertiary);
-        }
-        
         .app-card__btn {
             padding: var(--vsh-space-2) var(--vsh-space-4);
             font-size: var(--vsh-text-sm);
@@ -307,57 +331,31 @@
             color: white;
         }
         
-        /* App Card Badge */
-        .app-card__badge {
-            position: absolute;
-            top: var(--vsh-space-3);
-            right: var(--vsh-space-3);
-            padding: 2px 8px;
-            font-size: 10px;
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: var(--vsh-space-12) var(--vsh-space-4);
+        }
+        
+        .empty-state__icon {
+            font-size: 64px;
+            margin-bottom: var(--vsh-space-4);
+            opacity: 0.5;
+        }
+        
+        .empty-state__title {
+            font-size: var(--vsh-text-lg);
             font-weight: var(--vsh-font-semibold);
-            text-transform: uppercase;
-            border-radius: var(--vsh-border-radius-full);
-        }
-        
-        .app-card__badge--new {
-            background: var(--vsh-secondary);
-            color: white;
-        }
-        
-        .app-card__badge--popular {
-            background: var(--vsh-warning);
-            color: white;
-        }
-        
-        /* Quick Actions */
-        .quick-actions {
-            display: flex;
-            gap: var(--vsh-space-3);
-            flex-wrap: wrap;
-            margin-bottom: var(--vsh-space-6);
-        }
-        
-        .quick-action {
-            display: flex;
-            align-items: center;
-            gap: var(--vsh-space-2);
-            padding: var(--vsh-space-3) var(--vsh-space-4);
-            background: var(--vsh-bg-primary);
-            border: 1px solid var(--vsh-border-color);
-            border-radius: var(--vsh-border-radius);
-            font-size: var(--vsh-text-sm);
-            font-weight: var(--vsh-font-medium);
             color: var(--vsh-text-primary);
-            cursor: pointer;
-            transition: all var(--vsh-transition-fast);
+            margin-bottom: var(--vsh-space-2);
         }
         
-        .quick-action:hover {
-            border-color: var(--vsh-primary);
-            color: var(--vsh-primary);
+        .empty-state__description {
+            font-size: var(--vsh-text-sm);
+            color: var(--vsh-text-secondary);
         }
         
-        /* Search in Main */
+        /* Search Box */
         .search-box {
             position: relative;
             max-width: 400px;
@@ -387,104 +385,60 @@
             outline: none;
         }
         
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: var(--vsh-space-12) var(--vsh-space-4);
+        /* Upgrade Banner */
+        .upgrade-banner {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            border-radius: var(--vsh-border-radius-lg);
+            padding: var(--vsh-space-6);
+            color: white;
+            margin-top: var(--vsh-space-6);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: var(--vsh-space-4);
         }
         
-        .empty-state__icon {
-            font-size: 64px;
-            margin-bottom: var(--vsh-space-4);
-            opacity: 0.5;
-        }
-        
-        .empty-state__title {
+        .upgrade-banner__content h3 {
             font-size: var(--vsh-text-lg);
-            font-weight: var(--vsh-font-semibold);
-            color: var(--vsh-text-primary);
+            font-weight: var(--vsh-font-bold);
             margin-bottom: var(--vsh-space-2);
         }
         
-        .empty-state__description {
+        .upgrade-banner__content p {
             font-size: var(--vsh-text-sm);
-            color: var(--vsh-text-secondary);
+            opacity: 0.9;
         }
         
-        /* Recent Activity */
-        .activity-list {
-            display: flex;
-            flex-direction: column;
+        .upgrade-banner__btn {
+            background: white;
+            color: #7c3aed;
+            padding: var(--vsh-space-3) var(--vsh-space-6);
+            border-radius: var(--vsh-border-radius);
+            font-weight: var(--vsh-font-semibold);
+            text-decoration: none;
+            transition: all var(--vsh-transition-fast);
         }
         
-        .activity-item {
-            display: flex;
-            align-items: center;
-            gap: var(--vsh-space-3);
-            padding: var(--vsh-space-3) 0;
-            border-bottom: 1px solid var(--vsh-border-color);
+        .upgrade-banner__btn:hover {
+            background: #f5f3ff;
+            text-decoration: none;
         }
         
-        .activity-item:last-child {
-            border-bottom: none;
-        }
-        
-        .activity-item__icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: var(--vsh-bg-secondary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            flex-shrink: 0;
-        }
-        
-        .activity-item__content {
-            flex: 1;
-            min-width: 0;
-        }
-        
-        .activity-item__text {
-            font-size: var(--vsh-text-sm);
-            color: var(--vsh-text-primary);
-        }
-        
-        .activity-item__time {
-            font-size: var(--vsh-text-xs);
-            color: var(--vsh-text-tertiary);
-        }
-        
-        /* Responsive adjustments */
+        /* Responsive */
         @media (max-width: 640px) {
-            .welcome-banner {
-                padding: var(--vsh-space-4);
-            }
-            
-            .welcome-banner__name {
-                font-size: var(--vsh-text-xl);
-            }
-            
-            .apps-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .filter-tabs {
-                width: 100%;
-            }
-            
-            .section-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
+            .welcome-banner { padding: var(--vsh-space-4); }
+            .welcome-banner__name { font-size: var(--vsh-text-xl); }
+            .apps-grid { grid-template-columns: 1fr; }
+            .filter-tabs { width: 100%; }
+            .section-header { flex-direction: column; align-items: flex-start; }
         }
     </style>
     
     <!-- Supabase JS Library -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
-    <!-- VSH Scripts (chú ý đường dẫn có ../ vì đang ở thư mục con) -->
+    <!-- VSH Scripts -->
     <script src="../assets/js/vsh-config.js"></script>
     <script src="../assets/js/vsh-supabase.js"></script>
     <script src="../assets/js/vsh-auth.js"></script>
@@ -518,7 +472,7 @@
                         <a href="#" class="vsh-sidebar__nav-link">
                             <span class="vsh-sidebar__nav-icon">📱</span>
                             <span class="vsh-sidebar__nav-text">Ứng dụng</span>
-                            <span class="vsh-sidebar__nav-badge">12</span>
+                            <span class="vsh-sidebar__nav-badge" id="sidebarAppCount">0</span>
                         </a>
                     </li>
                     <li>
@@ -527,23 +481,17 @@
                             <span class="vsh-sidebar__nav-text">Báo cáo</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="#" class="vsh-sidebar__nav-link">
-                            <span class="vsh-sidebar__nav-icon">📁</span>
-                            <span class="vsh-sidebar__nav-text">Tài liệu</span>
-                        </a>
-                    </li>
                 </ul>
             </div>
             
-            <!-- Admin Menu (sẽ ẩn/hiện theo role) -->
-            <div class="vsh-sidebar__nav-section" id="adminMenu">
-                <div class="vsh-sidebar__nav-title">Quản trị</div>
+            <!-- Tenant Menu -->
+            <div class="vsh-sidebar__nav-section">
+                <div class="vsh-sidebar__nav-title">Công ty</div>
                 <ul class="vsh-sidebar__nav-list">
                     <li>
                         <a href="#" class="vsh-sidebar__nav-link">
                             <span class="vsh-sidebar__nav-icon">👥</span>
-                            <span class="vsh-sidebar__nav-text">Người dùng</span>
+                            <span class="vsh-sidebar__nav-text">Nhân viên</span>
                         </a>
                     </li>
                     <li>
@@ -554,13 +502,26 @@
                     </li>
                 </ul>
             </div>
+            
+            <!-- Admin Menu (chỉ hiện cho Super Admin) -->
+            <div class="vsh-sidebar__nav-section" id="adminMenu" style="display: none;">
+                <div class="vsh-sidebar__nav-title">Quản trị hệ thống</div>
+                <ul class="vsh-sidebar__nav-list">
+                    <li>
+                        <a href="../admin/index.html" class="vsh-sidebar__nav-link">
+                            <span class="vsh-sidebar__nav-icon">🔧</span>
+                            <span class="vsh-sidebar__nav-text">Admin Panel</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </nav>
         
         <!-- Sidebar Footer -->
         <div class="vsh-sidebar__footer">
-            <a href="#" class="vsh-sidebar__nav-link">
-                <span class="vsh-sidebar__nav-icon">❓</span>
-                <span class="vsh-sidebar__nav-text">Trợ giúp</span>
+            <a href="#" class="vsh-sidebar__nav-link" onclick="handleLogout()">
+                <span class="vsh-sidebar__nav-icon">🚪</span>
+                <span class="vsh-sidebar__nav-text">Đăng xuất</span>
             </a>
         </div>
     </aside>
@@ -571,18 +532,16 @@
     <!-- ===== HEADER ===== -->
     <header class="vsh-header">
         <!-- Toggle Sidebar (Mobile) -->
-        <button class="vsh-header__toggle" onclick="toggleSidebar()">
-            ☰
-        </button>
+        <button class="vsh-header__toggle" onclick="toggleSidebar()">☰</button>
         
         <!-- Tenant Info -->
         <div class="vsh-flex vsh-flex--items-center vsh-flex--gap-3">
             <div id="tenantLogo" style="width: 32px; height: 32px; background: var(--vsh-primary-bg); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold; color: var(--vsh-primary);">
-                A
+                C
             </div>
             <div class="vsh-hidden-mobile">
-                <div id="tenantName" style="font-size: 14px; font-weight: 600; color: var(--vsh-text-primary);">Công ty ABC</div>
-                <div style="font-size: 12px; color: var(--vsh-text-tertiary);">Gói Chuyên nghiệp</div>
+                <div id="tenantName" style="font-size: 14px; font-weight: 600; color: var(--vsh-text-primary);">Đang tải...</div>
+                <div id="tenantPlan" style="font-size: 12px; color: var(--vsh-text-tertiary);">...</div>
             </div>
         </div>
         
@@ -596,11 +555,11 @@
         <div class="vsh-dropdown" id="userDropdown">
             <div class="vsh-header__user" onclick="toggleUserMenu()">
                 <div class="vsh-avatar">
-                    <span id="userInitials">NA</span>
+                    <span id="userInitials">U</span>
                 </div>
                 <div class="vsh-hidden-mobile">
-                    <div class="vsh-header__user-name" id="userName">Nguyễn Văn A</div>
-                    <div class="vsh-header__user-role" id="userRole">Admin</div>
+                    <div class="vsh-header__user-name" id="userName">Đang tải...</div>
+                    <div class="vsh-header__user-role" id="userRole">...</div>
                 </div>
                 <span class="vsh-hidden-mobile">▼</span>
             </div>
@@ -617,7 +576,7 @@
                     <span>⚙️</span> Cài đặt
                 </a>
                 <div class="vsh-dropdown__divider"></div>
-                <a href="../login.html" class="vsh-dropdown__item vsh-dropdown__item--danger" onclick="handleLogout()">
+                <a href="#" class="vsh-dropdown__item vsh-dropdown__item--danger" onclick="handleLogout()">
                     <span>🚪</span> Đăng xuất
                 </a>
             </div>
@@ -626,12 +585,25 @@
     
     <!-- ===== MAIN CONTENT ===== -->
     <main class="vsh-main">
+        <!-- Trial Banner (hiện khi đang trong thời gian trial) -->
+        <div class="trial-banner" id="trialBanner" style="display: none;">
+            <div class="trial-banner__text">
+                <span>⏰</span>
+                <span>Bạn đang trong thời gian dùng thử. Còn <strong class="trial-banner__days" id="trialDaysLeft">14</strong> ngày.</span>
+            </div>
+            <a href="#" class="vsh-btn vsh-btn--warning vsh-btn--sm">Nâng cấp ngay</a>
+        </div>
+        
         <!-- Welcome Banner -->
         <div class="welcome-banner">
             <div class="welcome-banner__content">
                 <div class="welcome-banner__greeting">Xin chào,</div>
-                <div class="welcome-banner__name" id="welcomeName">Nguyễn Văn A! 👋</div>
-                <div class="welcome-banner__date" id="currentDate">Hôm nay là Thứ Hai, ngày 01/01/2024</div>
+                <div class="welcome-banner__name" id="welcomeName">Đang tải... 👋</div>
+                <div class="welcome-banner__company">
+                    <span>🏢</span>
+                    <span id="welcomeCompany">Đang tải...</span>
+                </div>
+                <div class="welcome-banner__date" id="currentDate">...</div>
             </div>
         </div>
         
@@ -640,47 +612,31 @@
             <div class="stat-card">
                 <div class="stat-card__icon stat-card__icon--primary">📱</div>
                 <div class="stat-card__info">
-                    <div class="stat-card__value" id="statApps">12</div>
-                    <div class="stat-card__label">Ứng dụng</div>
+                    <div class="stat-card__value" id="statApps">0</div>
+                    <div class="stat-card__label">Ứng dụng được phép</div>
                 </div>
             </div>
             <div class="stat-card">
                 <div class="stat-card__icon stat-card__icon--success">✅</div>
                 <div class="stat-card__info">
-                    <div class="stat-card__value" id="statActive">8</div>
+                    <div class="stat-card__value" id="statActive">0</div>
                     <div class="stat-card__label">Đang hoạt động</div>
                 </div>
             </div>
             <div class="stat-card">
-                <div class="stat-card__icon stat-card__icon--warning">👥</div>
+                <div class="stat-card__icon stat-card__icon--warning">📅</div>
                 <div class="stat-card__info">
-                    <div class="stat-card__value" id="statUsers">25</div>
-                    <div class="stat-card__label">Người dùng</div>
+                    <div class="stat-card__value" id="statTrialDays">--</div>
+                    <div class="stat-card__label">Ngày dùng thử còn lại</div>
                 </div>
             </div>
             <div class="stat-card">
-                <div class="stat-card__icon stat-card__icon--info">📈</div>
+                <div class="stat-card__icon stat-card__icon--info">👥</div>
                 <div class="stat-card__info">
-                    <div class="stat-card__value" id="statVisits">156</div>
-                    <div class="stat-card__label">Truy cập hôm nay</div>
+                    <div class="stat-card__value" id="statUsers">1</div>
+                    <div class="stat-card__label">Thành viên</div>
                 </div>
             </div>
-        </div>
-        
-        <!-- Quick Actions -->
-        <div class="quick-actions">
-            <button class="quick-action" onclick="openAppStore()">
-                <span>➕</span> Thêm ứng dụng
-            </button>
-            <button class="quick-action" onclick="inviteUser()">
-                <span>👤</span> Mời người dùng
-            </button>
-            <button class="quick-action" onclick="viewReports()">
-                <span>📊</span> Xem báo cáo
-            </button>
-            <button class="quick-action" onclick="openSettings()">
-                <span>⚙️</span> Cài đặt
-            </button>
         </div>
         
         <!-- Apps Section -->
@@ -689,21 +645,11 @@
                 <span>📱</span> Ứng dụng của bạn
             </h2>
             <div class="filter-tabs" id="filterTabs">
-                <button class="filter-tab is-active" data-filter="all" onclick="filterByCategory('all')">
-                    Tất cả
-                </button>
-                <button class="filter-tab" data-filter="management" onclick="filterByCategory('management')">
-                    Quản trị
-                </button>
-                <button class="filter-tab" data-filter="report" onclick="filterByCategory('report')">
-                    Báo cáo
-                </button>
-                <button class="filter-tab" data-filter="operation" onclick="filterByCategory('operation')">
-                    Vận hành
-                </button>
-                <button class="filter-tab" data-filter="communication" onclick="filterByCategory('communication')">
-                    Liên lạc
-                </button>
+                <button class="filter-tab is-active" data-filter="all" onclick="filterByCategory('all')">Tất cả</button>
+                <button class="filter-tab" data-filter="management" onclick="filterByCategory('management')">Quản trị</button>
+                <button class="filter-tab" data-filter="report" onclick="filterByCategory('report')">Báo cáo</button>
+                <button class="filter-tab" data-filter="operation" onclick="filterByCategory('operation')">Vận hành</button>
+                <button class="filter-tab" data-filter="communication" onclick="filterByCategory('communication')">Liên lạc</button>
             </div>
         </div>
         
@@ -718,40 +664,47 @@
             <!-- Apps sẽ được render bởi JavaScript -->
         </div>
         
-        <!-- Empty State (ẩn mặc định) -->
+        <!-- Empty State -->
         <div class="empty-state vsh-hidden" id="emptyState">
             <div class="empty-state__icon">📭</div>
             <h3 class="empty-state__title">Không tìm thấy ứng dụng</h3>
             <p class="empty-state__description">Thử thay đổi từ khóa tìm kiếm hoặc bộ lọc</p>
         </div>
         
-    </main>
-    
-    <!-- ===== APP MODAL ===== -->
-    <div class="vsh-modal-backdrop" id="appModal">
-        <div class="vsh-modal vsh-modal--lg">
-            <div class="vsh-modal__header">
-                <h3 class="vsh-modal__title" id="modalAppName">Tên ứng dụng</h3>
-                <button class="vsh-modal__close" onclick="closeAppModal()">×</button>
-            </div>
-            <div class="vsh-modal__body" style="padding: 0; height: 70vh;">
-                <iframe id="appIframe" src="" style="width: 100%; height: 100%; border: none;"></iframe>
-            </div>
+        <!-- Loading State -->
+        <div class="empty-state" id="loadingState">
+            <div class="empty-state__icon">⏳</div>
+            <h3 class="empty-state__title">Đang tải ứng dụng...</h3>
+            <p class="empty-state__description">Vui lòng đợi trong giây lát</p>
         </div>
-    </div>
+        
+        <!-- Upgrade Banner -->
+        <div class="upgrade-banner" id="upgradeBanner">
+            <div class="upgrade-banner__content">
+                <h3>🚀 Muốn thêm nhiều ứng dụng hơn?</h3>
+                <p>Nâng cấp lên gói Chuyên nghiệp để mở khóa 50+ ứng dụng và tính năng cao cấp!</p>
+            </div>
+            <a href="#" class="upgrade-banner__btn">Xem bảng giá</a>
+        </div>
+        
+    </main>
     
     <script>
         // ===== STATE =====
         let currentUser = null;
+        let tenantInfo = null;
+        let tenantApps = [];
         let currentFilter = 'all';
         let searchQuery = '';
-        let allApps = [];
         
         // ===== INITIALIZATION =====
         document.addEventListener('DOMContentLoaded', async function() {
+            console.log('🚀 Đang khởi tạo Dashboard...');
+            
             // Kiểm tra đăng nhập
             const isLoggedIn = await VSH_AUTH.isLoggedIn();
             if (!isLoggedIn) {
+                console.log('❌ Chưa đăng nhập, chuyển về trang login');
                 window.location.href = '../login.html';
                 return;
             }
@@ -759,79 +712,187 @@
             // Lấy thông tin user
             currentUser = await VSH_AUTH.getCurrentUser();
             if (!currentUser) {
+                console.log('❌ Không lấy được user, chuyển về trang login');
                 window.location.href = '../login.html';
                 return;
             }
             
-            // Hiển thị thông tin
-            renderUserInfo(currentUser);
+            console.log('✅ User đã đăng nhập:', currentUser.email);
+            
+            // Load thông tin tenant
+            await loadTenantInfo();
+            
+            // Hiển thị thông tin user
+            renderUserInfo();
+            
+            // Cập nhật ngày hiện tại
             updateCurrentDate();
             
-            // Load danh sách apps từ Supabase
-            await loadApps();
+            // Load apps của tenant
+            await loadTenantApps();
             
-            // Render stats
-            renderStats();
+            // Kiểm tra và hiển thị trial banner
+            checkTrialStatus();
+            
+            // Kiểm tra quyền admin
+            await checkAdminAccess();
+            
+            console.log('✅ Dashboard đã sẵn sàng!');
         });
         
-        // ===== LOAD APPS TỪ SUPABASE =====
-        async function loadApps() {
+        // ===== LOAD TENANT INFO =====
+        async function loadTenantInfo() {
             try {
                 const supabase = getSupabase();
-                if (!supabase) {
-                    console.error('Không thể kết nối Supabase');
-                    return;
-                }
                 
-                // Query lấy tất cả apps
-                const { data, error } = await supabase
-                    .from('apps')
-                    .select('*')
+                // Lấy tenant từ tenant_users
+                const { data: tenantUser, error } = await supabase
+                    .from('tenant_users')
+                    .select(`
+                        tenant_id,
+                        role,
+                        tenants (
+                            id,
+                            name,
+                            code,
+                            plan,
+                            trial_ends_at,
+                            status
+                        )
+                    `)
+                    .eq('user_id', currentUser.id)
                     .eq('is_active', true)
-                    .order('sort_order', { ascending: true });
+                    .single();
                 
-                if (error) {
-                    console.error('Lỗi load apps:', error);
+                if (error || !tenantUser) {
+                    console.warn('⚠️ Không tìm thấy tenant cho user này');
+                    tenantInfo = null;
                     return;
                 }
                 
-                // Lưu vào state
-                allApps = data || [];
-                console.log('✅ Loaded', allApps.length, 'apps');
+                tenantInfo = {
+                    id: tenantUser.tenants.id,
+                    name: tenantUser.tenants.name,
+                    code: tenantUser.tenants.code,
+                    plan: tenantUser.tenants.plan,
+                    trial_ends_at: tenantUser.tenants.trial_ends_at,
+                    status: tenantUser.tenants.status,
+                    user_role: tenantUser.role
+                };
+                
+                // Lưu vào localStorage
+                localStorage.setItem('vsh_tenant_id', tenantInfo.id);
+                localStorage.setItem('vsh_tenant_info', JSON.stringify(tenantInfo));
+                
+                console.log('✅ Loaded tenant:', tenantInfo.name);
+                
+            } catch (err) {
+                console.error('❌ Lỗi load tenant:', err);
+            }
+        }
+        
+        // ===== LOAD TENANT APPS =====
+        async function loadTenantApps() {
+            try {
+                document.getElementById('loadingState').classList.remove('vsh-hidden');
+                document.getElementById('appsGrid').innerHTML = '';
+                
+                const supabase = getSupabase();
+                
+                if (!tenantInfo) {
+                    console.warn('⚠️ Không có tenant, hiển thị apps mặc định');
+                    // Nếu không có tenant, load tất cả apps miễn phí
+                    const { data, error } = await supabase
+                        .from('apps')
+                        .select('*')
+                        .eq('is_active', true)
+                        .eq('is_free', true)
+                        .order('sort_order', { ascending: true });
+                    
+                    tenantApps = data || [];
+                } else {
+                    // Lấy apps được gán cho tenant
+                    const { data, error } = await supabase
+                        .from('tenant_apps')
+                        .select(`
+                            app_id,
+                            is_active,
+                            apps (
+                                id,
+                                code,
+                                name,
+                                description,
+                                icon,
+                                category,
+                                app_url,
+                                is_free,
+                                is_active,
+                                sort_order
+                            )
+                        `)
+                        .eq('tenant_id', tenantInfo.id)
+                        .eq('is_active', true);
+                    
+                    if (error) {
+                        console.error('❌ Lỗi load tenant_apps:', error);
+                        tenantApps = [];
+                    } else {
+                        // Chuyển đổi format
+                        tenantApps = (data || [])
+                            .filter(ta => ta.apps && ta.apps.is_active)
+                            .map(ta => ta.apps)
+                            .sort((a, b) => a.sort_order - b.sort_order);
+                    }
+                }
+                
+                console.log('✅ Loaded', tenantApps.length, 'apps');
+                
+                document.getElementById('loadingState').classList.add('vsh-hidden');
                 
                 // Render apps
                 renderApps();
                 
+                // Update stats
+                renderStats();
+                
             } catch (err) {
-                console.error('Exception:', err);
+                console.error('❌ Lỗi load apps:', err);
+                document.getElementById('loadingState').classList.add('vsh-hidden');
             }
         }
         
         // ===== RENDER USER INFO =====
-        function renderUserInfo(user) {
-            // Lấy tên từ metadata hoặc email
-            const fullName = user.user_metadata?.full_name || user.email.split('@')[0];
-            const email = user.email;
+        function renderUserInfo() {
+            const fullName = currentUser.user_metadata?.full_name || currentUser.email.split('@')[0];
             
-            // Cập nhật các phần hiển thị
+            // User info
             document.getElementById('userName').textContent = fullName;
-            document.getElementById('userRole').textContent = 'Người dùng';
             document.getElementById('welcomeName').textContent = fullName + '! 👋';
             
-            // Initials cho avatar
+            // User role
+            const userRole = tenantInfo?.user_role || 'member';
+            const roleNames = { 'owner': 'Chủ sở hữu', 'admin': 'Quản trị', 'member': 'Thành viên' };
+            document.getElementById('userRole').textContent = roleNames[userRole] || 'Thành viên';
+            
+            // Initials
             const names = fullName.split(' ');
-            let initials;
-            if (names.length > 1) {
-                initials = names[0][0] + names[names.length - 1][0];
-            } else {
-                initials = fullName.substring(0, 2);
-            }
+            let initials = names.length > 1 ? names[0][0] + names[names.length - 1][0] : fullName.substring(0, 2);
             document.getElementById('userInitials').textContent = initials.toUpperCase();
             
-            // Tenant info (tạm thời dùng tên công ty từ metadata)
-            const company = user.user_metadata?.company || 'Công ty của bạn';
-            document.getElementById('tenantName').textContent = company;
-            document.getElementById('tenantLogo').textContent = company.charAt(0).toUpperCase();
+            // Tenant info
+            if (tenantInfo) {
+                document.getElementById('tenantName').textContent = tenantInfo.name;
+                document.getElementById('tenantLogo').textContent = tenantInfo.name.charAt(0).toUpperCase();
+                document.getElementById('welcomeCompany').textContent = tenantInfo.name;
+                
+                // Plan
+                const planNames = { 'trial': 'Dùng thử', 'starter': 'Khởi nghiệp', 'professional': 'Chuyên nghiệp', 'enterprise': 'Doanh nghiệp' };
+                document.getElementById('tenantPlan').textContent = planNames[tenantInfo.plan] || tenantInfo.plan;
+            } else {
+                document.getElementById('tenantName').textContent = 'Chưa có công ty';
+                document.getElementById('welcomeCompany').textContent = 'Chưa có công ty';
+                document.getElementById('tenantPlan').textContent = 'Tạo công ty ngay';
+            }
         }
         
         // ===== RENDER APPS =====
@@ -840,7 +901,7 @@
             const emptyState = document.getElementById('emptyState');
             
             // Lọc apps
-            let filteredApps = allApps;
+            let filteredApps = tenantApps;
             
             // Lọc theo category
             if (currentFilter !== 'all') {
@@ -865,7 +926,7 @@
             
             emptyState.classList.add('vsh-hidden');
             
-            // Map category sang tên tiếng Việt
+            // Map category
             const categoryNames = {
                 'management': 'Quản trị',
                 'operation': 'Vận hành',
@@ -874,47 +935,94 @@
             };
             
             // Render cards
-            grid.innerHTML = filteredApps.map((app, index) => {
-                // Random badge cho demo (chỉ hiển thị một số app)
-                let badgeHtml = '';
-                if (index === 0) {
-                    badgeHtml = '<span class="app-card__badge app-card__badge--popular">Hot</span>';
-                } else if (index === 2 || index === 9) {
-                    badgeHtml = '<span class="app-card__badge app-card__badge--new">Mới</span>';
-                }
-                
-                const categoryName = categoryNames[app.category] || app.category;
-                
-                return `
-                    <div class="app-card" onclick="openApp('${app.id}', '${app.name}')">
-                        ${badgeHtml}
-                        <div class="app-card__header">
-                            <div class="app-card__icon">${app.icon || '📱'}</div>
-                            <div class="app-card__title-group">
-                                <div class="app-card__title">${app.name}</div>
-                                <div class="app-card__category">${categoryName}</div>
-                            </div>
-                        </div>
-                        <div class="app-card__description">${app.description || 'Không có mô tả'}</div>
-                        <div class="app-card__footer">
-                            <div class="app-card__status">
-                                <span class="app-card__status-dot"></span>
-                                <span>Hoạt động</span>
-                            </div>
-                            <button class="app-card__btn" onclick="event.stopPropagation(); openApp('${app.id}', '${app.name}')">
-                                Mở app
-                            </button>
+            grid.innerHTML = filteredApps.map(app => `
+                <div class="app-card" onclick="openApp('${app.id}', '${app.name}')">
+                    <div class="app-card__header">
+                        <div class="app-card__icon">${app.icon || '📱'}</div>
+                        <div class="app-card__title-group">
+                            <div class="app-card__title">${app.name}</div>
+                            <div class="app-card__category">${categoryNames[app.category] || app.category || 'Khác'}</div>
                         </div>
                     </div>
-                `;
-            }).join('');
+                    <div class="app-card__description">${app.description || 'Không có mô tả'}</div>
+                    <div class="app-card__footer">
+                        <div class="app-card__status">
+                            <span class="app-card__status-dot"></span>
+                            <span>Hoạt động</span>
+                        </div>
+                        <button class="app-card__btn" onclick="event.stopPropagation(); openApp('${app.id}', '${app.name}')">
+                            Mở app
+                        </button>
+                    </div>
+                </div>
+            `).join('');
         }
         
         // ===== RENDER STATS =====
         function renderStats() {
-            document.getElementById('statApps').textContent = allApps.length;
-            document.getElementById('statActive').textContent = allApps.filter(a => a.is_active).length;
-            // statUsers và statVisits giữ nguyên demo
+            document.getElementById('statApps').textContent = tenantApps.length;
+            document.getElementById('statActive').textContent = tenantApps.length;
+            document.getElementById('sidebarAppCount').textContent = tenantApps.length;
+            
+            // Trial days
+            if (tenantInfo && tenantInfo.plan === 'trial' && tenantInfo.trial_ends_at) {
+                const trialEnds = new Date(tenantInfo.trial_ends_at);
+                const now = new Date();
+                const diffTime = trialEnds - now;
+                const daysLeft = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                document.getElementById('statTrialDays').textContent = daysLeft > 0 ? daysLeft : 0;
+            } else {
+                document.getElementById('statTrialDays').textContent = '∞';
+            }
+        }
+        
+        // ===== CHECK TRIAL STATUS =====
+        function checkTrialStatus() {
+            const banner = document.getElementById('trialBanner');
+            
+            if (!tenantInfo || tenantInfo.plan !== 'trial') {
+                banner.style.display = 'none';
+                document.getElementById('upgradeBanner').style.display = 'none';
+                return;
+            }
+            
+            if (tenantInfo.trial_ends_at) {
+                const trialEnds = new Date(tenantInfo.trial_ends_at);
+                const now = new Date();
+                const diffTime = trialEnds - now;
+                const daysLeft = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                
+                document.getElementById('trialDaysLeft').textContent = daysLeft > 0 ? daysLeft : 0;
+                
+                if (daysLeft <= 0) {
+                    banner.classList.add('trial-banner--expired');
+                    banner.querySelector('.trial-banner__text span:last-child').innerHTML = 
+                        '⚠️ Thời gian dùng thử đã <strong>hết hạn</strong>. Vui lòng nâng cấp để tiếp tục sử dụng.';
+                } else if (daysLeft <= 3) {
+                    banner.style.background = 'linear-gradient(135deg, #fef2f2 0%, #fecaca 100%)';
+                    banner.style.borderColor = '#f87171';
+                }
+                
+                banner.style.display = 'flex';
+            }
+        }
+        
+        // ===== CHECK ADMIN ACCESS =====
+        async function checkAdminAccess() {
+            try {
+                const supabase = getSupabase();
+                const { data: profile } = await supabase
+                    .from('profiles')
+                    .select('is_super_admin')
+                    .eq('id', currentUser.id)
+                    .single();
+                
+                if (profile?.is_super_admin) {
+                    document.getElementById('adminMenu').style.display = 'block';
+                }
+            } catch (err) {
+                console.error('Lỗi check admin:', err);
+            }
         }
         
         // ===== UPDATE DATE =====
@@ -923,7 +1031,6 @@
             const now = new Date();
             const dayName = days[now.getDay()];
             const date = now.toLocaleDateString('vi-VN');
-            
             document.getElementById('currentDate').textContent = `Hôm nay là ${dayName}, ngày ${date}`;
         }
         
@@ -953,17 +1060,13 @@
         
         // ===== TOGGLE SIDEBAR =====
         function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            
-            sidebar.classList.toggle('is-active');
-            overlay.classList.toggle('is-active');
+            document.getElementById('sidebar').classList.toggle('is-active');
+            document.getElementById('sidebarOverlay').classList.toggle('is-active');
         }
         
         // ===== TOGGLE USER MENU =====
         function toggleUserMenu() {
-            const dropdown = document.getElementById('userDropdown');
-            dropdown.classList.toggle('is-active');
+            document.getElementById('userDropdown').classList.toggle('is-active');
         }
         
         // Close dropdown when clicking outside
@@ -976,32 +1079,7 @@
         
         // ===== OPEN APP =====
         function openApp(appId, appName) {
-            // Tạm thời hiển thị thông báo
-            // Trong tương lai sẽ mở app trong modal hoặc trang mới
             alert(`Mở ứng dụng: ${appName}\n\nTính năng này sẽ được kích hoạt trong phiên bản tiếp theo.`);
-        }
-        
-        // ===== CLOSE APP MODAL =====
-        function closeAppModal() {
-            document.getElementById('appModal').classList.remove('is-active');
-            document.getElementById('appIframe').src = '';
-        }
-        
-        // ===== QUICK ACTIONS =====
-        function openAppStore() {
-            alert('Tính năng "Thêm ứng dụng" sẽ được kích hoạt trong phiên bản tiếp theo.');
-        }
-        
-        function inviteUser() {
-            alert('Tính năng "Mời người dùng" sẽ được kích hoạt trong phiên bản tiếp theo.');
-        }
-        
-        function viewReports() {
-            alert('Tính năng "Xem báo cáo" sẽ được kích hoạt trong phiên bản tiếp theo.');
-        }
-        
-        function openSettings() {
-            alert('Tính năng "Cài đặt" sẽ được kích hoạt trong phiên bản tiếp theo.');
         }
         
         // ===== LOGOUT =====
@@ -1013,18 +1091,7 @@
                 alert('Có lỗi khi đăng xuất. Vui lòng thử lại.');
             }
         }
-        
-        // ===== CLOSE MODAL ON ESCAPE =====
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeAppModal();
-            }
-        });
     </script>
-
 
 </body>
 </html>
-
-
-
