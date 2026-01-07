@@ -135,6 +135,7 @@
             <!-- Navigation (ẩn trên mobile) -->
             <nav class="vsh-header__nav">
                 <a href="#tinh-nang" class="vsh-header__nav-link">Tính năng</a>
+                <a href="#kho-ung-dung" class="vsh-header__nav-link">Kho ứng dụng</a>
                 <a href="#nganh-nghe" class="vsh-header__nav-link">Ngành nghề</a>
                 <a href="#bang-gia" class="vsh-header__nav-link">Bảng giá</a>
                 <a href="#lien-he" class="vsh-header__nav-link">Liên hệ</a>
@@ -256,6 +257,299 @@
             </div>
         </div>
     </section>
+    
+<!-- ===== APP STORE SECTION (Kho ứng dụng) ===== -->
+<section id="kho-ung-dung" class="vsh-section">
+    <div class="vsh-container">
+        <!-- Section Header -->
+        <div class="vsh-section__header">
+            <h2 class="vsh-section__title">📱 Kho ứng dụng phong phú</h2>
+            <p class="vsh-section__subtitle">
+                Hơn 50+ ứng dụng được thiết kế riêng cho từng nhu cầu. Chọn những gì bạn cần, bỏ qua những gì không cần.
+            </p>
+        </div>
+        
+        <!-- App Categories Tabs -->
+        <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 40px;">
+            <button class="app-tab is-active" onclick="filterApps('all')">Tất cả</button>
+            <button class="app-tab" onclick="filterApps('management')">Quản trị</button>
+            <button class="app-tab" onclick="filterApps('operation')">Vận hành</button>
+            <button class="app-tab" onclick="filterApps('report')">Báo cáo</button>
+            <button class="app-tab" onclick="filterApps('communication')">Liên lạc</button>
+        </div>
+        
+        <!-- Apps Grid -->
+        <div class="apps-showcase" id="appsShowcase">
+            
+            <!-- App 1: Quản lý kho -->
+            <div class="app-item" data-category="management">
+                <div class="app-item__icon" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">📦</div>
+                <div class="app-item__content">
+                    <h3 class="app-item__name">Quản lý kho</h3>
+                    <p class="app-item__desc">Theo dõi tồn kho, nhập xuất, cảnh báo hết hàng tự động</p>
+                    <span class="app-item__badge app-item__badge--free">Miễn phí</span>
+                </div>
+            </div>
+            
+            <!-- App 2: Chấm công -->
+            <div class="app-item" data-category="operation">
+                <div class="app-item__icon" style="background: linear-gradient(135deg, #10b981, #059669);">⏰</div>
+                <div class="app-item__content">
+                    <h3 class="app-item__name">Chấm công</h3>
+                    <p class="app-item__desc">Điểm danh nhân viên, tính giờ làm việc, báo cáo chuyên cần</p>
+                    <span class="app-item__badge app-item__badge--free">Miễn phí</span>
+                </div>
+            </div>
+            
+            <!-- App 3: Quản lý công việc -->
+            <div class="app-item" data-category="management">
+                <div class="app-item__icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">✅</div>
+                <div class="app-item__content">
+                    <h3 class="app-item__name">Quản lý công việc</h3>
+                    <p class="app-item__desc">Giao việc, theo dõi tiến độ, deadline và hiệu suất</p>
+                    <span class="app-item__badge app-item__badge--free">Miễn phí</span>
+                </div>
+            </div>
+            
+            <!-- App 4: CRM Cơ bản -->
+            <div class="app-item" data-category="management">
+                <div class="app-item__icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">👥</div>
+                <div class="app-item__content">
+                    <h3 class="app-item__name">CRM Cơ bản</h3>
+                    <p class="app-item__desc">Quản lý khách hàng, lịch sử giao dịch, chăm sóc khách hàng</p>
+                    <span class="app-item__badge app-item__badge--free">Miễn phí</span>
+                </div>
+            </div>
+            
+            <!-- App 5: Báo cáo doanh thu -->
+            <div class="app-item" data-category="report">
+                <div class="app-item__icon" style="background: linear-gradient(135deg, #ef4444, #dc2626);">📊</div>
+                <div class="app-item__content">
+                    <h3 class="app-item__name">Báo cáo doanh thu</h3>
+                    <p class="app-item__desc">Thống kê doanh thu, chi phí, lợi nhuận theo thời gian</p>
+                    <span class="app-item__badge app-item__badge--free">Miễn phí</span>
+                </div>
+            </div>
+            
+            <!-- App 6: Quản lý đơn hàng -->
+            <div class="app-item" data-category="operation">
+                <div class="app-item__icon" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">🛒</div>
+                <div class="app-item__content">
+                    <h3 class="app-item__name">Quản lý đơn hàng</h3>
+                    <p class="app-item__desc">Tạo đơn, theo dõi trạng thái, in hóa đơn tự động</p>
+                    <span class="app-item__badge app-item__badge--pro">Pro</span>
+                </div>
+            </div>
+            
+            <!-- App 7: Chat nội bộ -->
+            <div class="app-item" data-category="communication">
+                <div class="app-item__icon" style="background: linear-gradient(135deg, #ec4899, #db2777);">💬</div>
+                <div class="app-item__content">
+                    <h3 class="app-item__name">Chat nội bộ</h3>
+                    <p class="app-item__desc">Nhắn tin nhóm, chia sẻ file, thông báo công ty</p>
+                    <span class="app-item__badge app-item__badge--pro">Pro</span>
+                </div>
+            </div>
+            
+            <!-- App 8: Quản lý tài sản -->
+            <div class="app-item" data-category="management">
+                <div class="app-item__icon" style="background: linear-gradient(135deg, #14b8a6, #0d9488);">🏷️</div>
+                <div class="app-item__content">
+                    <h3 class="app-item__name">Quản lý tài sản</h3>
+                    <p class="app-item__desc">Theo dõi thiết bị, bảo trì, khấu hao tài sản</p>
+                    <span class="app-item__badge app-item__badge--pro">Pro</span>
+                </div>
+            </div>
+            
+            <!-- App 9: Lịch & Sự kiện -->
+            <div class="app-item" data-category="operation">
+                <div class="app-item__icon" style="background: linear-gradient(135deg, #6366f1, #4f46e5);">📅</div>
+                <div class="app-item__content">
+                    <h3 class="app-item__name">Lịch & Sự kiện</h3>
+                    <p class="app-item__desc">Lịch họp, nhắc nhở, đồng bộ với Google Calendar</p>
+                    <span class="app-item__badge app-item__badge--pro">Pro</span>
+                </div>
+            </div>
+            
+            <!-- App 10: Báo cáo nhân sự -->
+            <div class="app-item" data-category="report">
+                <div class="app-item__icon" style="background: linear-gradient(135deg, #84cc16, #65a30d);">📈</div>
+                <div class="app-item__content">
+                    <h3 class="app-item__name">Báo cáo nhân sự</h3>
+                    <p class="app-item__desc">Thống kê nhân viên, nghỉ phép, hiệu suất làm việc</p>
+                    <span class="app-item__badge app-item__badge--pro">Pro</span>
+                </div>
+            </div>
+            
+            <!-- App 11: Thông báo Email -->
+            <div class="app-item" data-category="communication">
+                <div class="app-item__icon" style="background: linear-gradient(135deg, #f97316, #ea580c);">📧</div>
+                <div class="app-item__content">
+                    <h3 class="app-item__name">Thông báo Email</h3>
+                    <p class="app-item__desc">Gửi email hàng loạt, mẫu email, theo dõi mở email</p>
+                    <span class="app-item__badge app-item__badge--pro">Pro</span>
+                </div>
+            </div>
+            
+            <!-- App 12: Phê duyệt -->
+            <div class="app-item" data-category="operation">
+                <div class="app-item__icon" style="background: linear-gradient(135deg, #a855f7, #9333ea);">✍️</div>
+                <div class="app-item__content">
+                    <h3 class="app-item__name">Phê duyệt</h3>
+                    <p class="app-item__desc">Quy trình duyệt đơn từ, chi tiêu, nghỉ phép</p>
+                    <span class="app-item__badge app-item__badge--pro">Pro</span>
+                </div>
+            </div>
+            
+        </div>
+        
+        <!-- View All Button -->
+        <div style="text-align: center; margin-top: 40px;">
+            <p style="color: var(--vsh-text-secondary); margin-bottom: 16px;">
+                Và còn <strong>40+ ứng dụng</strong> khác đang chờ bạn khám phá!
+            </p>
+            <a href="register.html" class="vsh-btn vsh-btn--primary vsh-btn--lg">
+                Dùng thử miễn phí →
+            </a>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* App Store Section Styles */
+    .app-tab {
+        padding: 10px 20px;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--vsh-text-secondary);
+        background: var(--vsh-bg-secondary);
+        border: 1px solid var(--vsh-border-color);
+        border-radius: 25px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    
+    .app-tab:hover {
+        border-color: var(--vsh-primary);
+        color: var(--vsh-primary);
+    }
+    
+    .app-tab.is-active {
+        background: var(--vsh-primary);
+        border-color: var(--vsh-primary);
+        color: white;
+    }
+    
+    .apps-showcase {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+    }
+    
+    .app-item {
+        background: white;
+        border: 1px solid var(--vsh-border-color);
+        border-radius: 16px;
+        padding: 24px;
+        display: flex;
+        gap: 16px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .app-item:hover {
+        border-color: var(--vsh-primary);
+        box-shadow: 0 10px 30px rgba(37, 99, 235, 0.1);
+        transform: translateY(-4px);
+    }
+    
+    .app-item.is-hidden {
+        display: none;
+    }
+    
+    .app-item__icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        flex-shrink: 0;
+    }
+    
+    .app-item__content {
+        flex: 1;
+        min-width: 0;
+    }
+    
+    .app-item__name {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--vsh-text-primary);
+        margin-bottom: 6px;
+    }
+    
+    .app-item__desc {
+        font-size: 13px;
+        color: var(--vsh-text-secondary);
+        line-height: 1.5;
+        margin-bottom: 10px;
+    }
+    
+    .app-item__badge {
+        display: inline-block;
+        padding: 3px 10px;
+        font-size: 11px;
+        font-weight: 600;
+        border-radius: 20px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .app-item__badge--free {
+        background: #dcfce7;
+        color: #16a34a;
+    }
+    
+    .app-item__badge--pro {
+        background: #fef3c7;
+        color: #d97706;
+    }
+    
+    @media (max-width: 640px) {
+        .apps-showcase {
+            grid-template-columns: 1fr;
+        }
+        
+        .app-tab {
+            padding: 8px 16px;
+            font-size: 13px;
+        }
+    }
+</style>
+
+<script>
+    // Filter Apps Function
+    function filterApps(category) {
+        // Update active tab
+        document.querySelectorAll('.app-tab').forEach(tab => {
+            tab.classList.remove('is-active');
+        });
+        event.target.classList.add('is-active');
+        
+        // Filter apps
+        document.querySelectorAll('.app-item').forEach(item => {
+            if (category === 'all' || item.dataset.category === category) {
+                item.classList.remove('is-hidden');
+            } else {
+                item.classList.add('is-hidden');
+            }
+        });
+    }
+</script>
+
+
     <!-- ===== INDUSTRIES SECTION (Ngành nghề) ===== -->
     <section id="nganh-nghe" class="vsh-section vsh-section--gray">
         <div class="vsh-container">
