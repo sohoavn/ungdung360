@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tham gia công ty - UngDung360</title>
+    
+    <!-- Font Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- VSH CSS Framework -->
+    <link rel="stylesheet" href="assets/css/vsh-core.css">
+    <link rel="stylesheet" href="assets/css/vsh-components.css">
+    <link rel="stylesheet" href="assets/css/vsh-layout.css">
+    <link rel="stylesheet" href="assets/css/vsh-utilities.css">
+    <link rel="stylesheet" href="assets/css/vsh-responsive.css">
+    
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="assets/js/vsh-config.js"></script>
+    <script src="assets/js/vsh-supabase.js"></script>
+    <script src="assets/js/vsh-auth.js"></script>
+    
+    <style>
+        .invite-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            padding: 20px;
+        }
+        
+        .invite-card {
+            width: 100%;
+            max-width: 480px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .invite-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+        }
+        
+        .invite-icon--loading {
+            background: #f1f5f9;
+        }
+        
+        .invite-icon--success {
+            background: #dcfce7;
+        }
+        
+        .invite-icon--error {
+            background: #fef2f2;
+        }
+        
+        .invite-icon--info {
+            background: #dbeafe;
+        }
+        
+        .invite-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--vsh-text-primary);
+            margin-bottom: 12px;
+        }
+        
+        .invite-desc {
+            font-size: 16px;
+            color: var(--vsh-text-secondary);
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+        
+        .invite-company {
+            background: var(--vsh-bg-secondary);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+        
+        .invite-company__name {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--vsh-text-primary);
+            margin-bottom: 4px;
+        }
+        
+        .invite-company__role {
+            font-size: 14px;
+            color: var(--vsh-text-secondary);
+        }
+        
+        .invite-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .invite-footer {
+            margin-top: 24px;
+            font-size: 14px;
+            color: var(--vsh-text-tertiary);
+        }
+        
+        .invite-footer a {
+            color: var(--vsh-primary);
+        }
+        
+        /* Spinner */
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #e2e8f0;
+            border-top-color: var(--vsh-primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="invite-page">
+        <div class="invite-card">
+            <!-- Loading State -->
+            <div id="loadingState">
+                <div class="invite-icon invite-icon--loading">
+                    <div class="spinner"></div>
+                </div>
+                <h1 class="invite-title">Đang kiểm tra lời mời...</h1>
+                <p class="invite-desc">Vui lòng đợi trong giây lát</p>
+            </div>
+            
+            <!-- Error State -->
+            <div id="errorState" style="display: none;">
+                <div class="invite-icon invite-icon--error">❌</div>
+                <h1 class="invite-title">Lời mời không hợp lệ</h1>
+                <p class="invite-desc" id="errorMessage">Lời mời đã hết hạn hoặc không tồn tại.</p>
+                <div class="invite-actions">
+                    <a href="index.html" class="vsh-btn vsh-btn--primary vsh-btn--lg">
+                        Về trang chủ
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Not Logged In State -->
+            <div id="notLoggedInState" style="display: none;">
+                <div class="invite-icon invite-icon--info">🔐</div>
+                <h1 class="invite-title">Đăng nhập để tiếp tục</h1>
+                <p class="invite-desc">Bạn cần đăng nhập hoặc tạo tài khoản để tham gia công ty.</p>
+                
+                <div class="invite-company" id="companyInfoGuest">
+                    <div class="invite-company__name" id="companyNameGuest">-</div>
+                    <div class="invite-company__role">Bạn được mời với vai trò: <strong id="roleNameGuest">-</strong></div>
+                </div>
+                
+                <div class="invite-actions">
+                    <a href="" class="vsh-btn vsh-btn--primary vsh-btn--lg" id="loginLink">
+                        Đăng nhập
+                    </a>
+                    <a href="" class="vsh-btn vsh-btn--outline vsh-btn--lg" id="registerLink">
+                        Tạo tài khoản mới
+                    </a>
+                </div>
+                
+                <div class="invite-footer">
+                    Sau khi đăng nhập, bạn sẽ tự động tham gia công ty
+                </div>
+            </div>
+            
+            <!-- Logged In - Can Accept -->
+            <div id="acceptState" style="display: none;">
+                <div class="invite-icon invite-icon--success">🎉</div>
+                <h1 class="invite-title">Bạn được mời tham gia!</h1>
+                <p class="invite-desc">Nhấn nút bên dưới để tham gia công ty</p>
+                
+                <div class="invite-company">
+                    <div class="invite-company__name" id="companyName">-</div>
+                    <div class="invite-company__role">Vai trò: <strong id="roleName">-</strong></div>
+                </div>
+                
+                <div class="invite-actions">
+                    <button class="vsh-btn vsh-btn--success vsh-btn--lg" id="acceptBtn" onclick="acceptInvitation()">
+                        ✓ Tham gia ngay
+                    </button>
+                    <a href="dashboard/index.html" class="vsh-btn vsh-btn--secondary vsh-btn--lg">
+                        Để sau
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Success State -->
+            <div id="successState" style="display: none;">
+                <div class="invite-icon invite-icon--success">🎊</div>
+                <h1 class="invite-title">Chào mừng bạn!</h1>
+                <p class="invite-desc">Bạn đã tham gia công ty thành công. Hãy bắt đầu làm việc ngay!</p>
+                
+                <div class="invite-actions">
+                    <a href="dashboard/index.html" class="vsh-btn vsh-btn--primary vsh-btn--lg">
+                        Vào Dashboard →
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // ===== STATE =====
+        let invitationData = null;
+        let tenantData = null;
+        let currentUser = null;
+        let token = null;
+        
+        // ===== INITIALIZATION =====
+        document.addEventListener('DOMContentLoaded', async function() {
+            console.log('🚀 Đang xử lý lời mời...');
+            
+            // Lấy token từ URL
+            const urlParams = new URLSearchParams(window.location.search);
+            token = urlParams.get('token');
+            
+            if (!token) {
+                showError('Không tìm thấy mã lời mời trong URL');
+                return;
+            }
+            
+            // Kiểm tra lời mời
+            await checkInvitation();
+        });
+        
+        // ===== CHECK INVITATION =====
+        async function checkInvitation() {
+            try {
+                const supabase = getSupabase();
+                
+                // Lấy thông tin lời mời
+                const { data: invitation, error } = await supabase
+                    .from('tenant_invitations')
+                    .select(`
+                        *,
+                        tenants (
+                            id,
+                            name,
+                            code
+                        )
+                    `)
+                    .eq('token', token)
+                    .single();
+                
+                if (error || !invitation) {
+                    showError('Lời mời không tồn tại hoặc đã bị hủy');
+                    return;
+                }
+                
+                // Kiểm tra trạng thái
+                if (invitation.status !== 'pending') {
+                    if (invitation.status === 'accepted') {
+                        showError('Lời mời này đã được sử dụng');
+                    } else if (invitation.status === 'expired') {
+                        showError('Lời mời đã hết hạn');
+                    } else {
+                        showError('Lời mời đã bị hủy');
+                    }
+                    return;
+                }
+                
+                // Kiểm tra hết hạn
+                const expiresAt = new Date(invitation.expires_at);
+                if (expiresAt < new Date()) {
+                    // Cập nhật status thành expired
+                    await supabase
+                        .from('tenant_invitations')
+                        .update({ status: 'expired' })
+                        .eq('id', invitation.id);
+                    
+                    showError('Lời mời đã hết hạn');
+                    return;
+                }
+                
+                invitationData = invitation;
+                tenantData = invitation.tenants;
+                
+                // Kiểm tra user đã đăng nhập chưa
+                currentUser = await VSH_AUTH.getCurrentUser();
+                
+                if (!currentUser) {
+                    showNotLoggedIn();
+                } else {
+                    showAcceptState();
+                }
+                
+            } catch (err) {
+                console.error('Lỗi:', err);
+                showError('Có lỗi xảy ra. Vui lòng thử lại.');
+            }
+        }
+        
+        // ===== SHOW ERROR =====
+        function showError(message) {
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('errorState').style.display = 'block';
+            document.getElementById('errorMessage').textContent = message;
+        }
+        
+        // ===== SHOW NOT LOGGED IN =====
+        function showNotLoggedIn() {
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('notLoggedInState').style.display = 'block';
+            
+            // Hiển thị thông tin công ty
+            document.getElementById('companyNameGuest').textContent = tenantData.name;
+            document.getElementById('roleNameGuest').textContent = invitationData.role === 'admin' ? 'Quản trị viên' : 'Nhân viên';
+            
+            // Set redirect links
+            const redirectUrl = encodeURIComponent(window.location.href);
+            document.getElementById('loginLink').href = `login.html?redirect=${redirectUrl}`;
+            document.getElementById('registerLink').href = `register.html?redirect=${redirectUrl}`;
+        }
+        
+        // ===== SHOW ACCEPT STATE =====
+        function showAcceptState() {
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('acceptState').style.display = 'block';
+            
+            // Hiển thị thông tin
+            document.getElementById('companyName').textContent = tenantData.name;
+            document.getElementById('roleName').textContent = invitationData.role === 'admin' ? 'Quản trị viên' : 'Nhân viên';
+        }
+        
+        // ===== ACCEPT INVITATION =====
+        async function acceptInvitation() {
+            const btn = document.getElementById('acceptBtn');
+            btn.classList.add('vsh-btn--loading');
+            btn.disabled = true;
+            btn.textContent = 'Đang xử lý...';
+            
+            try {
+                const supabase = getSupabase();
+                
+                // Gọi function để accept
+                const { data, error } = await supabase
+                    .rpc('accept_tenant_invitation', {
+                        p_token: token,
+                        p_user_id: currentUser.id
+                    });
+                
+                if (error) throw error;
+                
+                const result = data;
+                
+                if (!result.success) {
+                    throw new Error(result.error);
+                }
+                
+                // Xóa cache tenant cũ
+                localStorage.removeItem('vsh_tenant_id');
+                localStorage.removeItem('vsh_tenant_info');
+                
+                // Hiển thị thành công
+                document.getElementById('acceptState').style.display = 'none';
+                document.getElementById('successState').style.display = 'block';
+                
+            } catch (err) {
+                console.error('Lỗi accept:', err);
+                btn.classList.remove('vsh-btn--loading');
+                btn.disabled = false;
+                btn.textContent = '✓ Tham gia ngay';
+                alert('Lỗi: ' + err.message);
+            }
+        }
+    </script>
+</body>
+</html>
