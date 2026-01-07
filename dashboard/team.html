@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý nhân viên - UngDung360</title>
+    
+    <!-- Font Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- VSH CSS Framework -->
+    <link rel="stylesheet" href="../assets/css/vsh-core.css">
+    <link rel="stylesheet" href="../assets/css/vsh-components.css">
+    <link rel="stylesheet" href="../assets/css/vsh-layout.css">
+    <link rel="stylesheet" href="../assets/css/vsh-utilities.css">
+    <link rel="stylesheet" href="../assets/css/vsh-responsive.css">
+    
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../assets/js/vsh-config.js"></script>
+    <script src="../assets/js/vsh-supabase.js"></script>
+    <script src="../assets/js/vsh-auth.js"></script>
+    
+    <style>
+        /* Team Page Styles */
+        .team-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .team-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .stat-card {
+            background: white;
+            border: 1px solid var(--vsh-border-color);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .stat-card__value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--vsh-primary);
+        }
+        
+        .stat-card__label {
+            font-size: 14px;
+            color: var(--vsh-text-secondary);
+            margin-top: 4px;
+        }
+        
+        .member-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: white;
+            border: 1px solid var(--vsh-border-color);
+            border-radius: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .member-card__avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--vsh-primary), var(--vsh-primary-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        
+        .member-card__info {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .member-card__name {
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--vsh-text-primary);
+        }
+        
+        .member-card__email {
+            font-size: 14px;
+            color: var(--vsh-text-secondary);
+        }
+        
+        .member-card__role {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .role--owner {
+            background: #fef3c7;
+            color: #d97706;
+        }
+        
+        .role--admin {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+        
+        .role--member {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+        
+        /* Invitation Card */
+        .invitation-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: #fffbeb;
+            border: 1px solid #fcd34d;
+            border-radius: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .invitation-card__icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #fef3c7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+        
+        .invitation-card__status {
+            font-size: 12px;
+            color: #d97706;
+            background: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border: 1px solid var(--vsh-border-color);
+            border-radius: 12px;
+        }
+        
+        .empty-state__icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+        
+        .empty-state__title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .empty-state__desc {
+            color: var(--vsh-text-secondary);
+            margin-bottom: 24px;
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 4px;
+            background: var(--vsh-bg-secondary);
+            padding: 4px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--vsh-text-secondary);
+            background: transparent;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .tab:hover {
+            color: var(--vsh-text-primary);
+        }
+        
+        .tab.is-active {
+            background: white;
+            color: var(--vsh-primary);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        /* Alert */
+        .page-alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+        
+        .page-alert--success {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #86efac;
+        }
+        
+        .page-alert--error {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fca5a5;
+        }
+        
+        .page-alert.is-visible {
+            display: block;
+        }
+        
+        /* Copy Link Box */
+        .copy-link-box {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        
+        .copy-link-box__input {
+            flex: 1;
+            padding: 10px 12px;
+            border: 1px solid var(--vsh-border-color);
+            border-radius: 8px;
+            font-size: 13px;
+            background: var(--vsh-bg-secondary);
+        }
+        
+        .copy-link-box__btn {
+            padding: 10px 16px;
+            background: var(--vsh-primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        
+        .copy-link-box__btn:hover {
+            background: var(--vsh-primary-dark);
+        }
+        
+        /* Action buttons */
+        .action-btn {
+            padding: 6px 12px;
+            font-size: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+        
+        .action-btn--cancel {
+            background: var(--vsh-danger-bg);
+            color: var(--vsh-danger);
+        }
+        
+        .action-btn--cancel:hover {
+            background: var(--vsh-danger);
+            color: white;
+        }
+        
+        .action-btn--resend {
+            background: var(--vsh-primary-bg);
+            color: var(--vsh-primary);
+        }
+        
+        .action-btn--resend:hover {
+            background: var(--vsh-primary);
+            color: white;
+        }
+    </style>
+</head>
+<body class="vsh-app vsh-app--with-sidebar">
+    
+    <!-- SIDEBAR -->
+    <aside class="vsh-sidebar vsh-sidebar--dark" id="sidebar">
+        <div class="vsh-sidebar__header">
+            <a href="index.html" class="vsh-sidebar__brand">
+                <div class="vsh-sidebar__brand-logo">U3</div>
+                <span class="vsh-sidebar__brand-text">UngDung360</span>
+            </a>
+        </div>
+        
+        <nav class="vsh-sidebar__nav">
+            <div class="vsh-sidebar__nav-section">
+                <div class="vsh-sidebar__nav-title">Menu chính</div>
+                <ul class="vsh-sidebar__nav-list">
+                    <li>
+                        <a href="index.html" class="vsh-sidebar__nav-link">
+                            <span class="vsh-sidebar__nav-icon">🏠</span>
+                            <span class="vsh-sidebar__nav-text">Trang chủ</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="profile.html" class="vsh-sidebar__nav-link">
+                            <span class="vsh-sidebar__nav-icon">👤</span>
+                            <span class="vsh-sidebar__nav-text">Thông tin cá nhân</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="vsh-sidebar__nav-section">
+                <div class="vsh-sidebar__nav-title">Công ty</div>
+                <ul class="vsh-sidebar__nav-list">
+                    <li>
+                        <a href="team.html" class="vsh-sidebar__nav-link is-active">
+                            <span class="vsh-sidebar__nav-icon">👥</span>
+                            <span class="vsh-sidebar__nav-text">Quản lý nhân viên</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="vsh-sidebar__nav-section" id="adminSection" style="display: none;">
+                <div class="vsh-sidebar__nav-title">Quản trị</div>
+                <ul class="vsh-sidebar__nav-list">
+                    <li>
+                        <a href="../admin/index.html" class="vsh-sidebar__nav-link">
+                            <span class="vsh-sidebar__nav-icon">⚙️</span>
+                            <span class="vsh-sidebar__nav-text">Admin Panel</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        
+        <div class="vsh-sidebar__footer">
+            <a href="#" class="vsh-sidebar__nav-link" onclick="handleLogout()">
+                <span class="vsh-sidebar__nav-icon">🚪</span>
+                <span class="vsh-sidebar__nav-text">Đăng xuất</span>
+            </a>
+        </div>
+    </aside>
+    
+    <!-- OVERLAY -->
+    <div class="vsh-sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    
+    <!-- HEADER -->
+    <header class="vsh-header">
+        <button class="vsh-header__toggle" onclick="toggleSidebar()">☰</button>
+        
+        <div style="margin-left: auto; display: flex; align-items: center; gap: 12px;">
+            <span id="tenantName" style="font-size: 14px; color: var(--vsh-text-secondary);">Đang tải...</span>
+            <div class="vsh-avatar" style="cursor: pointer;">
+                <span id="headerInitials">U</span>
+            </div>
+        </div>
+    </header>
+    
+    <!-- MAIN -->
+    <main class="vsh-main">
+        <!-- Page Header -->
+        <div class="team-header">
+            <div>
+                <h1 class="vsh-page-header__title">👥 Quản lý nhân viên</h1>
+                <p class="vsh-page-header__description">Mời và quản lý thành viên trong công ty của bạn</p>
+            </div>
+            <button class="vsh-btn vsh-btn--primary" onclick="openInviteModal()" id="inviteBtn" style="display: none;">
+                ➕ Mời nhân viên
+            </button>
+        </div>
+        
+        <!-- Alert -->
+        <div id="pageAlert" class="page-alert"></div>
+        
+        <!-- No Permission State -->
+        <div id="noPermissionState" class="empty-state" style="display: none;">
+            <div class="empty-state__icon">🔒</div>
+            <h3 class="empty-state__title">Bạn không có quyền quản lý</h3>
+            <p class="empty-state__desc">Chỉ Owner hoặc Admin của công ty mới có thể mời và quản lý nhân viên.</p>
+            <a href="index.html" class="vsh-btn vsh-btn--primary">← Về trang chủ</a>
+        </div>
+        
+        <!-- Main Content (chỉ hiện khi có quyền) -->
+        <div id="mainContent" style="display: none;">
+            <!-- Stats -->
+            <div class="team-stats">
+                <div class="stat-card">
+                    <div class="stat-card__value" id="statMembers">0</div>
+                    <div class="stat-card__label">Thành viên</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card__value" id="statPending">0</div>
+                    <div class="stat-card__label">Đang chờ</div>
+                </div>
+            </div>
+            
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab is-active" data-tab="members" onclick="switchTab('members')">
+                    👥 Thành viên
+                </button>
+                <button class="tab" data-tab="invitations" onclick="switchTab('invitations')">
+                    ✉️ Lời mời đang chờ
+                </button>
+            </div>
+            
+            <!-- Tab: Members -->
+            <div id="tabMembers">
+                <div id="membersList">
+                    <!-- Members will be loaded here -->
+                </div>
+                <div id="membersEmpty" class="empty-state" style="display: none;">
+                    <div class="empty-state__icon">👥</div>
+                    <h3 class="empty-state__title">Chưa có thành viên nào</h3>
+                    <p class="empty-state__desc">Mời nhân viên để bắt đầu làm việc cùng nhau</p>
+                </div>
+            </div>
+            
+            <!-- Tab: Invitations -->
+            <div id="tabInvitations" style="display: none;">
+                <div id="invitationsList">
+                    <!-- Invitations will be loaded here -->
+                </div>
+                <div id="invitationsEmpty" class="empty-state" style="display: none;">
+                    <div class="empty-state__icon">✉️</div>
+                    <h3 class="empty-state__title">Không có lời mời nào</h3>
+                    <p class="empty-state__desc">Tất cả lời mời đã được chấp nhận hoặc hết hạn</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Loading -->
+        <div id="loadingState" class="empty-state">
+            <div class="empty-state__icon">⏳</div>
+            <h3 class="empty-state__title">Đang tải...</h3>
+        </div>
+    </main>
+    
+    <!-- MODAL: Invite Member -->
+    <div class="vsh-modal-backdrop" id="inviteModal">
+        <div class="vsh-modal">
+            <div class="vsh-modal__header">
+                <h3 class="vsh-modal__title">✉️ Mời nhân viên mới</h3>
+                <button class="vsh-modal__close" onclick="closeInviteModal()">×</button>
+            </div>
+            <div class="vsh-modal__body">
+                <!-- Step 1: Form -->
+                <div id="inviteStep1">
+                    <form id="inviteForm" onsubmit="handleInvite(event)">
+                        <div class="vsh-form-group">
+                            <label class="vsh-label vsh-label--required">Email nhân viên</label>
+                            <input type="email" class="vsh-input" id="inviteEmail" placeholder="nhanvien@email.com" required>
+                            <span class="vsh-help-text">Nhân viên sẽ nhận được email với link tham gia</span>
+                        </div>
+                        
+                        <div class="vsh-form-group">
+                            <label class="vsh-label">Vai trò</label>
+                            <select class="vsh-select" id="inviteRole">
+                                <option value="member">Nhân viên (Member)</option>
+                                <option value="admin">Quản trị viên (Admin)</option>
+                            </select>
+                            <span class="vsh-help-text">Admin có thể mời thêm người và quản lý nhân viên</span>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Step 2: Success với Link -->
+                <div id="inviteStep2" style="display: none;">
+                    <div style="text-align: center; padding: 20px 0;">
+                        <div style="font-size: 64px; margin-bottom: 16px;">✅</div>
+                        <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 8px;">Đã tạo lời mời!</h3>
+                        <p style="color: var(--vsh-text-secondary); margin-bottom: 20px;">
+                            Gửi link bên dưới cho nhân viên để họ tham gia công ty
+                        </p>
+                        
+                        <div class="copy-link-box">
+                            <input type="text" class="copy-link-box__input" id="inviteLink" readonly>
+                            <button type="button" class="copy-link-box__btn" onclick="copyInviteLink()">
+                                📋 Copy
+                            </button>
+                        </div>
+                        
+                        <p style="font-size: 13px; color: var(--vsh-text-tertiary); margin-top: 16px;">
+                            ⏰ Link có hiệu lực trong 7 ngày
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="vsh-modal__footer" id="inviteFooter">
+                <button type="button" class="vsh-btn vsh-btn--secondary" onclick="closeInviteModal()">Hủy</button>
+                <button type="submit" form="inviteForm" class="vsh-btn vsh-btn--primary" id="inviteSubmitBtn">
+                    Tạo lời mời
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // ===== STATE =====
+        let currentUser = null;
+        let tenantInfo = null;
+        let userRole = null;
+        let members = [];
+        let invitations = [];
+        
+        // ===== INITIALIZATION =====
+        document.addEventListener('DOMContentLoaded', async function() {
+            console.log('🚀 Đang khởi tạo trang Team...');
+            
+            // Kiểm tra đăng nhập
+            const isLoggedIn = await VSH_AUTH.isLoggedIn();
+            if (!isLoggedIn) {
+                window.location.href = '../login.html';
+                return;
+            }
+            
+            // Lấy thông tin user
+            currentUser = await VSH_AUTH.getCurrentUser();
+            if (!currentUser) {
+                window.location.href = '../login.html';
+                return;
+            }
+            
+            // Hiển thị initials
+            const fullName = currentUser.user_metadata?.full_name || currentUser.email.split('@')[0];
+            const initials = fullName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+            document.getElementById('headerInitials').textContent = initials;
+            
+            // Load tenant info và kiểm tra quyền
+            await loadTenantAndCheckPermission();
+        });
+        
+        // ===== LOAD TENANT & CHECK PERMISSION =====
+        async function loadTenantAndCheckPermission() {
+            try {
+                const supabase = getSupabase();
+                
+                // Lấy tenant_users của user hiện tại
+                const { data: tenantUser, error } = await supabase
+                    .from('tenant_users')
+                    .select(`
+                        tenant_id,
+                        role,
+                        tenants (
+                            id,
+                            name,
+                            code
+                        )
+                    `)
+                    .eq('user_id', currentUser.id)
+                    .eq('is_active', true)
+                    .single();
+                
+                document.getElementById('loadingState').style.display = 'none';
+                
+                if (error || !tenantUser) {
+                    console.warn('Không tìm thấy tenant');
+                    document.getElementById('noPermissionState').style.display = 'block';
+                    return;
+                }
+                
+                tenantInfo = tenantUser.tenants;
+                userRole = tenantUser.role;
+                
+                // Hiển thị tên tenant
+                document.getElementById('tenantName').textContent = tenantInfo.name;
+                
+                // Kiểm tra quyền: chỉ owner hoặc admin mới được quản lý
+                if (userRole !== 'owner' && userRole !== 'admin') {
+                    document.getElementById('noPermissionState').style.display = 'block';
+                    return;
+                }
+                
+                // Có quyền → hiển thị nội dung
+                document.getElementById('mainContent').style.display = 'block';
+                document.getElementById('inviteBtn').style.display = 'inline-flex';
+                
+                // Kiểm tra Super Admin để hiện menu admin
+                await checkAdminAccess();
+                
+                // Load danh sách members và invitations
+                await loadMembers();
+                await loadInvitations();
+                
+            } catch (err) {
+                console.error('Lỗi:', err);
+                document.getElementById('loadingState').style.display = 'none';
+                showAlert('Có lỗi xảy ra. Vui lòng tải lại trang.', 'error');
+            }
+        }
+        
+        // ===== CHECK ADMIN ACCESS =====
+        async function checkAdminAccess() {
+            const supabase = getSupabase();
+            const { data: profile } = await supabase
+                .from('profiles')
+                .select('is_super_admin')
+                .eq('id', currentUser.id)
+                .single();
+            
+            if (profile?.is_super_admin) {
+                document.getElementById('adminSection').style.display = 'block';
+            }
+        }
+        
+        // ===== LOAD MEMBERS =====
+        async function loadMembers() {
+            try {
+                const supabase = getSupabase();
+                
+                const { data, error } = await supabase
+                    .from('tenant_users')
+                    .select(`
+                        id,
+                        user_id,
+                        role,
+                        created_at,
+                        profiles (
+                            full_name,
+                            phone
+                        )
+                    `)
+                    .eq('tenant_id', tenantInfo.id)
+                    .eq('is_active', true)
+                    .order('created_at', { ascending: true });
+                
+                if (error) throw error;
+                
+                members = data || [];
+                renderMembers();
+                document.getElementById('statMembers').textContent = members.length;
+                
+            } catch (err) {
+                console.error('Lỗi load members:', err);
+            }
+        }
+        
+        // ===== RENDER MEMBERS =====
+        function renderMembers() {
+            const container = document.getElementById('membersList');
+            const emptyState = document.getElementById('membersEmpty');
+            
+            if (members.length === 0) {
+                container.innerHTML = '';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            emptyState.style.display = 'none';
+            
+            const roleLabels = {
+                'owner': { text: 'Chủ sở hữu', class: 'role--owner' },
+                'admin': { text: 'Admin', class: 'role--admin' },
+                'member': { text: 'Nhân viên', class: 'role--member' }
+            };
+            
+            container.innerHTML = members.map(member => {
+                const name = member.profiles?.full_name || 'Chưa cập nhật';
+                const initials = name !== 'Chưa cập nhật' 
+                    ? name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()
+                    : 'U';
+                const role = roleLabels[member.role] || roleLabels['member'];
+                const isCurrentUser = member.user_id === currentUser.id;
+                
+                return `
+                    <div class="member-card">
+                        <div class="member-card__avatar">${initials}</div>
+                        <div class="member-card__info">
+                            <div class="member-card__name">
+                                ${name}
+                                ${isCurrentUser ? '<span style="color: var(--vsh-text-tertiary); font-weight: normal;">(Bạn)</span>' : ''}
+                            </div>
+                            <div class="member-card__email">ID: ${member.user_id.substring(0, 8)}...</div>
+                        </div>
+                        <span class="member-card__role ${role.class}">${role.text}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // ===== LOAD INVITATIONS =====
+        async function loadInvitations() {
+            try {
+                const supabase = getSupabase();
+                
+                const { data, error } = await supabase
+                    .from('tenant_invitations')
+                    .select('*')
+                    .eq('tenant_id', tenantInfo.id)
+                    .eq('status', 'pending')
+                    .order('created_at', { ascending: false });
+                
+                if (error) throw error;
+                
+                invitations = data || [];
+                renderInvitations();
+                document.getElementById('statPending').textContent = invitations.length;
+                
+            } catch (err) {
+                console.error('Lỗi load invitations:', err);
+            }
+        }
+        
+        // ===== RENDER INVITATIONS =====
+        function renderInvitations() {
+            const container = document.getElementById('invitationsList');
+            const emptyState = document.getElementById('invitationsEmpty');
+            
+            if (invitations.length === 0) {
+                container.innerHTML = '';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            emptyState.style.display = 'none';
+            
+            container.innerHTML = invitations.map(inv => {
+                const expiresAt = new Date(inv.expires_at);
+                const now = new Date();
+                const daysLeft = Math.ceil((expiresAt - now) / (1000 * 60 * 60 * 24));
+                const isExpiringSoon = daysLeft <= 2;
+                
+                return `
+                    <div class="invitation-card">
+                        <div class="invitation-card__icon">✉️</div>
+                        <div class="member-card__info">
+                            <div class="member-card__name">${inv.email}</div>
+                            <div class="member-card__email">
+                                Vai trò: ${inv.role === 'admin' ? 'Admin' : 'Nhân viên'} • 
+                                ${isExpiringSoon ? `<span style="color: #dc2626;">Còn ${daysLeft} ngày</span>` : `Còn ${daysLeft} ngày`}
+                            </div>
+                        </div>
+                        <span class="invitation-card__status">Đang chờ</span>
+                        <button class="action-btn action-btn--cancel" onclick="cancelInvitation('${inv.id}')">Hủy</button>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // ===== SWITCH TAB =====
+        function switchTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('is-active');
+                if (tab.dataset.tab === tabName) {
+                    tab.classList.add('is-active');
+                }
+            });
+            
+            // Update tab content
+            document.getElementById('tabMembers').style.display = tabName === 'members' ? 'block' : 'none';
+            document.getElementById('tabInvitations').style.display = tabName === 'invitations' ? 'block' : 'none';
+        }
+        
+        // ===== INVITE MODAL =====
+        function openInviteModal() {
+            document.getElementById('inviteStep1').style.display = 'block';
+            document.getElementById('inviteStep2').style.display = 'none';
+            document.getElementById('inviteFooter').style.display = 'flex';
+            document.getElementById('inviteForm').reset();
+            document.getElementById('inviteModal').classList.add('is-active');
+        }
+        
+        function closeInviteModal() {
+            document.getElementById('inviteModal').classList.remove('is-active');
+        }
+        
+        // ===== HANDLE INVITE =====
+        async function handleInvite(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('inviteEmail').value.trim().toLowerCase();
+            const role = document.getElementById('inviteRole').value;
+            const btn = document.getElementById('inviteSubmitBtn');
+            
+            // Validate email
+            if (!email || !email.includes('@')) {
+                showAlert('Vui lòng nhập email hợp lệ', 'error');
+                return;
+            }
+            
+            // Kiểm tra email đã là thành viên chưa
+            const supabase = getSupabase();
+            
+            btn.classList.add('vsh-btn--loading');
+            btn.disabled = true;
+            
+            try {
+                // Tạo token ngẫu nhiên
+                const token = generateToken();
+                
+                // Tính ngày hết hạn (7 ngày)
+                const expiresAt = new Date();
+                expiresAt.setDate(expiresAt.getDate() + 7);
+                
+                // Tạo lời mời
+                const { data, error } = await supabase
+                    .from('tenant_invitations')
+                    .insert({
+                        tenant_id: tenantInfo.id,
+                        email: email,
+                        role: role,
+                        invited_by: currentUser.id,
+                        token: token,
+                        status: 'pending',
+                        expires_at: expiresAt.toISOString()
+                    })
+                    .select()
+                    .single();
+                
+                if (error) throw error;
+                
+                // Tạo link mời
+                const inviteLink = `${window.location.origin}/invite.html?token=${token}`;
+                document.getElementById('inviteLink').value = inviteLink;
+                
+                // Chuyển sang step 2
+                document.getElementById('inviteStep1').style.display = 'none';
+                document.getElementById('inviteStep2').style.display = 'block';
+                document.getElementById('inviteFooter').style.display = 'none';
+                
+                // Reload invitations
+                await loadInvitations();
+                
+            } catch (err) {
+                console.error('Lỗi tạo lời mời:', err);
+                showAlert('Lỗi: ' + err.message, 'error');
+            }
+            
+            btn.classList.remove('vsh-btn--loading');
+            btn.disabled = false;
+        }
+        
+        // ===== COPY INVITE LINK =====
+        function copyInviteLink() {
+            const input = document.getElementById('inviteLink');
+            input.select();
+            document.execCommand('copy');
+            
+            // Feedback
+            const btn = input.nextElementSibling;
+            const originalText = btn.textContent;
+            btn.textContent = '✓ Đã copy!';
+            btn.style.background = '#10b981';
+            
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.style.background = '';
+            }, 2000);
+        }
+        
+        // ===== CANCEL INVITATION =====
+        async function cancelInvitation(invitationId) {
+            if (!confirm('Bạn có chắc muốn hủy lời mời này?')) return;
+            
+            try {
+                const supabase = getSupabase();
+                
+                const { error } = await supabase
+                    .from('tenant_invitations')
+                    .update({ status: 'cancelled' })
+                    .eq('id', invitationId);
+                
+                if (error) throw error;
+                
+                showAlert('Đã hủy lời mời', 'success');
+                await loadInvitations();
+                
+            } catch (err) {
+                console.error('Lỗi hủy lời mời:', err);
+                showAlert('Lỗi: ' + err.message, 'error');
+            }
+        }
+        
+        // ===== GENERATE TOKEN =====
+        function generateToken() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let token = '';
+            for (let i = 0; i < 32; i++) {
+                token += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return token;
+        }
+        
+        // ===== SHOW ALERT =====
+        function showAlert(message, type) {
+            const alert = document.getElementById('pageAlert');
+            alert.className = 'page-alert page-alert--' + type + ' is-visible';
+            alert.textContent = message;
+            
+            setTimeout(() => {
+                alert.classList.remove('is-visible');
+            }, 5000);
+        }
+        
+        // ===== SIDEBAR & LOGOUT =====
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('is-active');
+            document.getElementById('sidebarOverlay').classList.toggle('is-active');
+        }
+        
+        async function handleLogout() {
+            await VSH_AUTH.signOut();
+            window.location.href = '../login.html';
+        }
+    </script>
+</body>
+</html>
