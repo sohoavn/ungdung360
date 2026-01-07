@@ -72,45 +72,29 @@
             line-height: 1.6;
         }
         
-        /* Testimonial */
-        .register-testimonial {
-            background: rgba(255,255,255,0.1);
-            border-radius: var(--vsh-border-radius-lg);
-            padding: var(--vsh-space-6);
-            margin-top: var(--vsh-space-8);
-        }
-        
-        .register-testimonial__quote {
-            font-size: var(--vsh-text-base);
-            font-style: italic;
-            margin-bottom: var(--vsh-space-4);
-            line-height: 1.6;
-        }
-        
-        .register-testimonial__author {
+        /* Features list */
+        .register-features {
             display: flex;
-            align-items: center;
+            flex-direction: column;
             gap: var(--vsh-space-3);
         }
         
-        .register-testimonial__avatar {
-            width: 48px;
-            height: 48px;
+        .register-features__item {
+            display: flex;
+            align-items: center;
+            gap: var(--vsh-space-3);
+            font-size: var(--vsh-text-base);
+        }
+        
+        .register-features__icon {
+            width: 24px;
+            height: 24px;
             background: rgba(255,255,255,0.2);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
-        }
-        
-        .register-testimonial__name {
-            font-weight: var(--vsh-font-semibold);
-        }
-        
-        .register-testimonial__title {
-            font-size: var(--vsh-text-sm);
-            opacity: 0.8;
+            font-size: 12px;
         }
         
         /* Phần bên phải - Form */
@@ -335,27 +319,88 @@
             border: 1px solid #86efac;
         }
         
+        .register-alert--info {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #93c5fd;
+        }
+        
         .register-alert.is-visible {
             display: block;
         }
         
-        /* Steps indicator */
-        .register-steps {
+        /* Success State - Hiện sau khi đăng ký thành công */
+        .success-state {
+            display: none;
+            text-align: center;
+            padding: var(--vsh-space-8) var(--vsh-space-4);
+        }
+        
+        .success-state.is-visible {
+            display: block;
+        }
+        
+        .success-state__icon {
+            width: 80px;
+            height: 80px;
+            background: #dcfce7;
+            border-radius: 50%;
             display: flex;
+            align-items: center;
             justify-content: center;
-            gap: var(--vsh-space-2);
+            font-size: 40px;
+            margin: 0 auto var(--vsh-space-6);
+        }
+        
+        .success-state__title {
+            font-size: var(--vsh-text-xl);
+            font-weight: var(--vsh-font-bold);
+            color: var(--vsh-text-primary);
+            margin-bottom: var(--vsh-space-2);
+        }
+        
+        .success-state__desc {
+            font-size: var(--vsh-text-base);
+            color: var(--vsh-text-secondary);
+            line-height: 1.6;
             margin-bottom: var(--vsh-space-6);
         }
         
-        .register-step {
-            width: 32px;
-            height: 4px;
-            background: var(--vsh-border-color);
-            border-radius: 2px;
+        .success-state__email {
+            font-weight: var(--vsh-font-semibold);
+            color: var(--vsh-primary);
         }
         
-        .register-step.is-active {
-            background: var(--vsh-secondary);
+        .success-state__note {
+            font-size: var(--vsh-text-sm);
+            color: var(--vsh-text-tertiary);
+            background: var(--vsh-bg-secondary);
+            padding: var(--vsh-space-4);
+            border-radius: var(--vsh-border-radius);
+            margin-top: var(--vsh-space-4);
+        }
+        
+        /* Form State */
+        .form-state {
+            display: block;
+        }
+        
+        .form-state.is-hidden {
+            display: none;
+        }
+        
+        /* Trial badge */
+        .trial-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--vsh-space-2);
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            color: #92400e;
+            padding: var(--vsh-space-2) var(--vsh-space-4);
+            border-radius: var(--vsh-border-radius-full);
+            font-size: var(--vsh-text-sm);
+            font-weight: var(--vsh-font-medium);
+            margin-bottom: var(--vsh-space-4);
         }
         
         /* Desktop */
@@ -401,17 +446,23 @@
                 Tạo tài khoản miễn phí và khám phá hệ sinh thái 50+ ứng dụng được thiết kế riêng cho doanh nghiệp của bạn.
             </p>
             
-            <!-- Testimonial -->
-            <div class="register-testimonial">
-                <p class="register-testimonial__quote">
-                    "UngDung360 đã giúp chúng tôi số hóa toàn bộ quy trình vận hành, tiết kiệm 40% thời gian quản lý mỗi ngày."
-                </p>
-                <div class="register-testimonial__author">
-                    <div class="register-testimonial__avatar">👨‍💼</div>
-                    <div>
-                        <div class="register-testimonial__name">Nguyễn Văn A</div>
-                        <div class="register-testimonial__title">Giám đốc, Công ty ABC Logistics</div>
-                    </div>
+            <!-- Features -->
+            <div class="register-features">
+                <div class="register-features__item">
+                    <span class="register-features__icon">✓</span>
+                    <span>Dùng thử miễn phí 14 ngày</span>
+                </div>
+                <div class="register-features__item">
+                    <span class="register-features__icon">✓</span>
+                    <span>5 ứng dụng cơ bản miễn phí</span>
+                </div>
+                <div class="register-features__item">
+                    <span class="register-features__icon">✓</span>
+                    <span>Không cần thẻ tín dụng</span>
+                </div>
+                <div class="register-features__item">
+                    <span class="register-features__icon">✓</span>
+                    <span>Hỗ trợ kỹ thuật 24/7</span>
                 </div>
             </div>
         </div>
@@ -427,17 +478,15 @@
                         <span class="register-form-header__logo-text">Kênh Số Hóa</span>
                     </a>
                     
+                    <!-- Trial Badge -->
+                    <div class="trial-badge">
+                        🎁 Dùng thử miễn phí 14 ngày
+                    </div>
+                    
                     <h1 class="register-form-header__title">Tạo tài khoản mới</h1>
                     <p class="register-form-header__subtitle">
                         Điền thông tin bên dưới để bắt đầu sử dụng
                     </p>
-                </div>
-                
-                <!-- Steps -->
-                <div class="register-steps">
-                    <div class="register-step is-active"></div>
-                    <div class="register-step"></div>
-                    <div class="register-step"></div>
                 </div>
                 
                 <!-- Form Card -->
@@ -447,154 +496,182 @@
                         <span id="registerAlertMessage">Đã có lỗi xảy ra</span>
                     </div>
                     
-                    <!-- Form -->
-                    <form id="registerForm" onsubmit="handleRegister(event)">
-                        <!-- Row: Họ tên -->
-                        <div class="form-row">
-                            <div class="vsh-form-group">
-                                <label class="vsh-label vsh-label--required" for="lastName">Họ</label>
-                                <input 
-                                    type="text" 
-                                    id="lastName" 
-                                    name="lastName" 
-                                    class="vsh-input" 
-                                    placeholder="Nguyễn"
-                                    required
-                                >
-                            </div>
-                            <div class="vsh-form-group">
-                                <label class="vsh-label vsh-label--required" for="firstName">Tên</label>
-                                <input 
-                                    type="text" 
-                                    id="firstName" 
-                                    name="firstName" 
-                                    class="vsh-input" 
-                                    placeholder="Văn A"
-                                    required
-                                >
-                            </div>
-                        </div>
-                        
-                        <!-- Email -->
-                        <div class="vsh-form-group">
-                            <label class="vsh-label vsh-label--required" for="email">Email công việc</label>
-                            <input 
-                                type="email" 
-                                id="email" 
-                                name="email" 
-                                class="vsh-input" 
-                                placeholder="email@company.com"
-                                required
-                            >
-                            <span class="vsh-help-text">Sử dụng email công ty để được hỗ trợ tốt hơn</span>
-                        </div>
-                        
-                        <!-- Company -->
-                        <div class="vsh-form-group">
-                            <label class="vsh-label vsh-label--required" for="company">Tên công ty / tổ chức</label>
-                            <input 
-                                type="text" 
-                                id="company" 
-                                name="company" 
-                                class="vsh-input" 
-                                placeholder="Công ty ABC"
-                                required
-                            >
-                        </div>
-                        
-                        <!-- Industry -->
-                        <div class="vsh-form-group">
-                            <label class="vsh-label" for="industry">Ngành nghề</label>
-                            <select id="industry" name="industry" class="vsh-select">
-                                <option value="">-- Chọn ngành nghề --</option>
-                                <option value="logistics">Logistics & Vận tải</option>
-                                <option value="education">Giáo dục & Đào tạo</option>
-                                <option value="healthcare">Y tế & Sức khỏe</option>
-                                <option value="retail">Bán lẻ & F&B</option>
-                                <option value="manufacturing">Sản xuất & Công nghiệp</option>
-                                <option value="services">Dịch vụ & Tư vấn</option>
-                                <option value="other">Khác</option>
-                            </select>
-                        </div>
-                        
-                        <!-- Password -->
-                        <div class="vsh-form-group">
-                            <label class="vsh-label vsh-label--required" for="password">Mật khẩu</label>
-                            <div class="password-wrapper">
-                                <input 
-                                    type="password" 
-                                    id="password" 
-                                    name="password" 
-                                    class="vsh-input" 
-                                    placeholder="Tối thiểu 8 ký tự"
-                                    required
-                                    minlength="8"
-                                    oninput="checkPasswordStrength(this.value)"
-                                >
-                                <button type="button" class="password-toggle" onclick="togglePassword('password')">
-                                    <span id="toggleIcon1">👁️</span>
-                                </button>
-                            </div>
-                            <!-- Password strength -->
-                            <div class="password-strength">
-                                <div class="password-strength__bar">
-                                    <div class="password-strength__fill" id="strengthFill"></div>
+                    <!-- Form State (ẩn khi đăng ký thành công) -->
+                    <div id="formState" class="form-state">
+                        <!-- Form -->
+                        <form id="registerForm" onsubmit="handleRegister(event)">
+                            <!-- Row: Họ tên -->
+                            <div class="form-row">
+                                <div class="vsh-form-group">
+                                    <label class="vsh-label vsh-label--required" for="lastName">Họ</label>
+                                    <input 
+                                        type="text" 
+                                        id="lastName" 
+                                        name="lastName" 
+                                        class="vsh-input" 
+                                        placeholder="Nguyễn"
+                                        required
+                                    >
                                 </div>
-                                <span class="password-strength__text" id="strengthText">Nhập mật khẩu để kiểm tra độ mạnh</span>
+                                <div class="vsh-form-group">
+                                    <label class="vsh-label vsh-label--required" for="firstName">Tên</label>
+                                    <input 
+                                        type="text" 
+                                        id="firstName" 
+                                        name="firstName" 
+                                        class="vsh-input" 
+                                        placeholder="Văn A"
+                                        required
+                                    >
+                                </div>
                             </div>
-                        </div>
-                        
-                        <!-- Confirm Password -->
-                        <div class="vsh-form-group">
-                            <label class="vsh-label vsh-label--required" for="confirmPassword">Xác nhận mật khẩu</label>
-                            <div class="password-wrapper">
+                            
+                            <!-- Email -->
+                            <div class="vsh-form-group">
+                                <label class="vsh-label vsh-label--required" for="email">Email công việc</label>
                                 <input 
-                                    type="password" 
-                                    id="confirmPassword" 
-                                    name="confirmPassword" 
+                                    type="email" 
+                                    id="email" 
+                                    name="email" 
                                     class="vsh-input" 
-                                    placeholder="Nhập lại mật khẩu"
+                                    placeholder="email@company.com"
                                     required
                                 >
-                                <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')">
-                                    <span id="toggleIcon2">👁️</span>
-                                </button>
+                                <span class="vsh-help-text">Sử dụng email công ty để được hỗ trợ tốt hơn</span>
                             </div>
-                        </div>
+                            
+                            <!-- Company -->
+                            <div class="vsh-form-group">
+                                <label class="vsh-label vsh-label--required" for="company">Tên công ty / tổ chức</label>
+                                <input 
+                                    type="text" 
+                                    id="company" 
+                                    name="company" 
+                                    class="vsh-input" 
+                                    placeholder="Công ty ABC"
+                                    required
+                                >
+                                <span class="vsh-help-text">Hệ thống sẽ tự động tạo không gian làm việc cho công ty của bạn</span>
+                            </div>
+                            
+                            <!-- Industry -->
+                            <div class="vsh-form-group">
+                                <label class="vsh-label" for="industry">Ngành nghề</label>
+                                <select id="industry" name="industry" class="vsh-select">
+                                    <option value="">-- Chọn ngành nghề --</option>
+                                    <option value="logistics">Logistics & Vận tải</option>
+                                    <option value="education">Giáo dục & Đào tạo</option>
+                                    <option value="healthcare">Y tế & Sức khỏe</option>
+                                    <option value="retail">Bán lẻ & F&B</option>
+                                    <option value="manufacturing">Sản xuất & Công nghiệp</option>
+                                    <option value="services">Dịch vụ & Tư vấn</option>
+                                    <option value="other">Khác</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Password -->
+                            <div class="vsh-form-group">
+                                <label class="vsh-label vsh-label--required" for="password">Mật khẩu</label>
+                                <div class="password-wrapper">
+                                    <input 
+                                        type="password" 
+                                        id="password" 
+                                        name="password" 
+                                        class="vsh-input" 
+                                        placeholder="Tối thiểu 6 ký tự"
+                                        required
+                                        minlength="6"
+                                        oninput="checkPasswordStrength(this.value)"
+                                    >
+                                    <button type="button" class="password-toggle" onclick="togglePassword('password')">
+                                        <span id="toggleIcon1">👁️</span>
+                                    </button>
+                                </div>
+                                <!-- Password strength -->
+                                <div class="password-strength">
+                                    <div class="password-strength__bar">
+                                        <div class="password-strength__fill" id="strengthFill"></div>
+                                    </div>
+                                    <span class="password-strength__text" id="strengthText">Nhập mật khẩu để kiểm tra độ mạnh</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Confirm Password -->
+                            <div class="vsh-form-group">
+                                <label class="vsh-label vsh-label--required" for="confirmPassword">Xác nhận mật khẩu</label>
+                                <div class="password-wrapper">
+                                    <input 
+                                        type="password" 
+                                        id="confirmPassword" 
+                                        name="confirmPassword" 
+                                        class="vsh-input" 
+                                        placeholder="Nhập lại mật khẩu"
+                                        required
+                                    >
+                                    <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')">
+                                        <span id="toggleIcon2">👁️</span>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Terms -->
+                            <div class="vsh-form-group">
+                                <label class="vsh-checkbox">
+                                    <input type="checkbox" class="vsh-checkbox__input" name="terms" id="terms" required>
+                                    <span class="terms-text">
+                                        Tôi đồng ý với <a href="#">Điều khoản sử dụng</a> và <a href="#">Chính sách bảo mật</a>
+                                    </span>
+                                </label>
+                            </div>
+                            
+                            <!-- Submit -->
+                            <button type="submit" class="vsh-btn vsh-btn--success vsh-btn--block vsh-btn--lg" id="registerBtn">
+                                🚀 Bắt đầu dùng thử miễn phí
+                            </button>
+                        </form>
                         
-                        <!-- Terms -->
-                        <div class="vsh-form-group">
-                            <label class="vsh-checkbox">
-                                <input type="checkbox" class="vsh-checkbox__input" name="terms" id="terms" required>
-                                <span class="terms-text">
-                                    Tôi đồng ý với <a href="#">Điều khoản sử dụng</a> và <a href="#">Chính sách bảo mật</a>
-                                </span>
-                            </label>
-                        </div>
+                        <!-- Divider -->
+                        <div class="register-divider">hoặc đăng ký với</div>
                         
-                        <!-- Submit -->
-                        <button type="submit" class="vsh-btn vsh-btn--success vsh-btn--block vsh-btn--lg" id="registerBtn">
-                            Tạo tài khoản
+                        <!-- Social -->
+                        <button type="button" class="social-btn" onclick="handleGoogleRegister()">
+                            <svg class="social-btn__icon" viewBox="0 0 24 24">
+                                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                            </svg>
+                            <span>Đăng ký với Google</span>
                         </button>
-                    </form>
+                    </div>
                     
-                    <!-- Divider -->
-                    <div class="register-divider">hoặc đăng ký với</div>
-                    
-                    <!-- Social -->
-                    <button type="button" class="social-btn" onclick="handleGoogleRegister()">
-                        <svg class="social-btn__icon" viewBox="0 0 24 24">
-                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                        </svg>
-                        <span>Đăng ký với Google</span>
-                    </button>
+                    <!-- Success State (hiện sau khi đăng ký thành công) -->
+                    <div id="successState" class="success-state">
+                        <div class="success-state__icon">📧</div>
+                        <h2 class="success-state__title">Kiểm tra email của bạn!</h2>
+                        <p class="success-state__desc">
+                            Chúng tôi đã gửi email xác nhận đến<br>
+                            <span class="success-state__email" id="registeredEmail">email@example.com</span>
+                        </p>
+                        <p class="success-state__desc">
+                            Vui lòng click vào link trong email để kích hoạt tài khoản và bắt đầu sử dụng.
+                        </p>
+                        <div class="success-state__note">
+                            <strong>💡 Lưu ý:</strong><br>
+                            • Kiểm tra cả thư mục <strong>Spam/Junk</strong> nếu không thấy email<br>
+                            • Email có hiệu lực trong 24 giờ<br>
+                            • Sau khi xác nhận, bạn sẽ có 14 ngày dùng thử miễn phí
+                        </div>
+                        <div style="margin-top: var(--vsh-space-6);">
+                            <a href="login.html" class="vsh-btn vsh-btn--primary vsh-btn--lg">
+                                Đi đến trang Đăng nhập
+                            </a>
+                        </div>
+                    </div>
                 </div>
                 
                 <!-- Footer -->
-                <div class="register-footer">
+                <div class="register-footer" id="registerFooter">
                     Đã có tài khoản? <a href="login.html">Đăng nhập</a>
                 </div>
                 
@@ -647,8 +724,8 @@
             
             let strength = 0;
             
-            if (password.length >= 8) strength++;
-            if (password.length >= 12) strength++;
+            if (password.length >= 6) strength++;
+            if (password.length >= 10) strength++;
             if (/[a-z]/.test(password)) strength++;
             if (/[A-Z]/.test(password)) strength++;
             if (/[0-9]/.test(password)) strength++;
@@ -674,8 +751,8 @@
             const alert = document.getElementById('registerAlert');
             const alertMessage = document.getElementById('registerAlertMessage');
             
-            alert.classList.remove('register-alert--error', 'register-alert--success');
-            alert.classList.add(type === 'error' ? 'register-alert--error' : 'register-alert--success');
+            alert.classList.remove('register-alert--error', 'register-alert--success', 'register-alert--info');
+            alert.classList.add('register-alert--' + type);
             alertMessage.textContent = message;
             alert.classList.add('is-visible');
             
@@ -686,6 +763,14 @@
         function hideAlert() {
             const alert = document.getElementById('registerAlert');
             alert.classList.remove('is-visible');
+        }
+        
+        // ===== HIỂN THỊ TRẠNG THÁI THÀNH CÔNG =====
+        function showSuccessState(email) {
+            document.getElementById('formState').classList.add('is-hidden');
+            document.getElementById('successState').classList.add('is-visible');
+            document.getElementById('registeredEmail').textContent = email;
+            document.getElementById('registerFooter').style.display = 'none';
         }
         
         // ===== XỬ LÝ ĐĂNG KÝ =====
@@ -743,6 +828,7 @@
             // Hiển thị loading
             btn.classList.add('vsh-btn--loading');
             btn.disabled = true;
+            btn.textContent = 'Đang xử lý...';
             
             // ===== GỌI API ĐĂNG KÝ =====
             const fullName = lastName + ' ' + firstName;
@@ -750,19 +836,19 @@
             const result = await VSH_AUTH.signUp(email, password, {
                 full_name: fullName,
                 company: company,
-                industry: industry
+                industry: industry || 'other'
             });
+            
+            // Reset button
+            btn.classList.remove('vsh-btn--loading');
+            btn.disabled = false;
+            btn.textContent = '🚀 Bắt đầu dùng thử miễn phí';
             
             if (result.success) {
                 // Kiểm tra có cần xác nhận email không
-                if (result.data.user && !result.data.session) {
-                    // Cần xác nhận email
-                    showAlert('✓ Đăng ký thành công! Vui lòng kiểm tra email để xác nhận tài khoản.', 'success');
-                    
-                    // Chuyển đến trang login sau 3 giây
-                    setTimeout(() => {
-                        window.location.href = 'login.html';
-                    }, 3000);
+                if (result.needsEmailConfirmation) {
+                    // Hiển thị màn hình thành công với hướng dẫn xác nhận email
+                    showSuccessState(email);
                 } else {
                     // Không cần xác nhận email (đã tắt trong Supabase)
                     showAlert('✓ Đăng ký thành công! Đang chuyển hướng...', 'success');
@@ -775,8 +861,6 @@
             } else {
                 // Đăng ký thất bại
                 showAlert(result.error);
-                btn.classList.remove('vsh-btn--loading');
-                btn.disabled = false;
             }
         }
         
@@ -804,4 +888,3 @@
 
 </body>
 </html>
-
